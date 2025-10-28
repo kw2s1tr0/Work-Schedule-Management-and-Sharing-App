@@ -1,0 +1,42 @@
+services:
+  java:
+    container_name: java
+    build:
+      context: ./java
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: ../
+        target: /schedule
+      - type: volume
+        source: gradle-cache
+        target: /root/.gradle
+    depends_on:
+      - postgres
+    networks:
+      - schedule-network
+    tty: true
+  postgres:
+    container_name: postgres
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: schedule_dbs
+    ports:
+      - "5432:5432"
+    volumes:
+      - type: volume
+        source: pgdata
+        target: /var/lib/postgresql/data
+    networks:
+      - schedule-network
+volumes:
+  gradle-cache:
+  pgdata:
+networks:
+  schedule-network:
