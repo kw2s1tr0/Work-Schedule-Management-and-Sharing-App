@@ -1,6 +1,6 @@
 FROM eclipse-temurin:21-jdk
 
-ENV GRADLE_VERSION=9.1.0
+ENV GRADLE_VERSION=8.6
 ENV JAVA_HOME=/opt/java/openjdk
 ENV PATH=/opt/gradle-${GRADLE_VERSION}/bin:$PATH
 
