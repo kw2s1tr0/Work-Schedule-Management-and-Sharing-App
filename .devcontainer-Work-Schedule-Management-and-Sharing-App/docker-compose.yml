@@ -11,7 +11,7 @@ services:
         source: ../
         target: /schedule
       - type: volume
-        source: gradle-cache
+        source: gradle-Work-Schedule-Management-and-Sharing-App
         target: /root/.gradle
     depends_on:
       - postgres
@@ -31,12 +31,12 @@ services:
       - "5432:5432"
     volumes:
       - type: volume
-        source: pgdata
-        target: /var/lib/postgresql/data
+        source: pgdata-Work-Schedule-Management-and-Sharing-App
+        target: /var/lib/postgresql
     networks:
       - schedule-network
 volumes:
-  gradle-cache:
-  pgdata:
+  gradle-Work-Schedule-Management-and-Sharing-App:
+  pgdata-Work-Schedule-Management-and-Sharing-App:
 networks:
   schedule-network:

@@ -23,7 +23,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    // implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.postgresql:postgresql")
 
     // Use JUnit Jupiter for testing.
@@ -42,7 +42,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.App"
+    mainClass = "com.schedule.app.App"
 }
 
 tasks.named<Test>("test") {
