@@ -1,5 +1,9 @@
 package com.schedule.app.record.input;
 
-public class ScheduleSearchRecord {
-    
-}
+import java.time.LocalDate;
+
+public record ScheduleSearchRecord(
+    Integer userId,
+    LocalDate from,
+    LocalDate to
+) {}

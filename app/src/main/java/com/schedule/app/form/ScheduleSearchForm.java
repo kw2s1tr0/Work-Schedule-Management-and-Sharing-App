@@ -1,5 +1,9 @@
 package com.schedule.app.form;
 
-public class ScheduleSearchForm {
-    
-}
+public record ScheduleSearchForm (
+    Integer userId,
+    String week,
+    String month,
+    String name,
+    String organizationName
+){}
