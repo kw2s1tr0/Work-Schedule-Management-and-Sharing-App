@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.mapper.UserSearchMapper">
+    <select id="readUserRecord" resultType="com.schedule.app.record.output.UserRecord">
+        SELECT
+            u.user_name,
+            o.organization_name
+        FROM
+            users AS u
+        JOIN
+            organization AS o ON u.organization_code = o.organization_code
+        <where>
+            <if test="userId != null and userId != ''">
+                AND u.user_id = #{userId}
+            </if>
+            <if test="names != null">
+                <foreach collection="names" item="name" open="AND (" separator="AND" close=")">
+                    u.user_name LIKE CONCAT('%', #{name}, '%')
+                </foreach>
+            </if>
+            <if test="organizationCode != null and organizationCode != ''">
+                AND o.organization_code = #{organizationCode}
+            </if>
+        </where>
+</mapper>

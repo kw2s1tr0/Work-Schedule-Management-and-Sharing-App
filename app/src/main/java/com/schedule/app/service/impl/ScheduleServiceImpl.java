@@ -3,11 +3,9 @@ package com.schedule.app.service.impl;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +13,16 @@ import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.item.ScheduleDTO;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
+import com.schedule.app.record.output.UserDefaultScheduleRecord;
+import com.schedule.app.record.output.UserIrregularScheduleRecord;
 import com.schedule.app.record.output.UserRecord;
+import com.schedule.app.record.output.UserRegularScheduleRecord;
 import com.schedule.app.record.output.item.DefaultScheduleRecord;
 import com.schedule.app.record.output.item.IrregularScheduleRecord;
 import com.schedule.app.record.output.item.RegularScheduleRecord;
 import com.schedule.app.repository.CommonScheduleSearchMapper;
 import com.schedule.app.repository.ScheduleSearchMapper;
+import com.schedule.app.repository.UserSearchMapper;
 import com.schedule.app.service.ScheduleService;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +33,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     private final ScheduleSearchMapper scheduleSearchMapper;
     private final CommonScheduleSearchMapper commonScheduleSearchMapper;
+    private final UserSearchMapper userSearchMapper;
 
     @Override
     public List<UserDTO> scheduleSearchService(ScheduleSearchForm form){
@@ -87,20 +90,20 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public List<UserRecord> readRegularSchedule(ScheduleSearchRecord record){
-        List<UserRecord> userRecords = scheduleSearchMapper.readRegularScheduleRecord(record);
+    public List<UserRegularScheduleRecord> readRegularSchedule(ScheduleSearchRecord record){
+        List<UserRegularScheduleRecord> userRecords = scheduleSearchMapper.readRegularScheduleRecord(record);
         return userRecords;
     }
 
     @Override
-    public List<UserRecord> readIrregularSchedule(ScheduleSearchRecord record){
-        List<UserRecord> userRecords = scheduleSearchMapper.readIrregularScheduleRecord(record);
+    public List<UserIrregularScheduleRecord> readIrregularSchedule(ScheduleSearchRecord record){
+        List<UserIrregularScheduleRecord> userRecords = scheduleSearchMapper.readIrregularScheduleRecord(record);
         return userRecords;
     }
 
     @Override
-    public List<UserRecord> readDefaultSchedule(ScheduleSearchRecord record){
-        List<UserRecord> userRecords = scheduleSearchMapper.readDefaultScheduleRecord(record);
+    public List<UserDefaultScheduleRecord> readDefaultSchedule(ScheduleSearchRecord record){
+        List<UserDefaultScheduleRecord> userRecords = scheduleSearchMapper.readDefaultScheduleRecord(record);
         return userRecords;
     }
 
@@ -123,15 +126,41 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
+    public List<UserRecord> readUserRecords(ScheduleSearchRecord record) {
+        List<UserRecord> userRecords = userSearchMapper.readUserRecord(record);
+        return userRecords;
+    }
+
+    @Override
     public List<UserDTO> toUserDTOList(
-        List<UserRecord> defaultUserRecords,
-        List<UserRecord> regularUserRecords,
-        List<UserRecord> irregularUserRecords,
+        List<UserDefaultRecord> defaultUserRecords,
+        List<UserRegularRecord> regularUserRecords,
+        List<UserIrregularRecord> irregularUserRecords,
         List<DefaultScheduleRecord> defaultScheduleRecords,
         List<RegularScheduleRecord> regularScheduleRecords,
         List<IrregularScheduleRecord> irregularScheduleRecords,
+        List<UserRecord> userRecords,
         LocalDate from,
         LocalDate to) {
-        return null;
+        List<UserDTO> userDTOList = new ArrayList<>();
+        for (int i = 0; i < userRecords.size(); i++) {
+            UserRecord userRecord = userRecords.get(i);
+            DefaultUserRecord defaultUserRecord = defaultUserRecords.get(i);
+            RegularUserRecord regularUserRecord = regularUserRecords.get(i);
+            IrregularUserRecord irregularUserRecord = irregularUserRecords.get(i);
+            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+            for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
+                ScheduleDTO scheduleDTO = null;
+                scheduleDTOs.add(scheduleDTO);
+            }
+            UserDTO userDTO = UserDTO.builder()
+                .userId(userRecord.userId())
+                .name(userRecord.organizationName())
+                .schedules(scheduleDTOs)
+                .build();
+            userDTOList.add(userDTO);
+        }
+        return userDTOList;
     }
+
 }
