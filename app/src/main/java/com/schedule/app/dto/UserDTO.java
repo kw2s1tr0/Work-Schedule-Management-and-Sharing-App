@@ -8,7 +8,6 @@ import lombok.Builder;
 
 @Builder
 public record UserDTO (
-    int userId,
     String userName,
     String organizationName,
     List<ScheduleDTO> schedules

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN""http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.mapper.CommonScheduleSearchMapper">
+    <select id="readDefaultScheduleRecord" resultMap="com.schedule.app.record.output.item.DefaultScheduleRecord">
+        SELECT
+            ds.schedule_id,
+            ds.start_time,
+            ds.end_time,
+            ds.start_date,
+            ds.end_date,
+            st.work_type_name,
+            st.work_type_color
+        FROM
+            default_schedule AS ds
+        JOIN
+            schedule_type AS st ON ds.work_type_id = st.id
+        <where>
+            <if test="startDate != null">
+                AND ds.end_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND ds.start_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="readRegularScheduleRecord" resultMap="com.schedule.app.record.output.item.RegularScheduleRecord">
+        SELECT
+            is.schedule_id,
+            is.start_time,
+            is.end_time,
+            rs.start_date,
+            rs.end_date,
+            rs.days_of_weeks,
+            rs.interval_weeks,
+            st.work_type_name,
+            st.work_type_color
+        FROM
+            regular_schedule AS rs
+        JOIN
+            schedule_type AS st ON rs.work_type_id = st.id
+        <where>
+            <if test="startDate != null">
+                AND rs.start_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND rs.end_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="readIrregularScheduleRecord" resultMap="com.schedule.app.record.output.item.IrregularScheduleRecord">
+        SELECT
+            is.schedule_id,
+            is.start_time,
+            is.end_time,
+            is.date,
+            st.work_type_name,
+            st.work_type_color
+        FROM
+            irregular_schedule AS is
+        JOIN
+            schedule_type AS st ON is.work_type_id = st.id
+        <where>
+            <if test="startDate != null">
+                AND is.date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND is.date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+</mapper>

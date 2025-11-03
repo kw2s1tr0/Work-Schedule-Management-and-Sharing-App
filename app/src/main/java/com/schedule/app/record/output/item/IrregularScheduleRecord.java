@@ -7,8 +7,7 @@ public record IrregularScheduleRecord (
     int scheduleId,
     LocalTime startTime,
     LocalTime endTime,
-    LocalDate startDate,
-    LocalDate endDate,
+    LocalDate date,
     String worktypeName,
     String worktypeColor
 ){}

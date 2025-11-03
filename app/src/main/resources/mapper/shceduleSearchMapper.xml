@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.mapper.ScheduleSearchMapper">
+
+    <!-- readDefaultScheduleRecord -->
+    <resultMap id="DefaultScheduleMap" type="com.schedule.app.record.output.item.DefaultScheduleRecord">
+        <id property="scheduleId" column="schedule_id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="worktypeName" column="work_type_name"/>
+        <result property="worktypeColor" column="work_type_color"/>
+    </resultMap>
+
+    <resultMap id="UserRecordMap" type="com.schedule.app.record.output.UserRecord">
+        <result property="userName" column="user_name"/>
+        <result property="organizationName" column="organization_name"/>
+        <collection property="defaultSchedules"
+                    ofType="com.schedule.app.record.output.item.DefaultScheduleRecord"
+                    resultMap="DefaultScheduleMap"/>
+    </resultMap>
+
+    <select id="readDefaultScheduleRecord" resultMap="UserRecordMap">
+        SELECT
+            u.user_name,
+            o.organization_name,
+            ds.schedule_id,
+            ds.start_time,
+            ds.end_time,
+            ds.start_date,
+            ds.end_date,
+            st.work_type_name,
+            st.work_type_color
+        FROM
+            default_schedule AS ds
+        JOIN
+            user AS u ON ds.user_id = u.user_id
+        JOIN
+            organization AS o ON u.organization_code = o.organization_code
+        JOIN
+            schedule_type AS st ON ds.work_type_id = st.id
+        <where>
+            <if test="userId != null and userId != ''">
+                AND u.user_id = #{userId}
+            </if>
+            <if test="startDate != null">
+                AND ds.end_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND ds.start_date &lt;= #{endDate}
+            </if>
+            <if test="names != null">
+                <foreach collection="names" item="name" open="AND (" separator="AND" close=")">
+                    u.user_name LIKE CONCAT('%', #{name}, '%')
+                </foreach>
+            </if>
+            <if test="organizationCode != null and organizationCode != ''">
+                AND o.organization_code = #{organizationCode}
+            </if>
+        </where>
+    </select>
+
+    <!-- readRegularScheduleRecord -->
+    <resultMap id="RegularScheduleMap" type="com.schedule.app.record.output.item.RegularScheduleRecord">
+        <id property="scheduleId" column="schedule_id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="daysOfWeeks" column="days_of_weeks"/>
+        <result property="intervalWeeks" column="interval_weeks"/>
+        <result property="worktypeName" column="work_type_name"/>
+        <result property="worktypeColor" column="work_type_color"/>
+    </resultMap>
+
+    <resultMap id="UserRecordMap" type="com.schedule.app.record.output.UserRecord">
+        <result property="userName" column="user_name"/>
+        <result property="organizationName" column="organization_name"/>
+        <collection property="regularSchedules"
+                    ofType="com.schedule.app.record.output.item.RegularScheduleRecord"
+                    resultMap="RegularScheduleMap"/>
+    </resultMap>
+
+    <select id="readRegularScheduleRecord" resultMap="UserRecordMap">
+        SELECT
+            u.user_name,
+            o.organization_name,
+            rs.schedule_id,
+            rs.start_time,
+            rs.end_time,
+            rs.start_date,
+            rs.end_date,
+            rs.days_of_weeks,
+            rs.interval_weeks,
+            st.work_type_name,
+            st.work_type_color
+        FROM
+            regular_schedule AS rs
+        JOIN
+            user AS u ON rs.user_id = u.user_id
+        JOIN
+            organization AS o ON u.organization_code = o.organization_code
+        JOIN
+            schedule_type AS st ON rs.work_type_id = st.id
+        <where>
+            <if test="userId != null and userId != ''">
+                AND u.user_id = #{userId}
+            </if>
+            <if test="startDate != null">
+                AND ds.end_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND rs.start_date &lt;= #{endDate}
+            </if>
+            <if test="names != null">
+                <foreach collection="names" item="name" open="AND (" separator="AND" close=")">
+                    u.user_name LIKE CONCAT('%', #{name}, '%')
+                </foreach>
+            </if>
+            <if test="organizationCode != null and organizationCode != ''">
+                AND o.organization_code = #{organizationCode}
+            </if>
+        </where>
+    </select>
+
+    <!-- readIrregularScheduleRecord -->
+    <resultMap id="IrregularScheduleMap" type="com.schedule.app.record.output.item.IrregularScheduleRecord">
+        <id property="scheduleId" column="schedule_id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="date" column="date"/>
+        <result property="worktypeName" column="work_type_name"/>
+        <result property="worktypeColor" column="work_type_color"/>
+    </resultMap>
+
+    <resultMap id="UserRecordMap" type="com.schedule.app.record.output.UserRecord">
+        <result property="userName" column="user_name"/>
+        <result property="organizationName" column="organization_name"/>
+        <collection property="irregularSchedules"
+                    ofType="com.schedule.app.record.output.item.IrregularScheduleRecord"
+                    resultMap="IrregularScheduleMap"/>
+    </resultMap>
+
+    <select id="readIrregularScheduleRecord" resultMap="UserRecordMap">
+        SELECT
+            u.user_name,
+            o.organization_name,
+            is.schedule_id,
+            is.start_time,
+            is.end_time,
+            is.date,
+            st.work_type_name,
+            st.work_type_color
+        FROM
+            irregular_schedule AS is
+        JOIN
+            user AS u ON is.user_id = u.user_id
+        JOIN
+            organization AS o ON u.organization_code = o.organization_code
+        JOIN
+            schedule_type AS st ON is.work_type_id = st.id
+        <where>
+            <if test="userId != null and userId != ''">
+                AND u.user_id = #{userId}
+            </if>
+            <if test="startDate != null">
+                AND is.date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND is.date &lt;= #{endDate}
+            </if>
+            <if test="names != null">
+                <foreach collection="names" item="name" open="AND (" separator="AND" close=")">
+                    u.user_name LIKE CONCAT('%', #{name}, '%')
+                </foreach>
+            </if>
+            <if test="organizationCode != null and organizationCode != ''">
+                AND o.organization_code = #{organizationCode}
+            </if>
+        </where>
+    </select>
+</mapper>

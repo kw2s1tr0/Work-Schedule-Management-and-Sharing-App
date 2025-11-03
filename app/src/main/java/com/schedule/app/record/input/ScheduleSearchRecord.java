@@ -1,9 +1,15 @@
 package com.schedule.app.record.input;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import lombok.Builder;
+
+@Builder
 public record ScheduleSearchRecord(
-    Integer userId,
+    String userId,
     LocalDate from,
-    LocalDate to
+    LocalDate to,
+    List<String> names,
+    String organizationCode
 ) {}
