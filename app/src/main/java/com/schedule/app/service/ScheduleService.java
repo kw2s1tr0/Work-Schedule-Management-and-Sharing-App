@@ -25,12 +25,12 @@ public interface ScheduleService {
     public List<IrregularScheduleRecord> readCommonIrregularUserRecords(ScheduleSearchRecord record);
     public List<UserRecord> readUserRecords(ScheduleSearchRecord record);
     public List<UserDTO> toUserDTOList(
-        List<UserRecord> defaultUserRecords,
-        List<UserRecord> regularUserRecords,
-        List<UserRecord> irregularUserRecords,
-        List<DefaultScheduleRecord> defaultScheduleRecords,
-        List<RegularScheduleRecord> regularScheduleRecords,
-        List<IrregularScheduleRecord> irregularScheduleRecords,
+        List<UserDefaultScheduleRecord> defaultUserRecords,
+        List<UserRegularScheduleRecord> regularUserRecords,
+        List<UserIrregularScheduleRecord> irregularUserRecords,
+        List<DefaultScheduleRecord> commonDefaultScheduleRecords,
+        List<RegularScheduleRecord> commonRegularScheduleRecords,
+        List<IrregularScheduleRecord> commonIrregularScheduleRecords,
         List<UserRecord> userRecords,
         LocalDate from,
         LocalDate to);

@@ -3,10 +3,10 @@ package com.schedule.app.service.impl;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import com.schedule.app.dto.UserDTO;
@@ -132,32 +132,203 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public List<UserDTO> toUserDTOList(
-        List<UserDefaultRecord> defaultUserRecords,
-        List<UserRegularRecord> regularUserRecords,
-        List<UserIrregularRecord> irregularUserRecords,
-        List<DefaultScheduleRecord> defaultScheduleRecords,
-        List<RegularScheduleRecord> regularScheduleRecords,
-        List<IrregularScheduleRecord> irregularScheduleRecords,
-        List<UserRecord> userRecords,
-        LocalDate from,
-        LocalDate to) {
+    public List<UserDTO> toUserDTOList(List<UserDefaultScheduleRecord> defaultUserRecords,
+                                       List<UserRegularScheduleRecord> regularUserRecords,
+                                       List<UserIrregularScheduleRecord> irregularUserRecords,
+                                       List<DefaultScheduleRecord> commonDefaultScheduleRecords,
+                                       List<RegularScheduleRecord> commonRegularScheduleRecords,
+                                       List<IrregularScheduleRecord> commonIrregularScheduleRecords,
+                                       List<UserRecord> userRecords,
+                                       LocalDate from,
+                                       LocalDate to) {
+        
+        if (userRecords ==null){
+            List<UserDTO> emptyList = new ArrayList<>();
+            return emptyList;
+        }
+
         List<UserDTO> userDTOList = new ArrayList<>();
+
+        outer:
         for (int i = 0; i < userRecords.size(); i++) {
             UserRecord userRecord = userRecords.get(i);
-            DefaultUserRecord defaultUserRecord = defaultUserRecords.get(i);
-            RegularUserRecord regularUserRecord = regularUserRecords.get(i);
-            IrregularUserRecord irregularUserRecord = irregularUserRecords.get(i);
+            List<DefaultScheduleRecord> defaultRecords = defaultUserRecords.get(i).defaultSchedules();
+            List<RegularScheduleRecord> regularRecords = regularUserRecords.get(i).regularSchedules();
+            List<IrregularScheduleRecord> irregularRecords = irregularUserRecords.get(i).irregularSchedules();
+
             List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+
             for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
-                ScheduleDTO scheduleDTO = null;
-                scheduleDTOs.add(scheduleDTO);
+
+                if (irregularRecords != null){
+                    for (IrregularScheduleRecord record : irregularRecords) {
+                        if (date.equals(record.date())) {
+                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                                .scheduleId(record.scheduleId())
+                                .startTime(record.startTime())
+                                .endTime(record.endTime())
+                                .date(record.date())
+                                .worktypeName(record.worktypeName())
+                                .worktypeColor(record.worktypeColor())
+                                .build();
+                            scheduleDTOs.add(scheduleDTO);
+                            continue outer;
+                        }
+                    }
+                }
+
+                if (regularRecords != null){
+                    for (RegularScheduleRecord record : regularRecords) {
+                        if (date.isAfter(record.startDate().plusDays(1))
+                            && date.isBefore(record.endDate().plusDays(1))
+                            && record.daysOfWeek().name().equals(date.getDayOfWeek().name())
+                            ){
+                            switch (record.intervalWeeks()) {
+                                case 1:
+                                    ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                                        .scheduleId(record.scheduleId())
+                                        .startTime(record.startTime())
+                                        .endTime(record.endTime())
+                                        .date(date)
+                                        .worktypeName(record.worktypeName())
+                                        .worktypeColor(record.worktypeColor())
+                                        .build();
+                                    scheduleDTOs.add(scheduleDTO);
+                                    continue outer;
+                                case 2:
+                                    LocalDate startDate = record.startDate();
+                                    long weeksBetween = java.time.temporal.ChronoUnit.WEEKS.between(
+                                        startDate.with(java.time.DayOfWeek.MONDAY),
+                                        date.with(java.time.DayOfWeek.MONDAY)
+                                    );
+                                    if (weeksBetween % 2 == 0) {
+                                        ScheduleDTO scheduleDTO2 = ScheduleDTO.builder()
+                                            .scheduleId(record.scheduleId())
+                                            .startTime(record.startTime())
+                                            .endTime(record.endTime())
+                                            .date(date)
+                                            .worktypeName(record.worktypeName())
+                                            .worktypeColor(record.worktypeColor())
+                                            .build();
+                                        scheduleDTOs.add(scheduleDTO2);
+                                        continue outer;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            continue outer;
+                        }
+                    }
+                }
+
+                if (defaultRecords != null){
+                    for (DefaultScheduleRecord record : defaultRecords) {
+                        if (date.isAfter(record.startDate().plusDays(1))
+                            && date.isBefore(record.endDate().plusDays(1))
+                            ){
+                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                                .scheduleId(record.scheduleId())
+                                .startTime(record.startTime())
+                                .endTime(record.endTime())
+                                .date(date)
+                                .worktypeName(record.worktypeName())
+                                .worktypeColor(record.worktypeColor())
+                                .build();
+                            scheduleDTOs.add(scheduleDTO);
+                            continue outer;
+                        }
+                    }
+                }
+
+                if (commonIrregularScheduleRecords != null){
+                    for (IrregularScheduleRecord record : commonIrregularScheduleRecords) {
+                        if (date.getMonthValue() == record.date().getMonthValue()
+                            && date.getDayOfMonth() == record.date().getDayOfMonth()) {
+                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                                .scheduleId(record.scheduleId())
+                                .startTime(record.startTime())
+                                .endTime(record.endTime())
+                                .date(date)
+                                .worktypeName(record.worktypeName())
+                                .worktypeColor(record.worktypeColor())
+                                .build();
+                            scheduleDTOs.add(scheduleDTO);
+                            continue outer;
+                        }
+                    }
+                }
+
+                if (commonRegularScheduleRecords != null){
+                    for (RegularScheduleRecord record : commonRegularScheduleRecords) {
+                        if (date.isAfter(record.startDate().plusDays(1))
+                            && date.isBefore(record.endDate().plusDays(1))
+                            && record.daysOfWeek().name().equals(date.getDayOfWeek().name())
+                            ){
+                            switch (record.intervalWeeks()) {
+                                case 1:
+                                    ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                                        .scheduleId(record.scheduleId())
+                                        .startTime(record.startTime())
+                                        .endTime(record.endTime())
+                                        .date(date)
+                                        .worktypeName(record.worktypeName())
+                                        .worktypeColor(record.worktypeColor())
+                                        .build();
+                                    scheduleDTOs.add(scheduleDTO);
+                                    continue outer;
+                                case 2:
+                                    LocalDate startDate = record.startDate();
+                                    long weeksBetween = java.time.temporal.ChronoUnit.WEEKS.between(
+                                        startDate.with(java.time.DayOfWeek.MONDAY),
+                                        date.with(java.time.DayOfWeek.MONDAY)
+                                    );
+                                    if (weeksBetween % 2 == 0) {
+                                        ScheduleDTO scheduleDTO2 = ScheduleDTO.builder()
+                                            .scheduleId(record.scheduleId())
+                                            .startTime(record.startTime())
+                                            .endTime(record.endTime())
+                                            .date(date)
+                                            .worktypeName(record.worktypeName())
+                                            .worktypeColor(record.worktypeColor())
+                                            .build();
+                                        scheduleDTOs.add(scheduleDTO2);
+                                        continue outer;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            continue outer;
+                        }
+                    }
+                }
+
+                if (commonDefaultScheduleRecords != null){
+                    for (DefaultScheduleRecord record : commonDefaultScheduleRecords) {
+                        if (date.isAfter(record.startDate().plusDays(1))
+                            && date.isBefore(record.endDate().plusDays(1))
+                            ){
+                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                                .scheduleId(record.scheduleId())
+                                .startTime(record.startTime())
+                                .endTime(record.endTime())
+                                .date(date)
+                                .worktypeName(record.worktypeName())
+                                .worktypeColor(record.worktypeColor())
+                                .build();
+                            scheduleDTOs.add(scheduleDTO);
+                            continue outer;
+                        }
+                    }
+                }
             }
             UserDTO userDTO = UserDTO.builder()
-                .userId(userRecord.userId())
-                .name(userRecord.organizationName())
+                .userName(userRecord.userName())
+                .organizationName(userRecord.organizationName())
                 .schedules(scheduleDTOs)
                 .build();
+
             userDTOList.add(userDTO);
         }
         return userDTOList;
