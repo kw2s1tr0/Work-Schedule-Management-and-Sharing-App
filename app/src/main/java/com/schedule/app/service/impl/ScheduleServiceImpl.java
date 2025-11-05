@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.item.ScheduleDTO;
+import com.schedule.app.entity.Schedule;
+import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.record.output.UserDefaultScheduleRecord;
@@ -138,9 +140,9 @@ public class ScheduleServiceImpl implements ScheduleService{
                                        List<DefaultScheduleRecord> commonDefaultScheduleRecords,
                                        List<RegularScheduleRecord> commonRegularScheduleRecords,
                                        List<IrregularScheduleRecord> commonIrregularScheduleRecords,
-                                       List<UserRecord> userRecords,
                                        LocalDate from,
-                                       LocalDate to) {
+                                       LocalDate to,
+                                       List<UserRecord> userRecords) {
         
         if (userRecords ==null){
             List<UserDTO> emptyList = new ArrayList<>();
@@ -149,29 +151,25 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         List<UserDTO> userDTOList = new ArrayList<>();
 
-        outer:
+        
         for (int i = 0; i < userRecords.size(); i++) {
             UserRecord userRecord = userRecords.get(i);
             List<DefaultScheduleRecord> defaultRecords = defaultUserRecords.get(i).defaultSchedules();
             List<RegularScheduleRecord> regularRecords = regularUserRecords.get(i).regularSchedules();
             List<IrregularScheduleRecord> irregularRecords = irregularUserRecords.get(i).irregularSchedules();
 
-            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+            List<Schedule> schedules = new ArrayList<>();
 
+            outer:
             for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
 
+                Schedule schedule = Schedule.builder()
+                                            .date(date)
+                                            .build();               
                 if (irregularRecords != null){
                     for (IrregularScheduleRecord record : irregularRecords) {
-                        if (date.equals(record.date())) {
-                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                                .scheduleId(record.scheduleId())
-                                .startTime(record.startTime())
-                                .endTime(record.endTime())
-                                .date(record.date())
-                                .worktypeName(record.worktypeName())
-                                .worktypeColor(record.worktypeColor())
-                                .build();
-                            scheduleDTOs.add(scheduleDTO);
+                        if (schedule.matches(record, ScheduleType.IRREGULAR)) {
+                            schedules.add(schedule);
                             continue outer;
                         }
                     }
@@ -179,44 +177,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 
                 if (regularRecords != null){
                     for (RegularScheduleRecord record : regularRecords) {
-                        if (date.isAfter(record.startDate().plusDays(1))
-                            && date.isBefore(record.endDate().plusDays(1))
-                            && record.daysOfWeek().name().equals(date.getDayOfWeek().name())
-                            ){
-                            switch (record.intervalWeeks()) {
-                                case 1:
-                                    ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                                        .scheduleId(record.scheduleId())
-                                        .startTime(record.startTime())
-                                        .endTime(record.endTime())
-                                        .date(date)
-                                        .worktypeName(record.worktypeName())
-                                        .worktypeColor(record.worktypeColor())
-                                        .build();
-                                    scheduleDTOs.add(scheduleDTO);
-                                    continue outer;
-                                case 2:
-                                    LocalDate startDate = record.startDate();
-                                    long weeksBetween = java.time.temporal.ChronoUnit.WEEKS.between(
-                                        startDate.with(java.time.DayOfWeek.MONDAY),
-                                        date.with(java.time.DayOfWeek.MONDAY)
-                                    );
-                                    if (weeksBetween % 2 == 0) {
-                                        ScheduleDTO scheduleDTO2 = ScheduleDTO.builder()
-                                            .scheduleId(record.scheduleId())
-                                            .startTime(record.startTime())
-                                            .endTime(record.endTime())
-                                            .date(date)
-                                            .worktypeName(record.worktypeName())
-                                            .worktypeColor(record.worktypeColor())
-                                            .build();
-                                        scheduleDTOs.add(scheduleDTO2);
-                                        continue outer;
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                        if (schedule.matches(record, ScheduleType.REGULAR)) {
+                            schedules.add(schedule);
                             continue outer;
                         }
                     }
@@ -224,18 +186,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 
                 if (defaultRecords != null){
                     for (DefaultScheduleRecord record : defaultRecords) {
-                        if (date.isAfter(record.startDate().plusDays(1))
-                            && date.isBefore(record.endDate().plusDays(1))
-                            ){
-                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                                .scheduleId(record.scheduleId())
-                                .startTime(record.startTime())
-                                .endTime(record.endTime())
-                                .date(date)
-                                .worktypeName(record.worktypeName())
-                                .worktypeColor(record.worktypeColor())
-                                .build();
-                            scheduleDTOs.add(scheduleDTO);
+                        if (schedule.matches(record, ScheduleType.DEFAULT)) {
+                            schedules.add(schedule);
                             continue outer;
                         }
                     }
@@ -243,17 +195,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 
                 if (commonIrregularScheduleRecords != null){
                     for (IrregularScheduleRecord record : commonIrregularScheduleRecords) {
-                        if (date.getMonthValue() == record.date().getMonthValue()
-                            && date.getDayOfMonth() == record.date().getDayOfMonth()) {
-                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                                .scheduleId(record.scheduleId())
-                                .startTime(record.startTime())
-                                .endTime(record.endTime())
-                                .date(date)
-                                .worktypeName(record.worktypeName())
-                                .worktypeColor(record.worktypeColor())
-                                .build();
-                            scheduleDTOs.add(scheduleDTO);
+                        if (date.equals(record.date())) {
+                            schedules.add(schedule);
                             continue outer;
                         }
                     }
@@ -261,44 +204,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 
                 if (commonRegularScheduleRecords != null){
                     for (RegularScheduleRecord record : commonRegularScheduleRecords) {
-                        if (date.isAfter(record.startDate().plusDays(1))
-                            && date.isBefore(record.endDate().plusDays(1))
-                            && record.daysOfWeek().name().equals(date.getDayOfWeek().name())
-                            ){
-                            switch (record.intervalWeeks()) {
-                                case 1:
-                                    ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                                        .scheduleId(record.scheduleId())
-                                        .startTime(record.startTime())
-                                        .endTime(record.endTime())
-                                        .date(date)
-                                        .worktypeName(record.worktypeName())
-                                        .worktypeColor(record.worktypeColor())
-                                        .build();
-                                    scheduleDTOs.add(scheduleDTO);
-                                    continue outer;
-                                case 2:
-                                    LocalDate startDate = record.startDate();
-                                    long weeksBetween = java.time.temporal.ChronoUnit.WEEKS.between(
-                                        startDate.with(java.time.DayOfWeek.MONDAY),
-                                        date.with(java.time.DayOfWeek.MONDAY)
-                                    );
-                                    if (weeksBetween % 2 == 0) {
-                                        ScheduleDTO scheduleDTO2 = ScheduleDTO.builder()
-                                            .scheduleId(record.scheduleId())
-                                            .startTime(record.startTime())
-                                            .endTime(record.endTime())
-                                            .date(date)
-                                            .worktypeName(record.worktypeName())
-                                            .worktypeColor(record.worktypeColor())
-                                            .build();
-                                        scheduleDTOs.add(scheduleDTO2);
-                                        continue outer;
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                        if (schedule.matches(record, ScheduleType.COMMON_REGULAR)) {
+                            schedules.add(schedule);
                             continue outer;
                         }
                     }
@@ -306,23 +213,28 @@ public class ScheduleServiceImpl implements ScheduleService{
 
                 if (commonDefaultScheduleRecords != null){
                     for (DefaultScheduleRecord record : commonDefaultScheduleRecords) {
-                        if (date.isAfter(record.startDate().plusDays(1))
-                            && date.isBefore(record.endDate().plusDays(1))
-                            ){
-                            ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                                .scheduleId(record.scheduleId())
-                                .startTime(record.startTime())
-                                .endTime(record.endTime())
-                                .date(date)
-                                .worktypeName(record.worktypeName())
-                                .worktypeColor(record.worktypeColor())
-                                .build();
-                            scheduleDTOs.add(scheduleDTO);
+                        if (schedule.matches(record, ScheduleType.COMMON_DEFAULT)) {
+                            schedules.add(schedule);
                             continue outer;
                         }
                     }
                 }
             }
+
+            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+            for (Schedule schedule : schedules) {
+                ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                                                .scheduleId(schedule.getScheduleId())
+                                                .date(schedule.getDate())
+                                                .startTime(schedule.getStartTime())
+                                                .endTime(schedule.getEndTime())
+                                                .worktypeName(schedule.getWorktypeName())
+                                                .worktypeColor(schedule.getWorktypeColor())
+                                                .scheduleType(schedule.getScheduleType())
+                                                .build();
+                scheduleDTOs.add(scheduleDTO);
+            }
+
             UserDTO userDTO = UserDTO.builder()
                 .userName(userRecord.userName())
                 .organizationName(userRecord.organizationName())
