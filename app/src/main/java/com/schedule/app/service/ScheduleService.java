@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.schedule.app.dto.UserDTO;
-import com.schedule.app.entity.Schedule;
+import com.schedule.app.entity.User;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.record.output.UserDefaultScheduleRecord;
@@ -25,13 +25,14 @@ public interface ScheduleService {
     public List<RegularScheduleRecord> readCommonRegularUserRecords(ScheduleSearchRecord record);
     public List<IrregularScheduleRecord> readCommonIrregularUserRecords(ScheduleSearchRecord record);
     public List<UserRecord> readUserRecords(ScheduleSearchRecord record);
-    public List<UserDTO> toUserDTOList(List<UserDefaultScheduleRecord> defaultUserRecords,
-                                    List<UserRegularScheduleRecord> regularUserRecords,
-                                    List<UserIrregularScheduleRecord> irregularUserRecords,
-                                    List<DefaultScheduleRecord> commonDefaultScheduleRecords,
-                                    List<RegularScheduleRecord> commonRegularScheduleRecords,
-                                    List<IrregularScheduleRecord> commonIrregularScheduleRecords,
-                                    LocalDate from,
-                                    LocalDate to,
-                                    List<UserRecord> userRecords);
+    public List<User> toUserEntityList(List<UserDefaultScheduleRecord> defaultUserRecords,
+                                        List<UserRegularScheduleRecord> regularUserRecords,
+                                        List<UserIrregularScheduleRecord> irregularUserRecords,
+                                        List<DefaultScheduleRecord> commonDefaultScheduleRecords,
+                                        List<RegularScheduleRecord> commonRegularScheduleRecords,
+                                        List<IrregularScheduleRecord> commonIrregularScheduleRecords,
+                                        LocalDate from,
+                                        LocalDate to,
+                                        List<UserRecord> userRecords);  
+    public List<UserDTO> toUserDTOList(List<User> userList);
 }

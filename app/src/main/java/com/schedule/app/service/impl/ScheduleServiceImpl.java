@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.item.ScheduleDTO;
-import com.schedule.app.entity.Schedule;
+import com.schedule.app.entity.User;
+import com.schedule.app.entity.item.Schedule;
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
@@ -39,7 +40,25 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public List<UserDTO> scheduleSearchService(ScheduleSearchForm form){
-        return null;
+        ScheduleSearchRecord record = toScheduleSearchRecord(form);
+        List<UserRegularScheduleRecord> regularSchedules = readRegularSchedule(record);
+        List<UserIrregularScheduleRecord> irregularSchedules = readIrregularSchedule(record);
+        List<UserDefaultScheduleRecord> defaultSchedules = readDefaultSchedule(record);
+        List<DefaultScheduleRecord> commonDefaultScheduleRecords = readCommonDefaultScheduleRecord(record);
+        List<RegularScheduleRecord> commonRegularScheduleRecords = readCommonRegularUserRecords(record);
+        List<IrregularScheduleRecord> commonIrregularScheduleRecords = readCommonIrregularUserRecords(record);
+        List<UserRecord> userRecords = readUserRecords(record);
+        List<User> userList = toUserEntityList(defaultSchedules,
+                                                regularSchedules,
+                                                irregularSchedules,
+                                                commonDefaultScheduleRecords,
+                                                commonRegularScheduleRecords,       
+                                                commonIrregularScheduleRecords,
+                                                record.from(),
+                                                record.to(),
+                                                userRecords);
+        List<UserDTO> userDTOList = toUserDTOList(userList);
+        return userDTOList;
     }
 
     @Override
@@ -134,22 +153,19 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public List<UserDTO> toUserDTOList(List<UserDefaultScheduleRecord> defaultUserRecords,
-                                       List<UserRegularScheduleRecord> regularUserRecords,
-                                       List<UserIrregularScheduleRecord> irregularUserRecords,
-                                       List<DefaultScheduleRecord> commonDefaultScheduleRecords,
-                                       List<RegularScheduleRecord> commonRegularScheduleRecords,
-                                       List<IrregularScheduleRecord> commonIrregularScheduleRecords,
-                                       LocalDate from,
-                                       LocalDate to,
-                                       List<UserRecord> userRecords) {
-        
-        if (userRecords ==null){
-            List<UserDTO> emptyList = new ArrayList<>();
+    public List<User> toUserEntityList(List<UserDefaultScheduleRecord> defaultUserRecords,
+            List<UserRegularScheduleRecord> regularUserRecords, List<UserIrregularScheduleRecord> irregularUserRecords,
+            List<DefaultScheduleRecord> commonDefaultScheduleRecords,
+            List<RegularScheduleRecord> commonRegularScheduleRecords,
+            List<IrregularScheduleRecord> commonIrregularScheduleRecords, LocalDate from, LocalDate to,
+            List<UserRecord> userRecords) {
+
+        if (userRecords.isEmpty()) {
+            List<User> emptyList = new ArrayList<>();
             return emptyList;
         }
 
-        List<UserDTO> userDTOList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
 
         
         for (int i = 0; i < userRecords.size(); i++) {
@@ -166,7 +182,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                 Schedule schedule = Schedule.builder()
                                             .date(date)
                                             .build();               
-                if (irregularRecords != null){
+                if (!irregularRecords.isEmpty()){
                     for (IrregularScheduleRecord record : irregularRecords) {
                         if (schedule.matches(record, ScheduleType.IRREGULAR)) {
                             schedules.add(schedule);
@@ -175,7 +191,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (regularRecords != null){
+                if (!regularRecords.isEmpty()){
                     for (RegularScheduleRecord record : regularRecords) {
                         if (schedule.matches(record, ScheduleType.REGULAR)) {
                             schedules.add(schedule);
@@ -184,16 +200,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (defaultRecords != null){
-                    for (DefaultScheduleRecord record : defaultRecords) {
-                        if (schedule.matches(record, ScheduleType.DEFAULT)) {
-                            schedules.add(schedule);
-                            continue outer;
-                        }
-                    }
-                }
-
-                if (commonIrregularScheduleRecords != null){
+                if (!commonIrregularScheduleRecords.isEmpty()){
                     for (IrregularScheduleRecord record : commonIrregularScheduleRecords) {
                         if (date.equals(record.date())) {
                             schedules.add(schedule);
@@ -202,7 +209,8 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (commonRegularScheduleRecords != null){
+
+                if (!commonRegularScheduleRecords.isEmpty()){
                     for (RegularScheduleRecord record : commonRegularScheduleRecords) {
                         if (schedule.matches(record, ScheduleType.COMMON_REGULAR)) {
                             schedules.add(schedule);
@@ -211,7 +219,16 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (commonDefaultScheduleRecords != null){
+                if (!defaultRecords.isEmpty()){
+                    for (DefaultScheduleRecord record : defaultRecords) {
+                        if (schedule.matches(record, ScheduleType.DEFAULT)) {
+                            schedules.add(schedule);
+                            continue outer;
+                        }
+                    }
+                }
+
+                if (!commonDefaultScheduleRecords.isEmpty()){
                     for (DefaultScheduleRecord record : commonDefaultScheduleRecords) {
                         if (schedule.matches(record, ScheduleType.COMMON_DEFAULT)) {
                             schedules.add(schedule);
@@ -220,30 +237,49 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
             }
-
-            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
-            for (Schedule schedule : schedules) {
-                ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                                                .scheduleId(schedule.getScheduleId())
-                                                .date(schedule.getDate())
-                                                .startTime(schedule.getStartTime())
-                                                .endTime(schedule.getEndTime())
-                                                .worktypeName(schedule.getWorktypeName())
-                                                .worktypeColor(schedule.getWorktypeColor())
-                                                .scheduleType(schedule.getScheduleType())
-                                                .build();
-                scheduleDTOs.add(scheduleDTO);
-            }
-
-            UserDTO userDTO = UserDTO.builder()
+            User user = User.builder()
                 .userName(userRecord.userName())
                 .organizationName(userRecord.organizationName())
-                .schedules(scheduleDTOs)
+                .schedules(schedules)
                 .build();
 
+            userList.add(user);
+        }
+        return userList;
+    }
+
+    @Override
+    public List<UserDTO> toUserDTOList(List<User> userList) {
+        
+        if (userList.isEmpty()) {
+            List<UserDTO> emptyList = new ArrayList<>();
+            return emptyList;
+        }
+
+        List<UserDTO> userDTOList = new ArrayList<>();
+
+        for (User user : userList) {
+            List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+
+            for (Schedule schedule : user.getSchedules()) {
+                ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+                    .scheduleId(schedule.getScheduleId())
+                    .date(schedule.getDate())
+                    .startTime(schedule.getStartTime())
+                    .endTime(schedule.getEndTime())
+                    .worktypeName(schedule.getWorktypeName())
+                    .worktypeColor(schedule.getWorktypeColor())
+                    .scheduleType(schedule.getScheduleType())
+                    .build();
+                scheduleDTOs.add(scheduleDTO);
+            }
+            UserDTO userDTO = UserDTO.builder()
+                .userName(user.getUserName())
+                .organizationName(user.getOrganizationName())
+                .schedules(scheduleDTOs)
+                .build();
             userDTOList.add(userDTO);
         }
         return userDTOList;
     }
-
 }
