@@ -8,12 +8,12 @@ import com.schedule.app.enums.ScheduleType;
 import lombok.Builder;
 
 @Builder
-public record ScheduleDTO (
-    int scheduleId,
-    LocalDate date,
-    LocalTime startTime,
-    LocalTime endTime,
-    String worktypeName,
-    String worktypeColor,
-    ScheduleType scheduleType
-){}
+public record ScheduleDTO(
+        int scheduleId,
+        LocalDate date,
+        LocalTime startTime,
+        LocalTime endTime,
+        String worktypeName,
+        String worktypeColor,
+        ScheduleType scheduleType) {
+}

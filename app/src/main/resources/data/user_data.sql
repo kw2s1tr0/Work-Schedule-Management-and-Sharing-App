@@ -1,4 +1,4 @@
-INSERT INTO users (member_id, organization_code, name, position_code, hire_date, resignation_date) VALUES
+INSERT INTO users (user_id, organization_code, name, position_code, hire_date, resignation_date) VALUES
     ('00001', '006', '山田太郎', '022', '2020-04-01', NULL),
     ('00002', '006', '佐藤花子', '033', '2019-06-15', NULL),
     ('00003', '010', '田中一郎', '041', '2021-03-10', '2025-10-31'),

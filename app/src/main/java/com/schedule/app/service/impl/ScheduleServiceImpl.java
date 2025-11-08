@@ -32,14 +32,21 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
     private final CommonScheduleSearchMapper commonScheduleSearchMapper;
     private final UserSearchMapper userSearchMapper;
 
+    /**
+     * スケジュール検索サービス
+     * ユーザーごとのスケジュールリストを検索条件に基づき取得する
+     * 
+     * @param form スケジュール検索条件
+     * @return 条件に一致したユーザーDTOリスト(各ユーザーはスケジュールDTOリスト内包)
+     */
     @Override
-    public List<UserDTO> scheduleSearchService(ScheduleSearchForm form){
+    public List<UserDTO> scheduleSearchService(ScheduleSearchForm form) {
         ScheduleSearchRecord record = toScheduleSearchRecord(form);
         List<UserRegularScheduleRecord> regularSchedules = readRegularSchedule(record);
         List<UserIrregularScheduleRecord> irregularSchedules = readIrregularSchedule(record);
@@ -49,21 +56,28 @@ public class ScheduleServiceImpl implements ScheduleService{
         List<IrregularScheduleRecord> commonIrregularScheduleRecords = readCommonIrregularUserRecords(record);
         List<UserRecord> userRecords = readUserRecords(record);
         List<User> userList = toUserEntityList(defaultSchedules,
-                                                regularSchedules,
-                                                irregularSchedules,
-                                                commonDefaultScheduleRecords,
-                                                commonRegularScheduleRecords,       
-                                                commonIrregularScheduleRecords,
-                                                record.from(),
-                                                record.to(),
-                                                userRecords);
+                regularSchedules,
+                irregularSchedules,
+                commonDefaultScheduleRecords,
+                commonRegularScheduleRecords,
+                commonIrregularScheduleRecords,
+                record.from(),
+                record.to(),
+                userRecords);
         List<UserDTO> userDTOList = toUserDTOList(userList);
         return userDTOList;
     }
 
+    /**
+     * スケジュール検索条件をScheduleSearchRecordに変換する
+     * 
+     * @param form スケジュール検索条件
+     * @return ScheduleSearchRecord
+     */
     @Override
     public ScheduleSearchRecord toScheduleSearchRecord(ScheduleSearchForm form) {
 
+        // 週の開始日と終了日を取得
         WeekFields weekFields = WeekFields.ISO;
         int year;
         int week;
@@ -74,8 +88,9 @@ public class ScheduleServiceImpl implements ScheduleService{
             case WEEK:
                 year = Integer.parseInt(form.week().substring(0, 4));
                 week = Integer.parseInt(form.week().substring(6));
+                // その年の1/1を基準に、指定された週に移動し、週の初めの月曜日に設定し、週の終わりの日曜日も取得
                 from = LocalDate
-                        .ofYearDay(year,1)
+                        .ofYearDay(year, 1)
                         .with(weekFields.weekOfYear(), week)
                         .with(weekFields.dayOfWeek(), 1);
                 to = from.plusDays(6);
@@ -91,6 +106,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                 throw new IllegalArgumentException("Invalid view mode: " + form.viewMode());
         }
 
+        // 名前をスペースで分割してリスト化
         List<String> names;
         if (form.name() == null || form.name().isBlank()) {
             names = null;
@@ -98,51 +114,55 @@ public class ScheduleServiceImpl implements ScheduleService{
             names = Arrays.asList(form.name().trim().split("\\s+|　+"));
         }
 
+        // ユーザーIDを正規化(全角→半角)
         String userId = Normalizer.normalize(form.userId(), Normalizer.Form.NFKC);
 
         ScheduleSearchRecord record = ScheduleSearchRecord.builder()
-            .userId(userId)
-            .from(from)
-            .to(to)
-            .names(names)
-            .organizationCode(form.organizationCode())
-            .build();
+                .userId(userId)
+                .from(from)
+                .to(to)
+                .names(names)
+                .organizationCode(form.organizationCode())
+                .build();
         return record;
     }
 
     @Override
-    public List<UserRegularScheduleRecord> readRegularSchedule(ScheduleSearchRecord record){
+    public List<UserRegularScheduleRecord> readRegularSchedule(ScheduleSearchRecord record) {
         List<UserRegularScheduleRecord> userRecords = scheduleSearchMapper.readRegularScheduleRecord(record);
         return userRecords;
     }
 
     @Override
-    public List<UserIrregularScheduleRecord> readIrregularSchedule(ScheduleSearchRecord record){
+    public List<UserIrregularScheduleRecord> readIrregularSchedule(ScheduleSearchRecord record) {
         List<UserIrregularScheduleRecord> userRecords = scheduleSearchMapper.readIrregularScheduleRecord(record);
         return userRecords;
     }
 
     @Override
-    public List<UserDefaultScheduleRecord> readDefaultSchedule(ScheduleSearchRecord record){
+    public List<UserDefaultScheduleRecord> readDefaultSchedule(ScheduleSearchRecord record) {
         List<UserDefaultScheduleRecord> userRecords = scheduleSearchMapper.readDefaultScheduleRecord(record);
         return userRecords;
     }
 
     @Override
-    public List<DefaultScheduleRecord> readCommonDefaultScheduleRecord(ScheduleSearchRecord record){
-        List<DefaultScheduleRecord> defaultScheduleRecords = commonScheduleSearchMapper.readDefaultScheduleRecord(record);
+    public List<DefaultScheduleRecord> readCommonDefaultScheduleRecord(ScheduleSearchRecord record) {
+        List<DefaultScheduleRecord> defaultScheduleRecords = commonScheduleSearchMapper
+                .readDefaultScheduleRecord(record);
         return defaultScheduleRecords;
     }
 
     @Override
-    public List<RegularScheduleRecord> readCommonRegularUserRecords(ScheduleSearchRecord record ){
-        List<RegularScheduleRecord> regularScheduleRecords = commonScheduleSearchMapper.readRegularScheduleRecord(record);
+    public List<RegularScheduleRecord> readCommonRegularUserRecords(ScheduleSearchRecord record) {
+        List<RegularScheduleRecord> regularScheduleRecords = commonScheduleSearchMapper
+                .readRegularScheduleRecord(record);
         return regularScheduleRecords;
     }
 
     @Override
-    public List<IrregularScheduleRecord> readCommonIrregularUserRecords(ScheduleSearchRecord record){
-        List<IrregularScheduleRecord> irregularScheduleRecords = commonScheduleSearchMapper.readIrregularScheduleRecord(record);
+    public List<IrregularScheduleRecord> readCommonIrregularUserRecords(ScheduleSearchRecord record) {
+        List<IrregularScheduleRecord> irregularScheduleRecords = commonScheduleSearchMapper
+                .readIrregularScheduleRecord(record);
         return irregularScheduleRecords;
     }
 
@@ -152,6 +172,20 @@ public class ScheduleServiceImpl implements ScheduleService{
         return userRecords;
     }
 
+    /**
+     * 検索結果のレコードをユーザーエンティティリストに変換する
+     * 
+     * @param defaultUserRecords             ユーザーレコードリスト（デフォルトスケジュールリストを内包）
+     * @param regularUserRecords             ユーザーレコードリスト（定期スケジュールリストを内包）
+     * @param irregularUserRecords           ユーザーレコードリスト（非定期スケジュールリストを内包）
+     * @param commonDefaultScheduleRecords   共通デフォルトスケジュールレコード
+     * @param commonRegularScheduleRecords   共通定期スケジュールレコード
+     * @param commonIrregularScheduleRecords 共通非定期スケジュールレコード
+     * @param from                           検索開始日
+     * @param to                             検索終了日
+     * @param userRecords                    ユーザーレコードリスト
+     * @return ユーザーエンティティリスト
+     */
     @Override
     public List<User> toUserEntityList(List<UserDefaultScheduleRecord> defaultUserRecords,
             List<UserRegularScheduleRecord> regularUserRecords, List<UserIrregularScheduleRecord> irregularUserRecords,
@@ -160,6 +194,7 @@ public class ScheduleServiceImpl implements ScheduleService{
             List<IrregularScheduleRecord> commonIrregularScheduleRecords, LocalDate from, LocalDate to,
             List<UserRecord> userRecords) {
 
+        // ユーザーレコードが空の場合は空のリストを返す
         if (userRecords.isEmpty()) {
             List<User> emptyList = new ArrayList<>();
             return emptyList;
@@ -167,7 +202,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         List<User> userList = new ArrayList<>();
 
-        
+        // ユーザーレコードを元にユーザーエンティティを生成し、リストに追加していく
         for (int i = 0; i < userRecords.size(); i++) {
             UserRecord userRecord = userRecords.get(i);
             List<DefaultScheduleRecord> defaultRecords = defaultUserRecords.get(i).defaultSchedules();
@@ -176,13 +211,27 @@ public class ScheduleServiceImpl implements ScheduleService{
 
             List<Schedule> schedules = new ArrayList<>();
 
-            outer:
-            for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
+            // ユーザーのスケジュールを生成
+            // 日付ごとにスケジュールをチェックし、該当するスケジュールをリストにセット
+            outer: for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
 
+                // スケジュールエンティティを生成
+                // スケジュールが適合した場合にフィールドがセットされる仕組み
                 Schedule schedule = Schedule.builder()
-                                            .date(date)
-                                            .build();               
-                if (!irregularRecords.isEmpty()){
+                        .date(date)
+                        .build();
+
+                // スケジュールの優先順位は以下の通り
+                // 1. 非定期スケジュール
+                // 2. 定期スケジュール
+                // 3. 共通非定期スケジュール
+                // 4. 共通定期スケジュール
+                // 5. デフォルトスケジュール
+                // 6. 共通デフォルトスケジュール
+                // 理由はREADMEを参照されたし
+
+                // 各スケジュールリストをチェックし、該当するスケジュールがあればリストに追加して次の日付へ
+                if (!irregularRecords.isEmpty()) {
                     for (IrregularScheduleRecord record : irregularRecords) {
                         if (schedule.matches(record, ScheduleType.IRREGULAR)) {
                             schedules.add(schedule);
@@ -191,7 +240,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (!regularRecords.isEmpty()){
+                if (!regularRecords.isEmpty()) {
                     for (RegularScheduleRecord record : regularRecords) {
                         if (schedule.matches(record, ScheduleType.REGULAR)) {
                             schedules.add(schedule);
@@ -200,17 +249,16 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (!commonIrregularScheduleRecords.isEmpty()){
+                if (!commonIrregularScheduleRecords.isEmpty()) {
                     for (IrregularScheduleRecord record : commonIrregularScheduleRecords) {
-                        if (date.equals(record.date())) {
+                        if (schedule.matches(record, ScheduleType.COMMON_IRREGULAR)) {
                             schedules.add(schedule);
                             continue outer;
                         }
                     }
                 }
 
-
-                if (!commonRegularScheduleRecords.isEmpty()){
+                if (!commonRegularScheduleRecords.isEmpty()) {
                     for (RegularScheduleRecord record : commonRegularScheduleRecords) {
                         if (schedule.matches(record, ScheduleType.COMMON_REGULAR)) {
                             schedules.add(schedule);
@@ -219,7 +267,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (!defaultRecords.isEmpty()){
+                if (!defaultRecords.isEmpty()) {
                     for (DefaultScheduleRecord record : defaultRecords) {
                         if (schedule.matches(record, ScheduleType.DEFAULT)) {
                             schedules.add(schedule);
@@ -228,7 +276,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                     }
                 }
 
-                if (!commonDefaultScheduleRecords.isEmpty()){
+                if (!commonDefaultScheduleRecords.isEmpty()) {
                     for (DefaultScheduleRecord record : commonDefaultScheduleRecords) {
                         if (schedule.matches(record, ScheduleType.COMMON_DEFAULT)) {
                             schedules.add(schedule);
@@ -236,21 +284,34 @@ public class ScheduleServiceImpl implements ScheduleService{
                         }
                     }
                 }
-            }
-            User user = User.builder()
-                .userName(userRecord.userName())
-                .organizationName(userRecord.organizationName())
-                .schedules(schedules)
-                .build();
 
+                // スケジュールが何も該当しなかった場合は日付だけセットしたスケジュールを追加
+                schedules.add(schedule);
+            }
+
+            // ユーザーエンティティを生成し、スケジュールリストをセット
+            User user = User.builder()
+                    .userName(userRecord.userName())
+                    .organizationName(userRecord.organizationName())
+                    .schedules(schedules)
+                    .build();
+
+            // ユーザーリストに追加
             userList.add(user);
         }
         return userList;
     }
 
+    /**
+     * ユーザーエンティティリストをユーザーDTOリストに変換する
+     * 
+     * @param userList ユーザーエンティティリスト
+     * @return ユーザーDTOリスト
+     */
     @Override
     public List<UserDTO> toUserDTOList(List<User> userList) {
-        
+
+        // ユーザーレコードが空の場合は空のリストを返す
         if (userList.isEmpty()) {
             List<UserDTO> emptyList = new ArrayList<>();
             return emptyList;
@@ -258,26 +319,27 @@ public class ScheduleServiceImpl implements ScheduleService{
 
         List<UserDTO> userDTOList = new ArrayList<>();
 
+        // ユーザーエンティティリストを元にユーザーDTOリストを生成
         for (User user : userList) {
             List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
 
             for (Schedule schedule : user.getSchedules()) {
                 ScheduleDTO scheduleDTO = ScheduleDTO.builder()
-                    .scheduleId(schedule.getScheduleId())
-                    .date(schedule.getDate())
-                    .startTime(schedule.getStartTime())
-                    .endTime(schedule.getEndTime())
-                    .worktypeName(schedule.getWorktypeName())
-                    .worktypeColor(schedule.getWorktypeColor())
-                    .scheduleType(schedule.getScheduleType())
-                    .build();
+                        .scheduleId(schedule.getScheduleId())
+                        .date(schedule.getDate())
+                        .startTime(schedule.getStartTime())
+                        .endTime(schedule.getEndTime())
+                        .worktypeName(schedule.getWorktypeName())
+                        .worktypeColor(schedule.getWorktypeColor())
+                        .scheduleType(schedule.getScheduleType())
+                        .build();
                 scheduleDTOs.add(scheduleDTO);
             }
             UserDTO userDTO = UserDTO.builder()
-                .userName(user.getUserName())
-                .organizationName(user.getOrganizationName())
-                .schedules(scheduleDTOs)
-                .build();
+                    .userName(user.getUserName())
+                    .organizationName(user.getOrganizationName())
+                    .schedules(scheduleDTOs)
+                    .build();
             userDTOList.add(userDTO);
         }
         return userDTOList;

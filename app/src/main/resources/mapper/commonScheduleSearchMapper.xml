@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN""http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.schedule.app.mapper.CommonScheduleSearchMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.repository.CommonScheduleSearchMapper">
     <select id="readDefaultScheduleRecord" resultType="com.schedule.app.record.output.item.DefaultScheduleRecord">
         SELECT
-            ds.schedule_id,
+            ds.id,
             ds.start_time,
             ds.end_time,
             ds.start_date,
@@ -15,23 +15,23 @@
         JOIN
             schedule_type AS st ON ds.work_type_id = st.id
         <where>
-            <if test="startDate != null">
-                AND ds.end_date &gt;= #{startDate}
+            <if test="from != null">
+                AND ds.end_date &gt;= #{from}
             </if>
-            <if test="endDate != null">
-                AND ds.start_date &lt;= #{endDate}
+            <if test="to != null">
+                AND ds.start_date &lt;= #{to}
             </if>
         </where>
     </select>
 
     <select id="readRegularScheduleRecord" resultType="com.schedule.app.record.output.item.RegularScheduleRecord">
         SELECT
-            is.schedule_id,
+            is.id,
             is.start_time,
             is.end_time,
             rs.start_date,
             rs.end_date,
-            rs.days_of_weeks,
+            rs.days_of_week,
             rs.interval_weeks,
             st.work_type_name,
             st.work_type_color
@@ -40,18 +40,18 @@
         JOIN
             schedule_type AS st ON rs.work_type_id = st.id
         <where>
-            <if test="startDate != null">
-                AND rs.start_date &gt;= #{startDate}
+            <if test="from != null">
+                AND rs.start_date &gt;= #{from}
             </if>
-            <if test="endDate != null">
-                AND rs.end_date &lt;= #{endDate}
+            <if test="to != null">
+                AND rs.end_date &lt;= #{to}
             </if>
         </where>
     </select>
 
     <select id="readIrregularScheduleRecord" resultType="com.schedule.app.record.output.item.IrregularScheduleRecord">
         SELECT
-            is.schedule_id,
+            is.id,
             is.start_time,
             is.end_time,
             is.date,
@@ -62,11 +62,11 @@
         JOIN
             schedule_type AS st ON is.work_type_id = st.id
         <where>
-            <if test="startDate != null">
-                AND is.date &gt;= #{startDate}
+            <if test="from != null">
+                AND is.date &gt;= #{from}
             </if>
-            <if test="endDate != null">
-                AND is.date &lt;= #{endDate}
+            <if test="to != null">
+                AND is.date &lt;= #{to}
             </if>
         </where>
     </select>

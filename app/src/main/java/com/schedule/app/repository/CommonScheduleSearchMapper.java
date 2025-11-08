@@ -9,6 +9,8 @@ import com.schedule.app.record.output.item.RegularScheduleRecord;
 
 public interface CommonScheduleSearchMapper {
     List<DefaultScheduleRecord> readDefaultScheduleRecord(ScheduleSearchRecord record);
+
     List<RegularScheduleRecord> readRegularScheduleRecord(ScheduleSearchRecord record);
+
     List<IrregularScheduleRecord> readIrregularScheduleRecord(ScheduleSearchRecord record);
 }

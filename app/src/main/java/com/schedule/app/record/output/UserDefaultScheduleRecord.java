@@ -4,6 +4,6 @@ import java.util.List;
 
 import com.schedule.app.record.output.item.DefaultScheduleRecord;
 
-public record UserDefaultScheduleRecord (
-    List<DefaultScheduleRecord> defaultSchedules
-){}
+public record UserDefaultScheduleRecord(
+        List<DefaultScheduleRecord> defaultSchedules) {
+}

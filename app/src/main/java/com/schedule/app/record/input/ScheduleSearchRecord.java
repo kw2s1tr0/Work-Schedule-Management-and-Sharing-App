@@ -7,9 +7,9 @@ import lombok.Builder;
 
 @Builder
 public record ScheduleSearchRecord(
-    String userId,
-    LocalDate from,
-    LocalDate to,
-    List<String> names,
-    String organizationCode
-) {}
+        String userId,
+        LocalDate from,
+        LocalDate to,
+        List<String> names,
+        String organizationCode) {
+}

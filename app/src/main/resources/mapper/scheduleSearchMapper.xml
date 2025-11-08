@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.schedule.app.mapper.ScheduleSearchMapper">
+<mapper namespace="com.schedule.app.repository.ScheduleSearchMapper">
 
     <!-- readDefaultScheduleRecord -->
     <resultMap id="DefaultScheduleMap" type="com.schedule.app.record.output.item.DefaultScheduleRecord">
-        <id property="scheduleId" column="schedule_id"/>
+        <id property="scheduleId" column="id"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
-        <result property="startDate" column="start_date"/>
-        <result property="endDate" column="end_date"/>
+        <result property="from" column="start_date"/>
+        <result property="to" column="end_date"/>
         <result property="worktypeName" column="work_type_name"/>
         <result property="worktypeColor" column="work_type_color"/>
     </resultMap>
@@ -21,8 +21,7 @@
 
     <select id="readDefaultScheduleRecord" resultMap="UserDefaultScheduleRecordMap">
         SELECT
-            u.user_id,
-            ds.schedule_id,
+            ds.id,
             ds.start_time,
             ds.end_time,
             ds.start_date,
@@ -33,21 +32,23 @@
             users AS u
         LEFT JOIN
             default_schedule AS ds ON ds.user_id = u.user_id
-            <if test="startDate != null">
-                AND ds.end_date &gt;= #{startDate}
+            <if test="from != null">
+                AND ds.end_date &gt;= #{from}
             </if>
-            <if test="endDate != null">
-                AND ds.start_date &lt;= #{endDate}
+            <if test="to != null">
+                AND ds.start_date &lt;= #{to}
             </if>
         JOIN
             schedule_type AS st ON ds.work_type_id = st.id
+        JOIN
+            organization AS o ON u.organization_code = o.organization_code
         <where>
             <if test="userId != null and userId != ''">
                 AND u.user_id = #{userId}
             </if>
             <if test="names != null">
                 <foreach collection="names" item="name" open="AND (" separator="AND" close=")">
-                    u.user_name LIKE CONCAT('%', #{name}, '%')
+                    u.name LIKE CONCAT('%', #{name}, '%')
                 </foreach>
             </if>
         </where>
@@ -55,12 +56,12 @@
 
     <!-- readRegularScheduleRecord -->
     <resultMap id="RegularScheduleMap" type="com.schedule.app.record.output.item.RegularScheduleRecord">
-        <id property="scheduleId" column="schedule_id"/>
+        <id property="scheduleId" column="id"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
-        <result property="startDate" column="start_date"/>
-        <result property="endDate" column="end_date"/>
-        <result property="daysOfWeeks" column="days_of_weeks"/>
+        <result property="from" column="start_date"/>
+        <result property="to" column="end_date"/>
+        <result property="daysOfWeeks" column="days_of_week"/>
         <result property="intervalWeeks" column="interval_weeks"/>
         <result property="worktypeName" column="work_type_name"/>
         <result property="worktypeColor" column="work_type_color"/>
@@ -74,13 +75,12 @@
 
     <select id="readRegularScheduleRecord" resultMap="UserRegularScheduleRecordMap">
         SELECT
-            u.user_id,
-            rs.schedule_id,
+            rs.id,
             rs.start_time,
             rs.end_time,
             rs.start_date,
             rs.end_date,
-            rs.days_of_weeks,
+            rs.days_of_week,
             rs.interval_weeks,
             st.work_type_name,
             st.work_type_color
@@ -88,21 +88,23 @@
             users AS u
         LEFT JOIN
             regular_schedule AS rs ON rs.user_id = u.user_id
-            <if test="startDate != null">
-                AND rs.end_date &gt;= #{startDate}
+            <if test="from != null">
+                AND rs.end_date &gt;= #{from}
             </if>
-            <if test="endDate != null">
-                AND rs.start_date &lt;= #{endDate}
+            <if test="to != null">
+                AND rs.start_date &lt;= #{to}
             </if>
         JOIN
             schedule_type AS st ON rs.work_type_id = st.id
+        JOIN
+            organization AS o ON u.organization_code = o.organization_code
         <where>
             <if test="userId != null and userId != ''">
                 AND u.user_id = #{userId}
             </if>
             <if test="names != null">
                 <foreach collection="names" item="name" open="AND (" separator="AND" close=")">
-                    u.user_name LIKE CONCAT('%', #{name}, '%')
+                    u.name LIKE CONCAT('%', #{name}, '%')
                 </foreach>
             </if>
             <if test="organizationCode != null and organizationCode != ''">
@@ -113,7 +115,7 @@
 
     <!-- readIrregularScheduleRecord -->
     <resultMap id="IrregularScheduleMap" type="com.schedule.app.record.output.item.IrregularScheduleRecord">
-        <id property="scheduleId" column="schedule_id"/>
+        <id property="scheduleId" column="id"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
         <result property="date" column="date"/>
@@ -129,31 +131,33 @@
 
     <select id="readIrregularScheduleRecord" resultMap="UserIrregularScheduleRecordMap">
         SELECT
-            is.schedule_id,
-            is.start_time,
-            is.end_time,
-            is.date,
+            irs.id,
+            irs.start_time,
+            irs.end_time,
+            irs.date,
             st.work_type_name,
             st.work_type_color
         FROM
             users AS u
         LEFT JOIN
-            irregular_schedule AS is ON is.user_id = u.user_id
-            <if test="startDate != null">
-                AND is.date &gt;= #{startDate}
+            irregular_schedule AS irs ON irs.user_id = u.user_id
+            <if test="from != null">
+                AND irs.date &gt;= #{from}
             </if>
-            <if test="endDate != null">
-                AND is.date &lt;= #{endDate}
+            <if test="to != null">
+                AND irs.date &lt;= #{to}
             </if>
         JOIN
-            schedule_type AS st ON is.work_type_id = st.id
+            schedule_type AS st ON irs.work_type_id = st.id
+        JOIN
+            organization AS o ON u.organization_code = o.organization_code
         <where>
             <if test="userId != null and userId != ''">
                 AND u.user_id = #{userId}
             </if>
             <if test="names != null">
                 <foreach collection="names" item="name" open="AND (" separator="AND" close=")">
-                    u.user_name LIKE CONCAT('%', #{name}, '%')
+                    u.name LIKE CONCAT('%', #{name}, '%')
                 </foreach>
             </if>
             <if test="organizationCode != null and organizationCode != ''">
