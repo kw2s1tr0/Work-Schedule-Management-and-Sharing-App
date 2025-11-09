@@ -1,5 +1,5 @@
 {
-    "name": "Work Schedule Management and Sharing App Dev Container",
+    "name": "devcontainer",
     "dockerComposeFile": [
         "docker-compose.yml"
     ],

@@ -1,3 +1,4 @@
+name: WSMSA-back
 services:
   java:
     container_name: java
