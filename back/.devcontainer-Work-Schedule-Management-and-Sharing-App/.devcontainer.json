@@ -10,7 +10,8 @@
             "extensions": [
                 "vscjava.vscode-java-pack",
                 "vscjava.vscode-gradle",
-                "vscjava.vscode-lombok"
+                "vscjava.vscode-lombok",
+                "42Crunch.vscode-openapi"
             ]
         }
     }
