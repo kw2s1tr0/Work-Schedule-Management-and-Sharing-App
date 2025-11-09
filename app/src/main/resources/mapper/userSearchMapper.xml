@@ -3,8 +3,9 @@
 <mapper namespace="com.schedule.app.repository.UserSearchMapper">
     <select id="readUserRecord" resultType="com.schedule.app.record.output.UserRecord">
         SELECT
+            u.user_id AS userId,
             u.name,
-            o.organization_name
+            o.organization_name AS organizationName
         FROM
             users AS u
         JOIN

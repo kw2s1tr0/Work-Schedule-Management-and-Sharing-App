@@ -25,7 +25,7 @@ import com.schedule.app.service.ScheduleService;
 
 @WebMvcTest(ScheduleController.class)
 class ScheduleControllerTest {
-    
+
     @Autowired
     private MockMvc mockMvc;
 

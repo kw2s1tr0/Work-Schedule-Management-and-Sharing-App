@@ -3,14 +3,14 @@ package com.schedule.app.repository;
 import java.util.List;
 
 import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.UserDefaultScheduleRecord;
-import com.schedule.app.record.output.UserIrregularScheduleRecord;
-import com.schedule.app.record.output.UserRegularScheduleRecord;
+import com.schedule.app.record.output.DefaultScheduleRecord;
+import com.schedule.app.record.output.IrregularScheduleRecord;
+import com.schedule.app.record.output.RegularScheduleRecord;
 
 public interface ScheduleSearchMapper {
-    List<UserRegularScheduleRecord> readRegularScheduleRecord(ScheduleSearchRecord record);
+    List<RegularScheduleRecord> readRegularScheduleRecord(ScheduleSearchRecord record);
 
-    List<UserIrregularScheduleRecord> readIrregularScheduleRecord(ScheduleSearchRecord record);
+    List<IrregularScheduleRecord> readIrregularScheduleRecord(ScheduleSearchRecord record);
 
-    List<UserDefaultScheduleRecord> readDefaultScheduleRecord(ScheduleSearchRecord record);
+    List<DefaultScheduleRecord> readDefaultScheduleRecord(ScheduleSearchRecord record);
 }

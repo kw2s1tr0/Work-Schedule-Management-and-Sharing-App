@@ -1,6 +1,12 @@
 package com.schedule.app.record.output;
 
-public record UserRecord(
-        String userName,
-        String organizationName) {
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class UserRecord {
+    private String userId;
+    private String name;
+    private String organizationName;
 }

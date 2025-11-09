@@ -5,9 +5,9 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import com.schedule.app.enums.ScheduleType;
-import com.schedule.app.record.output.item.DefaultScheduleRecord;
-import com.schedule.app.record.output.item.IrregularScheduleRecord;
-import com.schedule.app.record.output.item.RegularScheduleRecord;
+import com.schedule.app.record.output.DefaultScheduleRecord;
+import com.schedule.app.record.output.IrregularScheduleRecord;
+import com.schedule.app.record.output.RegularScheduleRecord;
 
 import lombok.Builder;
 import lombok.Data;
@@ -31,15 +31,15 @@ public class Schedule {
     public boolean matches(IrregularScheduleRecord record, ScheduleType scheduleType) {
 
         // 日付が一致しない場合は非該当
-        if (!date.equals(record.date())) {
+        if (!date.equals(record.getDate())) {
             return false;
         }
 
-        this.scheduleId = record.scheduleId();
-        this.startTime = record.startTime();
-        this.endTime = record.endTime();
-        this.worktypeName = record.worktypeName();
-        this.worktypeColor = record.worktypeColor();
+        this.scheduleId = record.getId();
+        this.startTime = record.getStartTime();
+        this.endTime = record.getEndTime();
+        this.worktypeName = record.getWorktypeName();
+        this.worktypeColor = record.getWorktypeColor();
         this.scheduleType = scheduleType;
         return true;
     }
@@ -51,29 +51,29 @@ public class Schedule {
      */
     public boolean matches(RegularScheduleRecord record, ScheduleType scheduleType) {
 
-        if (date.isBefore(record.startDate()) || date.isAfter(record.endDate())) {
+        if (date.isBefore(record.getStartDate()) || date.isAfter(record.getEndDate())) {
             return false;
         }
 
         // 曜日の一致確認
-        if (!record.daysOfWeek().name().equals(date.getDayOfWeek().name())) {
+        if (!record.getDaysOfWeek().equals(date.getDayOfWeek().name())) {
             return false;
         }
 
         // 間隔週の確認（2週間間隔など）
-        if (record.intervalWeeks() == 2) {
-            LocalDate startDate = record.startDate();
+        if (record.getIntervalWeeks() == 2) {
+            LocalDate startDate = record.getStartDate();
             long weeksBetween = ChronoUnit.WEEKS.between(startDate, date);
             if (weeksBetween % 2 != 0) {
                 return false;
             }
         }
 
-        this.scheduleId = record.scheduleId();
-        this.startTime = record.startTime();
-        this.endTime = record.endTime();
-        this.worktypeName = record.worktypeName();
-        this.worktypeColor = record.worktypeColor();
+        this.scheduleId = record.getId();
+        this.startTime = record.getStartTime();
+        this.endTime = record.getEndTime();
+        this.worktypeName = record.getWorktypeName();
+        this.worktypeColor = record.getWorktypeColor();
         this.scheduleType = scheduleType;
         
         return true;
@@ -87,15 +87,15 @@ public class Schedule {
     public boolean matches(DefaultScheduleRecord record, ScheduleType scheduleType) {
 
         // 日付が範囲外の場合は非該当
-        if (date.isBefore(record.startDate()) || date.isAfter(record.endDate())) {
+        if (date.isBefore(record.getStartDate()) || date.isAfter(record.getEndDate())) {
             return false;
         }
 
-        this.scheduleId = record.scheduleId();
-        this.startTime = record.startTime();
-        this.endTime = record.endTime();
-        this.worktypeName = record.worktypeName();
-        this.worktypeColor = record.worktypeColor();
+        this.scheduleId = record.getId();
+        this.startTime = record.getStartTime();
+        this.endTime = record.getEndTime();
+        this.worktypeName = record.getWorktypeName();
+        this.worktypeColor = record.getWorktypeColor();
         this.scheduleType = scheduleType;
         return true;
     }

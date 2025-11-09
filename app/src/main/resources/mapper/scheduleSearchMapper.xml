@@ -3,31 +3,16 @@
 <mapper namespace="com.schedule.app.repository.ScheduleSearchMapper">
 
     <!-- readDefaultScheduleRecord -->
-    <resultMap id="DefaultScheduleMap" type="com.schedule.app.record.output.item.DefaultScheduleRecord">
-        <id property="scheduleId" column="id"/>
-        <result property="startTime" column="start_time"/>
-        <result property="endTime" column="end_time"/>
-        <result property="from" column="start_date"/>
-        <result property="to" column="end_date"/>
-        <result property="worktypeName" column="work_type_name"/>
-        <result property="worktypeColor" column="work_type_color"/>
-    </resultMap>
-
-    <resultMap id="UserDefaultScheduleRecordMap" type="com.schedule.app.record.output.UserDefaultScheduleRecord">
-        <collection property="defaultSchedules"
-                    ofType="com.schedule.app.record.output.item.DefaultScheduleRecord"
-                    resultMap="DefaultScheduleMap"/>
-    </resultMap>
-
-    <select id="readDefaultScheduleRecord" resultMap="UserDefaultScheduleRecordMap">
+   <select id="readDefaultScheduleRecord" resultType="com.schedule.app.record.output.DefaultScheduleRecord">
         SELECT
+            u.user_id AS userId,
             ds.id,
-            ds.start_time,
-            ds.end_time,
-            ds.start_date,
-            ds.end_date,
-            st.work_type_name,
-            st.work_type_color
+            ds.start_time AS startTime,
+            ds.end_time AS endTime,
+            ds.start_date AS startDate,
+            ds.end_date AS endDate,
+            st.work_type_name AS worktypeName,
+            st.work_type_color AS worktypeColor
         FROM
             users AS u
         LEFT JOIN
@@ -52,38 +37,25 @@
                 </foreach>
             </if>
         </where>
+        ORDER BY 
+            u.organization_code ASC,
+            u.position_code ASC,
+            u.name ASC
     </select>
 
     <!-- readRegularScheduleRecord -->
-    <resultMap id="RegularScheduleMap" type="com.schedule.app.record.output.item.RegularScheduleRecord">
-        <id property="scheduleId" column="id"/>
-        <result property="startTime" column="start_time"/>
-        <result property="endTime" column="end_time"/>
-        <result property="from" column="start_date"/>
-        <result property="to" column="end_date"/>
-        <result property="daysOfWeeks" column="days_of_week"/>
-        <result property="intervalWeeks" column="interval_weeks"/>
-        <result property="worktypeName" column="work_type_name"/>
-        <result property="worktypeColor" column="work_type_color"/>
-    </resultMap>
-
-    <resultMap id="UserRegularScheduleRecordMap" type="com.schedule.app.record.output.UserRegularScheduleRecord">
-        <collection property="regularSchedules"
-                    ofType="com.schedule.app.record.output.item.RegularScheduleRecord"
-                    resultMap="RegularScheduleMap"/>
-    </resultMap>
-
-    <select id="readRegularScheduleRecord" resultMap="UserRegularScheduleRecordMap">
+   <select id="readRegularScheduleRecord" resultType="com.schedule.app.record.output.RegularScheduleRecord">
         SELECT
+            u.user_id AS userId,
             rs.id,
-            rs.start_time,
-            rs.end_time,
-            rs.start_date,
-            rs.end_date,
-            rs.days_of_week,
-            rs.interval_weeks,
-            st.work_type_name,
-            st.work_type_color
+            rs.start_time AS startTime,
+            rs.end_time AS endTime,
+            rs.start_date AS startDate,
+            rs.end_date AS endDate,
+            rs.days_of_week AS daysOfWeek,
+            rs.interval_weeks AS intervalWeeks,
+            st.work_type_name AS worktypeName,
+            st.work_type_color AS worktypeColor
         FROM
             users AS u
         LEFT JOIN
@@ -111,32 +83,22 @@
                 AND o.organization_code = #{organizationCode}
             </if>
         </where>
+        ORDER BY 
+            u.organization_code ASC,
+            u.position_code ASC,
+            u.name ASC
     </select>
 
     <!-- readIrregularScheduleRecord -->
-    <resultMap id="IrregularScheduleMap" type="com.schedule.app.record.output.item.IrregularScheduleRecord">
-        <id property="scheduleId" column="id"/>
-        <result property="startTime" column="start_time"/>
-        <result property="endTime" column="end_time"/>
-        <result property="date" column="date"/>
-        <result property="worktypeName" column="work_type_name"/>
-        <result property="worktypeColor" column="work_type_color"/>
-    </resultMap>
-
-    <resultMap id="UserIrregularScheduleRecordMap" type="com.schedule.app.record.output.UserIrregularScheduleRecord">
-        <collection property="irregularSchedules"
-                    ofType="com.schedule.app.record.output.item.IrregularScheduleRecord"
-                    resultMap="IrregularScheduleMap"/>
-    </resultMap>
-
-    <select id="readIrregularScheduleRecord" resultMap="UserIrregularScheduleRecordMap">
+    <select id="readIrregularScheduleRecord" resultType="com.schedule.app.record.output.IrregularScheduleRecord">
         SELECT
+            u.user_id AS userId,
             irs.id,
-            irs.start_time,
-            irs.end_time,
+            irs.start_time AS startTime,
+            irs.end_time AS endTime,
             irs.date,
-            st.work_type_name,
-            st.work_type_color
+            st.work_type_name AS worktypeName,
+            st.work_type_color AS worktypeColor
         FROM
             users AS u
         LEFT JOIN
@@ -164,5 +126,9 @@
                 AND o.organization_code = #{organizationCode}
             </if>
         </where>
+        ORDER BY 
+            u.organization_code ASC,
+            u.position_code ASC,
+            u.name ASC
     </select>
 </mapper>

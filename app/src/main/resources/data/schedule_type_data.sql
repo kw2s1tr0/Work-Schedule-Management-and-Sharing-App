@@ -11,4 +11,4 @@ INSERT INTO schedule_type (id, work_type_name, work_type_color) VALUES
     ('9', '外出', '#009688'),
     ('10', '半休（午前）', '#FFC107'),
     ('11', '半休（午後）', '#FFEB3B'),
-    ('12', '振替休日', '#E91E63');
+    ('12', '休日', '#E91E63');
