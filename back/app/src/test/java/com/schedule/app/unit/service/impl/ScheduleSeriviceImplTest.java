@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.schedule.app.applicationservice.impl.ScheduleServiceImpl;
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.item.ScheduleDTO;
 import com.schedule.app.entity.User;
@@ -25,7 +26,6 @@ import com.schedule.app.record.output.DefaultScheduleRecord;
 import com.schedule.app.record.output.IrregularScheduleRecord;
 import com.schedule.app.record.output.RegularScheduleRecord;
 import com.schedule.app.record.output.UserRecord;
-import com.schedule.app.service.impl.ScheduleServiceImpl;
 
 class ScheduleServiceImplTest {
     

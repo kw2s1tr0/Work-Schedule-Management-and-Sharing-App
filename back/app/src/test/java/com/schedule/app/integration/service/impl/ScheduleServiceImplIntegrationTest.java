@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.schedule.app.applicationservice.ScheduleService;
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.item.ScheduleDTO;
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.enums.ViewMode;
 import com.schedule.app.form.ScheduleSearchForm;
-import com.schedule.app.service.ScheduleService;
 
 @SpringBootTest
 @Transactional

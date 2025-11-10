@@ -1,4 +1,4 @@
-package com.schedule.app.service.impl;
+package com.schedule.app.applicationservice.impl;
 
 import java.text.Normalizer;
 import java.time.LocalDate;
@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.schedule.app.applicationservice.ScheduleService;
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.item.ScheduleDTO;
 import com.schedule.app.entity.User;
@@ -23,7 +24,6 @@ import com.schedule.app.record.output.UserRecord;
 import com.schedule.app.repository.CommonScheduleSearchMapper;
 import com.schedule.app.repository.ScheduleSearchMapper;
 import com.schedule.app.repository.UserSearchMapper;
-import com.schedule.app.service.ScheduleService;
 
 import lombok.AllArgsConstructor;
 

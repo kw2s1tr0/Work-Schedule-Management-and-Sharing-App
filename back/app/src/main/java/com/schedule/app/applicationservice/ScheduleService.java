@@ -1,4 +1,4 @@
-package com.schedule.app.service;
+package com.schedule.app.applicationservice;
 
 import java.time.LocalDate;
 import java.util.List;
