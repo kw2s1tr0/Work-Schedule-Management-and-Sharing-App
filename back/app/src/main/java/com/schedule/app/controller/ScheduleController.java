@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.schedule.app.applicationservice.IrregularScheduleService;
+import com.schedule.app.applicationservice.IrregularScheduleSearchService;
 import com.schedule.app.dto.IrregularScheduleDTO;
 import com.schedule.app.dto.UserDTO;
-import com.schedule.app.form.IrregularScheduleSearchForm;
+import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.form.ScheduleSearchForm;
-import com.schedule.app.applicationservice.ScheduleService;
+import com.schedule.app.applicationservice.ScheduleSearchService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ScheduleController {
 
-    private final ScheduleService scheduleService;
-    private final IrregularScheduleService irregularScheduleService;
+    private final ScheduleSearchService scheduleService;
+    private final IrregularScheduleSearchService irregularScheduleService;
 
     /**
      * スケジュール検索
@@ -36,7 +36,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/api/irregularSchedule")
-    public List<IrregularScheduleDTO> getIrregularSchedule(@Valid IrregularScheduleSearchForm form) {
+    public List<IrregularScheduleDTO> getIrregularSchedule(@Valid SingleScheduleSearchForm form) {
         List<IrregularScheduleDTO> userDTOs = irregularScheduleService.irregularScheduleSearchService(form);
         return userDTOs;
     }

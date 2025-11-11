@@ -17,10 +17,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.schedule.app.applicationservice.ScheduleService;
+import com.schedule.app.applicationservice.ScheduleSearchService;
 import com.schedule.app.controller.ScheduleController;
+import com.schedule.app.dto.ScheduleDTO;
 import com.schedule.app.dto.UserDTO;
-import com.schedule.app.dto.item.ScheduleDTO;
 import com.schedule.app.enums.ScheduleType;
 
 @WebMvcTest(ScheduleController.class)
@@ -30,7 +30,7 @@ class ScheduleControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ScheduleService scheduleService;
+    private ScheduleSearchService scheduleService;
 
     private List<UserDTO> expectedUserDTOs;
 

@@ -12,9 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.schedule.app.applicationservice.impl.ScheduleServiceImpl;
+import com.schedule.app.applicationservice.impl.ScheduleSearchServiceImpl;
+import com.schedule.app.dto.ScheduleDTO;
 import com.schedule.app.dto.UserDTO;
-import com.schedule.app.dto.item.ScheduleDTO;
 import com.schedule.app.entity.User;
 import com.schedule.app.entity.item.Schedule;
 import com.schedule.app.enums.DaysOfWeek;
@@ -29,11 +29,11 @@ import com.schedule.app.record.output.UserRecord;
 
 class ScheduleServiceImplTest {
     
-    private ScheduleServiceImpl scheduleService;
+    private ScheduleSearchServiceImpl scheduleService;
 
     @BeforeEach
     void setUp() {
-        scheduleService = new ScheduleServiceImpl(null, null, null);
+        scheduleService = new ScheduleSearchServiceImpl(null, null, null);
     }
 
     @Test

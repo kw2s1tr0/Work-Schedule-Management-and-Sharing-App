@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.IrregularScheduleService;
+import com.schedule.app.applicationservice.IrregularScheduleSearchService;
 import com.schedule.app.dto.IrregularScheduleDTO;
-import com.schedule.app.form.IrregularScheduleSearchForm;
+import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.record.output.IrregularScheduleRecord;
 import com.schedule.app.repository.ScheduleSearchMapper;
@@ -16,12 +16,12 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class IrregularScheduleServiceImpl implements IrregularScheduleService {
+public class IrregularScheduleSearchServiceImpl implements IrregularScheduleSearchService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
 
     @Override
-    public List<IrregularScheduleDTO> irregularScheduleSearchService(IrregularScheduleSearchForm form) {
+    public List<IrregularScheduleDTO> irregularScheduleSearchService(SingleScheduleSearchForm form) {
         ScheduleSearchRecord record = toScheduleRecord(form);
         List<IrregularScheduleRecord> records = readIrregularSchedule(record);
         List<IrregularScheduleDTO> dtos = toScheduleDTOList(records);
@@ -29,7 +29,7 @@ public class IrregularScheduleServiceImpl implements IrregularScheduleService {
     }
 
     @Override
-    public ScheduleSearchRecord toScheduleRecord(IrregularScheduleSearchForm form) {
+    public ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form) {
         ScheduleSearchRecord record = ScheduleSearchRecord.builder()
                 .from(form.from())
                 .to(form.to())

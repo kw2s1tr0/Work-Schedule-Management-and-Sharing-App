@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.schedule.app.applicationservice.ScheduleService;
+import com.schedule.app.applicationservice.ScheduleSearchService;
+import com.schedule.app.dto.ScheduleDTO;
 import com.schedule.app.dto.UserDTO;
-import com.schedule.app.dto.item.ScheduleDTO;
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.enums.ViewMode;
 import com.schedule.app.form.ScheduleSearchForm;
@@ -24,7 +24,7 @@ import com.schedule.app.form.ScheduleSearchForm;
 public class ScheduleServiceImplIntegrationTest {
 
     @Autowired
-    private ScheduleService scheduleService;
+    private ScheduleSearchService scheduleService;
 
     @Test
     @DisplayName("scheduleSearchService - 週表示モードでユーザー固有のスケジュール検索が正常に動作する")
