@@ -1,4 +1,4 @@
-package com.schedule.app.entity.item;
+package com.schedule.app.entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

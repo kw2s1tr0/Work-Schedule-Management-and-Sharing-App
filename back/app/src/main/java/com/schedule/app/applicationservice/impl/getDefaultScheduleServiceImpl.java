@@ -5,26 +5,26 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.RegularScheduleSearchService;
-import com.schedule.app.dto.RegularScheduleDTO;
+import com.schedule.app.applicationservice.getDefaultScheduleService;
+import com.schedule.app.dto.DefaultScheduleDTO;
 import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.RegularScheduleRecord;
+import com.schedule.app.record.output.DefaultScheduleRecord;
 import com.schedule.app.repository.ScheduleSearchMapper;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class RegularScheduleSearchServiceImpl implements RegularScheduleSearchService {
+public class getDefaultScheduleServiceImpl implements getDefaultScheduleService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
 
     @Override
-    public List<RegularScheduleDTO> regularScheduleSearchService(SingleScheduleSearchForm form) {
+    public List<DefaultScheduleDTO> defaultScheduleSearchService(SingleScheduleSearchForm form) {
         ScheduleSearchRecord record = toScheduleRecord(form);
-        List<RegularScheduleRecord> records = readRegularSchedule(record);
-        List<RegularScheduleDTO> dtos = toScheduleDTOList(records);
+        List<DefaultScheduleRecord> records = readDefaultSchedule(record);
+        List<DefaultScheduleDTO> dtos = toScheduleDTOList(records);
         return dtos;
     }
 
@@ -38,25 +38,27 @@ public class RegularScheduleSearchServiceImpl implements RegularScheduleSearchSe
     }
 
     @Override
-    public List<RegularScheduleRecord> readRegularSchedule(ScheduleSearchRecord record) {
-        List<RegularScheduleRecord> records = scheduleSearchMapper.readRegularScheduleRecord(record);
+    public List<DefaultScheduleRecord> readDefaultSchedule(ScheduleSearchRecord record) {
+        List<DefaultScheduleRecord> records = scheduleSearchMapper.readDefaultScheduleRecord(record);
         return records;
     }
 
     @Override
-    public List<RegularScheduleDTO> toScheduleDTOList(List<RegularScheduleRecord> records) {
-        List<RegularScheduleDTO> dtos = new ArrayList<>();
-        for (RegularScheduleRecord record : records) {
-            RegularScheduleDTO dto = RegularScheduleDTO.builder()
+    public List<DefaultScheduleDTO> toScheduleDTOList(List<DefaultScheduleRecord> records) {
+        List<DefaultScheduleDTO> dtos = new ArrayList<>();
+        for (DefaultScheduleRecord record : records) {
+            DefaultScheduleDTO dto = DefaultScheduleDTO.builder()
                     .scheduleId(record.getId())
                     .startTime(record.getStartTime())
                     .endTime(record.getEndTime())
+                    .startDate(record.getStartDate())
+                    .endDate(record.getEndDate())
                     .worktypeName(record.getWorktypeName())
                     .worktypeColor(record.getWorktypeColor())
-                    .daysOfWeek(record.getDaysOfWeek())
                     .build();
             dtos.add(dto);
         }
         return dtos;
-    }    
+    }
+
 }

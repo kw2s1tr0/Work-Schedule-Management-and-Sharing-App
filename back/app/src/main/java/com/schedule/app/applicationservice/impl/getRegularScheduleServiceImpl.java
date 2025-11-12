@@ -5,26 +5,26 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.IrregularScheduleSearchService;
-import com.schedule.app.dto.IrregularScheduleDTO;
+import com.schedule.app.applicationservice.getRegularScheduleService;
+import com.schedule.app.dto.RegularScheduleDTO;
 import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.IrregularScheduleRecord;
+import com.schedule.app.record.output.RegularScheduleRecord;
 import com.schedule.app.repository.ScheduleSearchMapper;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class IrregularScheduleSearchServiceImpl implements IrregularScheduleSearchService {
+public class getRegularScheduleServiceImpl implements getRegularScheduleService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
 
     @Override
-    public List<IrregularScheduleDTO> irregularScheduleSearchService(SingleScheduleSearchForm form) {
+    public List<RegularScheduleDTO> regularScheduleSearchService(SingleScheduleSearchForm form) {
         ScheduleSearchRecord record = toScheduleRecord(form);
-        List<IrregularScheduleRecord> records = readIrregularSchedule(record);
-        List<IrregularScheduleDTO> dtos = toScheduleDTOList(records);
+        List<RegularScheduleRecord> records = readRegularSchedule(record);
+        List<RegularScheduleDTO> dtos = toScheduleDTOList(records);
         return dtos;
     }
 
@@ -38,25 +38,25 @@ public class IrregularScheduleSearchServiceImpl implements IrregularScheduleSear
     }
 
     @Override
-    public List<IrregularScheduleRecord> readIrregularSchedule(ScheduleSearchRecord record) {
-        List<IrregularScheduleRecord> records = scheduleSearchMapper.readIrregularScheduleRecord(record);
+    public List<RegularScheduleRecord> readRegularSchedule(ScheduleSearchRecord record) {
+        List<RegularScheduleRecord> records = scheduleSearchMapper.readRegularScheduleRecord(record);
         return records;
     }
 
     @Override
-    public List<IrregularScheduleDTO> toScheduleDTOList(List<IrregularScheduleRecord> records) {
-        List<IrregularScheduleDTO> dtos = new ArrayList<>();
-        for (IrregularScheduleRecord record : records) {
-            IrregularScheduleDTO dto = IrregularScheduleDTO.builder()
+    public List<RegularScheduleDTO> toScheduleDTOList(List<RegularScheduleRecord> records) {
+        List<RegularScheduleDTO> dtos = new ArrayList<>();
+        for (RegularScheduleRecord record : records) {
+            RegularScheduleDTO dto = RegularScheduleDTO.builder()
                     .scheduleId(record.getId())
                     .startTime(record.getStartTime())
                     .endTime(record.getEndTime())
                     .worktypeName(record.getWorktypeName())
                     .worktypeColor(record.getWorktypeColor())
+                    .daysOfWeek(record.getDaysOfWeek())
                     .build();
             dtos.add(dto);
         }
         return dtos;
-    }
-    
+    }    
 }

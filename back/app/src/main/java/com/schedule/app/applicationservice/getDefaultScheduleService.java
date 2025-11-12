@@ -7,7 +7,7 @@ import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.record.output.DefaultScheduleRecord;
 
-public interface DefaultScheduleSearchService {
+public interface getDefaultScheduleService {
     List<DefaultScheduleDTO> defaultScheduleSearchService(SingleScheduleSearchForm form);
 
     ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form);

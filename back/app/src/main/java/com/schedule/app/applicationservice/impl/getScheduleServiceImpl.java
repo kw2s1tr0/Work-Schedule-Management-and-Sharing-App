@@ -9,11 +9,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.ScheduleSearchService;
+import com.schedule.app.applicationservice.getScheduleService;
 import com.schedule.app.dto.ScheduleDTO;
 import com.schedule.app.dto.UserDTO;
+import com.schedule.app.entity.Schedule;
 import com.schedule.app.entity.User;
-import com.schedule.app.entity.item.Schedule;
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class ScheduleSearchServiceImpl implements ScheduleSearchService {
+public class getScheduleServiceImpl implements getScheduleService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
     private final CommonScheduleSearchMapper commonScheduleSearchMapper;

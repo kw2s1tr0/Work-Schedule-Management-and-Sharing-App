@@ -12,11 +12,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.schedule.app.applicationservice.impl.ScheduleSearchServiceImpl;
+import com.schedule.app.applicationservice.impl.getScheduleServiceImpl;
 import com.schedule.app.dto.ScheduleDTO;
 import com.schedule.app.dto.UserDTO;
+import com.schedule.app.entity.Schedule;
 import com.schedule.app.entity.User;
-import com.schedule.app.entity.item.Schedule;
 import com.schedule.app.enums.DaysOfWeek;
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.enums.ViewMode;
@@ -29,11 +29,11 @@ import com.schedule.app.record.output.UserRecord;
 
 class ScheduleServiceImplTest {
     
-    private ScheduleSearchServiceImpl scheduleService;
+    private getScheduleServiceImpl scheduleService;
 
     @BeforeEach
     void setUp() {
-        scheduleService = new ScheduleSearchServiceImpl(null, null, null);
+        scheduleService = new getScheduleServiceImpl(null, null, null);
     }
 
     @Test

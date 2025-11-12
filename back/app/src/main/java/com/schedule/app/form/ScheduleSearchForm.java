@@ -8,7 +8,9 @@ import com.schedule.app.enums.ViewMode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
+@Builder
 public record ScheduleSearchForm(
 
         @Pattern(regexp = "^[0-9０-９]{0,5}$") String userId,

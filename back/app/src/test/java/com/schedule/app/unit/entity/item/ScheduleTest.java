@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.schedule.app.entity.item.Schedule;
+import com.schedule.app.entity.Schedule;
 import com.schedule.app.enums.DaysOfWeek;
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.record.output.DefaultScheduleRecord;

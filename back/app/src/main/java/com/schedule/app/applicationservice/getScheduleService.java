@@ -12,7 +12,7 @@ import com.schedule.app.record.output.IrregularScheduleRecord;
 import com.schedule.app.record.output.RegularScheduleRecord;
 import com.schedule.app.record.output.UserRecord;
 
-public interface ScheduleSearchService {
+public interface getScheduleService {
     public List<UserDTO> scheduleSearchService(ScheduleSearchForm form);
 
     public ScheduleSearchRecord toScheduleSearchRecord(ScheduleSearchForm form);

@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+@Builder
 public record SingleScheduleSearchForm(
 
         @NotNull LocalDate from,
