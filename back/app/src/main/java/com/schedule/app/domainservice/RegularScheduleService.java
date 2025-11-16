@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.schedule.app.entity.Schedule;
+import com.schedule.app.entity.RegularSchedule;
 import com.schedule.app.record.output.RegularScheduleOutputRecord;
 import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.repository.ScheduleExistMapper;
@@ -28,11 +28,11 @@ public class RegularScheduleService {
         }
     }
 
-    public boolean checkRegularSchedule(ScheduleSearchRecord scheduleSearchRecord,Schedule schedule) {
+    public boolean checkRegularSchedule(ScheduleSearchRecord scheduleSearchRecord,RegularSchedule regularSchedule) {
         List<RegularScheduleOutputRecord> records = readRegularSchedule(scheduleSearchRecord);
         if (!records.isEmpty()) {
             for (RegularScheduleOutputRecord record : records) {
-                if(schedule.isOverlaps(record)) {
+                if(regularSchedule.isOverlaps(record)) {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No regular schedules found for the given criteria.");
                 }
             }

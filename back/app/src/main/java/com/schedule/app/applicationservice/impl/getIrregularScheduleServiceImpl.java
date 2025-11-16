@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.getIrregularScheduleService;
+import com.schedule.app.applicationservice.GetIrregularScheduleService;
 import com.schedule.app.dto.IrregularScheduleDTO;
 import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class getIrregularScheduleServiceImpl implements getIrregularScheduleService {
+public class GetIrregularScheduleServiceImpl implements GetIrregularScheduleService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
 

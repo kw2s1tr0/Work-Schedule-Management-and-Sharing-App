@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.getScheduleService;
+import com.schedule.app.applicationservice.GetScheduleService;
 import com.schedule.app.dto.ScheduleDTO;
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.entity.Schedule;
@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class getScheduleServiceImpl implements getScheduleService {
+public class GetScheduleServiceImpl implements GetScheduleService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
     private final CommonScheduleSearchMapper commonScheduleSearchMapper;

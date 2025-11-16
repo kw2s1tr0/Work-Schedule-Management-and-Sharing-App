@@ -9,9 +9,9 @@ import lombok.Builder;
 public record DefaultScheduleInputRecord(
     Integer id,
     String userId,
-    LocalTime starTime,
+    LocalTime startTime,
     LocalTime endTime,
-    LocalDate starDate,
+    LocalDate startDate,
     LocalDate endDate,
     String workTypeId
 ) {

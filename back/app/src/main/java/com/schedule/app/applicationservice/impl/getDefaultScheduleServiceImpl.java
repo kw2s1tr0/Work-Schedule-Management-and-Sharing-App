@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.getDefaultScheduleService;
+import com.schedule.app.applicationservice.GetDefaultScheduleService;
 import com.schedule.app.dto.DefaultScheduleDTO;
 import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class getDefaultScheduleServiceImpl implements getDefaultScheduleService {
+public class GetDefaultScheduleServiceImpl implements GetDefaultScheduleService {
 
     private final ScheduleSearchMapper scheduleSearchMapper;
 

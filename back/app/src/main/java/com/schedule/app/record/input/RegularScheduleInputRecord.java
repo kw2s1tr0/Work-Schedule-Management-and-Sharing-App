@@ -1,15 +1,18 @@
 package com.schedule.app.record.input;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import lombok.Builder;
 
 @Builder
 public record RegularScheduleInputRecord(
     Integer id,
     String userId,
-    String startTime,
-    String endTime,
-    String startDate,
-    String endDate,
+    LocalTime startTime,
+    LocalTime endTime,
+    LocalDate startDate,
+    LocalDate endDate,
     String dayOfWeek,
     Integer intervalWeeks,
     String workTypeId
