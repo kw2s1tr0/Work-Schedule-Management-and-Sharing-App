@@ -6,12 +6,13 @@ import java.time.LocalTime;
 import lombok.Builder;
 
 @Builder
-public record IrregularScheduleRecord(
+public record DefaultScheduleInputRecord(
     Integer id,
     String userId,
-    LocalTime startTime,
+    LocalTime starTime,
     LocalTime endTime,
-    LocalDate date,
+    LocalDate starDate,
+    LocalDate endDate,
     String workTypeId
 ) {
 }

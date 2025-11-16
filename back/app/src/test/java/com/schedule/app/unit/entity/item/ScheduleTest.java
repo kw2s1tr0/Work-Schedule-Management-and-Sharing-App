@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import com.schedule.app.entity.Schedule;
 import com.schedule.app.enums.DaysOfWeek;
 import com.schedule.app.enums.ScheduleType;
-import com.schedule.app.record.output.DefaultScheduleRecord;
-import com.schedule.app.record.output.IrregularScheduleRecord;
-import com.schedule.app.record.output.RegularScheduleRecord;
+import com.schedule.app.record.output.DefaultScheduleOutputRecord;
+import com.schedule.app.record.output.IrregularScheduleOutputRecord;
+import com.schedule.app.record.output.RegularScheduleOutputRecord;
 
 class ScheduleTest {
 
@@ -33,7 +33,7 @@ class ScheduleTest {
     @DisplayName("非定期スケジュール - 日付が一致する場合はtrueを返し、フィールドが設定される")
     void testIrregularScheduleMatches_DateMatches_ReturnsTrue() {
         // Given
-        IrregularScheduleRecord record = IrregularScheduleRecord.builder()
+        IrregularScheduleOutputRecord record = IrregularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(1)
                 .startTime(LocalTime.of(9, 0))
@@ -60,7 +60,7 @@ class ScheduleTest {
     @DisplayName("非定期スケジュール - 日付が一致しない場合はfalseを返す")
     void testIrregularScheduleMatches_DateDoesNotMatch_ReturnsFalse() {
         // Given
-        IrregularScheduleRecord record = IrregularScheduleRecord.builder()
+        IrregularScheduleOutputRecord record = IrregularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(1)
                 .startTime(LocalTime.of(9, 0))
@@ -81,7 +81,7 @@ class ScheduleTest {
     @DisplayName("定期スケジュール - 条件が全て一致する場合はtrueを返し、フィールドが設定される")
     void testRegularScheduleMatches_AllConditionsMatch_ReturnsTrue() {
         // Given
-        RegularScheduleRecord record = RegularScheduleRecord.builder()
+        RegularScheduleOutputRecord record = RegularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(2)
                 .startTime(LocalTime.of(10, 0))
@@ -111,7 +111,7 @@ class ScheduleTest {
     @DisplayName("定期スケジュール - 日付が範囲外の場合はfalseを返す")
     void testRegularScheduleMatches_DateOutOfRange_ReturnsFalse() {
         // Given
-        RegularScheduleRecord record = RegularScheduleRecord.builder()
+        RegularScheduleOutputRecord record = RegularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(2)
                 .startTime(LocalTime.of(10, 0))
@@ -135,7 +135,7 @@ class ScheduleTest {
     @DisplayName("定期スケジュール - 終了日が過去の場合はfalseを返す")
     void testRegularScheduleMatches_EndDateInPast_ReturnsFalse() {
         // Given
-        RegularScheduleRecord record = RegularScheduleRecord.builder()
+        RegularScheduleOutputRecord record = RegularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(2)
                 .startTime(LocalTime.of(10, 0))
@@ -159,7 +159,7 @@ class ScheduleTest {
     @DisplayName("定期スケジュール - 曜日が一致しない場合はfalseを返す")
     void testRegularScheduleMatches_DayOfWeekDoesNotMatch_ReturnsFalse() {
         // Given
-        RegularScheduleRecord record = RegularScheduleRecord.builder()
+        RegularScheduleOutputRecord record = RegularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(2)
                 .startTime(LocalTime.of(10, 0))
@@ -190,7 +190,7 @@ class ScheduleTest {
                 .date(targetDate)
                 .build();
 
-        RegularScheduleRecord record = RegularScheduleRecord.builder()
+        RegularScheduleOutputRecord record = RegularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(3)
                 .startTime(LocalTime.of(9, 0))
@@ -221,7 +221,7 @@ class ScheduleTest {
                 .date(targetDate)
                 .build();
 
-        RegularScheduleRecord record = RegularScheduleRecord.builder()
+        RegularScheduleOutputRecord record = RegularScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(3)
                 .startTime(LocalTime.of(9, 0))
@@ -245,7 +245,7 @@ class ScheduleTest {
     @DisplayName("デフォルトスケジュール - 日付が範囲内の場合はtrueを返し、フィールドが設定される")
     void testDefaultScheduleMatches_DateInRange_ReturnsTrue() {
         // Given
-        DefaultScheduleRecord record = DefaultScheduleRecord.builder()
+        DefaultScheduleOutputRecord record = DefaultScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(4)
                 .startTime(LocalTime.of(8, 30))
@@ -273,7 +273,7 @@ class ScheduleTest {
     @DisplayName("デフォルトスケジュール - 日付が範囲外の場合はfalseを返す")
     void testDefaultScheduleMatches_DateOutOfRange_ReturnsFalse() {
         // Given
-        DefaultScheduleRecord record = DefaultScheduleRecord.builder()
+        DefaultScheduleOutputRecord record = DefaultScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(4)
                 .startTime(LocalTime.of(8, 30))
@@ -295,7 +295,7 @@ class ScheduleTest {
     @DisplayName("デフォルトスケジュール - 終了日が過去の場合はfalseを返す")
     void testDefaultScheduleMatches_EndDateInPast_ReturnsFalse() {
         // Given
-        DefaultScheduleRecord record = DefaultScheduleRecord.builder()
+        DefaultScheduleOutputRecord record = DefaultScheduleOutputRecord.builder()
                 .userId("00001")
                 .id(4)
                 .startTime(LocalTime.of(8, 30))

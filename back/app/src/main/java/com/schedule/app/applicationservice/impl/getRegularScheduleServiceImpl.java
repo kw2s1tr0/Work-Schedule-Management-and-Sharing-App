@@ -9,7 +9,7 @@ import com.schedule.app.applicationservice.getRegularScheduleService;
 import com.schedule.app.dto.RegularScheduleDTO;
 import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.RegularScheduleRecord;
+import com.schedule.app.record.output.RegularScheduleOutputRecord;
 import com.schedule.app.repository.ScheduleSearchMapper;
 
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class getRegularScheduleServiceImpl implements getRegularScheduleService 
     @Override
     public List<RegularScheduleDTO> regularScheduleSearchService(SingleScheduleSearchForm form) {
         ScheduleSearchRecord record = toScheduleRecord(form);
-        List<RegularScheduleRecord> records = readRegularSchedule(record);
+        List<RegularScheduleOutputRecord> records = readRegularSchedule(record);
         List<RegularScheduleDTO> dtos = toScheduleDTOList(records);
         return dtos;
     }
@@ -38,15 +38,15 @@ public class getRegularScheduleServiceImpl implements getRegularScheduleService 
     }
 
     @Override
-    public List<RegularScheduleRecord> readRegularSchedule(ScheduleSearchRecord record) {
-        List<RegularScheduleRecord> records = scheduleSearchMapper.readRegularScheduleRecord(record);
+    public List<RegularScheduleOutputRecord> readRegularSchedule(ScheduleSearchRecord record) {
+        List<RegularScheduleOutputRecord> records = scheduleSearchMapper.readRegularScheduleRecord(record);
         return records;
     }
 
     @Override
-    public List<RegularScheduleDTO> toScheduleDTOList(List<RegularScheduleRecord> records) {
+    public List<RegularScheduleDTO> toScheduleDTOList(List<RegularScheduleOutputRecord> records) {
         List<RegularScheduleDTO> dtos = new ArrayList<>();
-        for (RegularScheduleRecord record : records) {
+        for (RegularScheduleOutputRecord record : records) {
             RegularScheduleDTO dto = RegularScheduleDTO.builder()
                     .scheduleId(record.getId())
                     .startTime(record.getStartTime())

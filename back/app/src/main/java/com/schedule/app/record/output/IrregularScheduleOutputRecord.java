@@ -8,13 +8,12 @@ import lombok.Data;
 
 @Data
 @Builder
-public class DefaultScheduleRecord {
+public class IrregularScheduleOutputRecord {
     private String userId;
     private Integer id;
     private LocalTime startTime;
     private LocalTime endTime;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate date;
     private String worktypeName;
     private String worktypeColor;
 }

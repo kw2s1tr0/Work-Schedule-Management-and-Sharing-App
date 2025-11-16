@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RegularScheduleRecord {
+public class RegularScheduleOutputRecord {
     private String userId;
     private Integer id;
     private LocalTime startTime;

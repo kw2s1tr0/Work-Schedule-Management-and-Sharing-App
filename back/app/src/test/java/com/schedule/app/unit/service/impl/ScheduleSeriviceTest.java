@@ -22,9 +22,9 @@ import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.enums.ViewMode;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.DefaultScheduleRecord;
-import com.schedule.app.record.output.IrregularScheduleRecord;
-import com.schedule.app.record.output.RegularScheduleRecord;
+import com.schedule.app.record.output.DefaultScheduleOutputRecord;
+import com.schedule.app.record.output.IrregularScheduleOutputRecord;
+import com.schedule.app.record.output.RegularScheduleOutputRecord;
 import com.schedule.app.record.output.UserRecord;
 
 class ScheduleServiceImplTest {
@@ -157,8 +157,8 @@ class ScheduleServiceImplTest {
         );
 
         // 非定期スケジュール（最優先）
-        List<IrregularScheduleRecord> irregularRecords = Arrays.asList(
-                IrregularScheduleRecord.builder()
+        List<IrregularScheduleOutputRecord> irregularRecords = Arrays.asList(
+                IrregularScheduleOutputRecord.builder()
                         .userId("00001")
                         .id(1)
                         .startTime(LocalTime.of(10, 0))
@@ -170,8 +170,8 @@ class ScheduleServiceImplTest {
         );
 
         // 定期スケジュール
-        List<RegularScheduleRecord> regularRecords = Arrays.asList(
-                RegularScheduleRecord.builder()
+        List<RegularScheduleOutputRecord> regularRecords = Arrays.asList(
+                RegularScheduleOutputRecord.builder()
                         .userId("00001")
                         .id(2)
                         .startTime(LocalTime.of(9, 0))
@@ -186,8 +186,8 @@ class ScheduleServiceImplTest {
         );
 
         // デフォルトスケジュール
-        List<DefaultScheduleRecord> defaultRecords = Arrays.asList(
-                DefaultScheduleRecord.builder()
+        List<DefaultScheduleOutputRecord> defaultRecords = Arrays.asList(
+                DefaultScheduleOutputRecord.builder()
                         .userId("00001")
                         .id(3)
                         .startTime(LocalTime.of(8, 30))
@@ -254,9 +254,9 @@ class ScheduleServiceImplTest {
         );
 
         // 空のスケジュールリスト
-        List<DefaultScheduleRecord> defaultRecords = new ArrayList<>();
-        List<RegularScheduleRecord> regularRecords = new ArrayList<>();
-        List<IrregularScheduleRecord> irregularRecords = new ArrayList<>();
+        List<DefaultScheduleOutputRecord> defaultRecords = new ArrayList<>();
+        List<RegularScheduleOutputRecord> regularRecords = new ArrayList<>();
+        List<IrregularScheduleOutputRecord> irregularRecords = new ArrayList<>();
 
         // When
         List<User> result = scheduleService.toUserEntityList(
@@ -351,8 +351,8 @@ class ScheduleServiceImplTest {
         );
 
         // 月水金のスケジュール
-        List<RegularScheduleRecord> regularRecords = Arrays.asList(
-                RegularScheduleRecord.builder()
+        List<RegularScheduleOutputRecord> regularRecords = Arrays.asList(
+                RegularScheduleOutputRecord.builder()
                         .userId("00001")
                         .id(1)
                         .startTime(LocalTime.of(9, 0))
@@ -364,7 +364,7 @@ class ScheduleServiceImplTest {
                         .worktypeName("出社")
                         .worktypeColor("#4CAF50")
                         .build(),
-                RegularScheduleRecord.builder()
+                RegularScheduleOutputRecord.builder()
                         .userId("00001")
                         .id(2)
                         .startTime(LocalTime.of(9, 0))

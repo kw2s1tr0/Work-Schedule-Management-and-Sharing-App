@@ -5,9 +5,9 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import com.schedule.app.enums.ScheduleType;
-import com.schedule.app.record.output.DefaultScheduleRecord;
-import com.schedule.app.record.output.IrregularScheduleRecord;
-import com.schedule.app.record.output.RegularScheduleRecord;
+import com.schedule.app.record.output.DefaultScheduleOutputRecord;
+import com.schedule.app.record.output.IrregularScheduleOutputRecord;
+import com.schedule.app.record.output.RegularScheduleOutputRecord;
 
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class Schedule {
      * 
      * @return 照合結果(true:該当、false:非該当)
      */
-    public boolean matches(IrregularScheduleRecord record, ScheduleType scheduleType) {
+    public boolean matches(IrregularScheduleOutputRecord record, ScheduleType scheduleType) {
 
         // 日付が一致しない場合は非該当
         if (!date.equals(record.getDate())) {
@@ -49,7 +49,7 @@ public class Schedule {
      * 
      * @return 照合結果(true:該当、false:非該当)
      */
-    public boolean matches(RegularScheduleRecord record, ScheduleType scheduleType) {
+    public boolean matches(RegularScheduleOutputRecord record, ScheduleType scheduleType) {
 
         if (date.isBefore(record.getStartDate()) || date.isAfter(record.getEndDate())) {
             return false;
@@ -84,7 +84,7 @@ public class Schedule {
      * 
      * @return 照合結果(true:該当、false:非該当)
      */
-    public boolean matches(DefaultScheduleRecord record, ScheduleType scheduleType) {
+    public boolean matches(DefaultScheduleOutputRecord record, ScheduleType scheduleType) {
 
         // 日付が範囲外の場合は非該当
         if (date.isBefore(record.getStartDate()) || date.isAfter(record.getEndDate())) {
@@ -98,5 +98,10 @@ public class Schedule {
         this.worktypeColor = record.getWorktypeColor();
         this.scheduleType = scheduleType;
         return true;
+    }
+
+    public boolean isOverlaps(RegularScheduleOutputRecord record) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isOverlaps'");
     }
 }

@@ -17,9 +17,9 @@ import com.schedule.app.entity.User;
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.DefaultScheduleRecord;
-import com.schedule.app.record.output.IrregularScheduleRecord;
-import com.schedule.app.record.output.RegularScheduleRecord;
+import com.schedule.app.record.output.DefaultScheduleOutputRecord;
+import com.schedule.app.record.output.IrregularScheduleOutputRecord;
+import com.schedule.app.record.output.RegularScheduleOutputRecord;
 import com.schedule.app.record.output.UserRecord;
 import com.schedule.app.repository.CommonScheduleSearchMapper;
 import com.schedule.app.repository.ScheduleSearchMapper;
@@ -45,12 +45,12 @@ public class getScheduleServiceImpl implements getScheduleService {
     @Override
     public List<UserDTO> scheduleSearchService(ScheduleSearchForm form) {
         ScheduleSearchRecord record = toScheduleSearchRecord(form);
-        List<RegularScheduleRecord> regularSchedules = readRegularSchedule(record);
-        List<IrregularScheduleRecord> irregularSchedules = readIrregularSchedule(record);
-        List<DefaultScheduleRecord> defaultSchedules = readDefaultSchedule(record);
-        List<DefaultScheduleRecord> commonDefaultScheduleRecords = readCommonDefaultScheduleRecord(record);
-        List<RegularScheduleRecord> commonRegularScheduleRecords = readCommonRegularUserRecords(record);
-        List<IrregularScheduleRecord> commonIrregularScheduleRecords = readCommonIrregularUserRecords(record);
+        List<RegularScheduleOutputRecord> regularSchedules = readRegularSchedule(record);
+        List<IrregularScheduleOutputRecord> irregularSchedules = readIrregularSchedule(record);
+        List<DefaultScheduleOutputRecord> defaultSchedules = readDefaultSchedule(record);
+        List<DefaultScheduleOutputRecord> commonDefaultScheduleRecords = readCommonDefaultScheduleRecord(record);
+        List<RegularScheduleOutputRecord> commonRegularScheduleRecords = readCommonRegularUserRecords(record);
+        List<IrregularScheduleOutputRecord> commonIrregularScheduleRecords = readCommonIrregularUserRecords(record);
         List<UserRecord> userRecords = readUserRecords(record);
         List<User> userList = toUserEntityList(defaultSchedules,
                 regularSchedules,
@@ -130,40 +130,40 @@ public class getScheduleServiceImpl implements getScheduleService {
     }
 
     @Override
-    public List<RegularScheduleRecord> readRegularSchedule(ScheduleSearchRecord record) {
-        List<RegularScheduleRecord> regularRecords = scheduleSearchMapper.readRegularScheduleRecord(record);
+    public List<RegularScheduleOutputRecord> readRegularSchedule(ScheduleSearchRecord record) {
+        List<RegularScheduleOutputRecord> regularRecords = scheduleSearchMapper.readRegularScheduleRecord(record);
         return regularRecords;
     }
 
     @Override
-    public List<IrregularScheduleRecord> readIrregularSchedule(ScheduleSearchRecord record) {
-        List<IrregularScheduleRecord> irregularRecords = scheduleSearchMapper.readIrregularScheduleRecord(record);
+    public List<IrregularScheduleOutputRecord> readIrregularSchedule(ScheduleSearchRecord record) {
+        List<IrregularScheduleOutputRecord> irregularRecords = scheduleSearchMapper.readIrregularScheduleRecord(record);
         return irregularRecords;
     }
 
     @Override
-    public List<DefaultScheduleRecord> readDefaultSchedule(ScheduleSearchRecord record) {
-        List<DefaultScheduleRecord> defaultRecords = scheduleSearchMapper.readDefaultScheduleRecord(record);
+    public List<DefaultScheduleOutputRecord> readDefaultSchedule(ScheduleSearchRecord record) {
+        List<DefaultScheduleOutputRecord> defaultRecords = scheduleSearchMapper.readDefaultScheduleRecord(record);
         return defaultRecords;
     }
 
     @Override
-    public List<DefaultScheduleRecord> readCommonDefaultScheduleRecord(ScheduleSearchRecord record) {
-        List<DefaultScheduleRecord> defaultScheduleRecords = commonScheduleSearchMapper
+    public List<DefaultScheduleOutputRecord> readCommonDefaultScheduleRecord(ScheduleSearchRecord record) {
+        List<DefaultScheduleOutputRecord> defaultScheduleRecords = commonScheduleSearchMapper
                 .readDefaultScheduleRecord(record);
         return defaultScheduleRecords;
     }
 
     @Override
-    public List<RegularScheduleRecord> readCommonRegularUserRecords(ScheduleSearchRecord record) {
-        List<RegularScheduleRecord> regularScheduleRecords = commonScheduleSearchMapper
+    public List<RegularScheduleOutputRecord> readCommonRegularUserRecords(ScheduleSearchRecord record) {
+        List<RegularScheduleOutputRecord> regularScheduleRecords = commonScheduleSearchMapper
                 .readRegularScheduleRecord(record);
         return regularScheduleRecords;
     }
 
     @Override
-    public List<IrregularScheduleRecord> readCommonIrregularUserRecords(ScheduleSearchRecord record) {
-        List<IrregularScheduleRecord> irregularScheduleRecords = commonScheduleSearchMapper
+    public List<IrregularScheduleOutputRecord> readCommonIrregularUserRecords(ScheduleSearchRecord record) {
+        List<IrregularScheduleOutputRecord> irregularScheduleRecords = commonScheduleSearchMapper
                 .readIrregularScheduleRecord(record);
         return irregularScheduleRecords;
     }
@@ -189,11 +189,11 @@ public class getScheduleServiceImpl implements getScheduleService {
      * @return ユーザーエンティティリスト
      */
     @Override
-    public List<User> toUserEntityList(List<DefaultScheduleRecord> defaultRecords,
-            List<RegularScheduleRecord> regularRecords, List<IrregularScheduleRecord> irregularRecords,
-            List<DefaultScheduleRecord> commonDefaultScheduleRecords,
-            List<RegularScheduleRecord> commonRegularScheduleRecords,
-            List<IrregularScheduleRecord> commonIrregularScheduleRecords, LocalDate from, LocalDate to,
+    public List<User> toUserEntityList(List<DefaultScheduleOutputRecord> defaultRecords,
+            List<RegularScheduleOutputRecord> regularRecords, List<IrregularScheduleOutputRecord> irregularRecords,
+            List<DefaultScheduleOutputRecord> commonDefaultScheduleRecords,
+            List<RegularScheduleOutputRecord> commonRegularScheduleRecords,
+            List<IrregularScheduleOutputRecord> commonIrregularScheduleRecords, LocalDate from, LocalDate to,
             List<UserRecord> userRecords) {
 
         // ユーザーレコードが空の場合は空のリストを返す
@@ -230,7 +230,7 @@ public class getScheduleServiceImpl implements getScheduleService {
 
                 // 各スケジュールリストをチェックし、該当するスケジュールがあればリストに追加して次の日付へ
                 // 個別の場合はユーザーID照合
-                for (IrregularScheduleRecord record : irregularRecords) {
+                for (IrregularScheduleOutputRecord record : irregularRecords) {
                     if (!record.getUserId().equals(userRecord.getUserId())){
                         continue;
                     }
@@ -240,7 +240,7 @@ public class getScheduleServiceImpl implements getScheduleService {
                     }
                 }
 
-                for (RegularScheduleRecord record : regularRecords) {
+                for (RegularScheduleOutputRecord record : regularRecords) {
                     if (!record.getUserId().equals(userRecord.getUserId())){
                         continue;
                     }
@@ -250,21 +250,21 @@ public class getScheduleServiceImpl implements getScheduleService {
                     }
                 }
 
-                for (IrregularScheduleRecord record : commonIrregularScheduleRecords) {
+                for (IrregularScheduleOutputRecord record : commonIrregularScheduleRecords) {
                     if (schedule.matches(record, ScheduleType.COMMON_IRREGULAR)) {
                         schedules.add(schedule);
                         continue outer;
                     }
                 }
 
-                for (RegularScheduleRecord record : commonRegularScheduleRecords) {
+                for (RegularScheduleOutputRecord record : commonRegularScheduleRecords) {
                     if (schedule.matches(record, ScheduleType.COMMON_REGULAR)) {
                         schedules.add(schedule);
                         continue outer;
                     }
                 }
 
-                for (DefaultScheduleRecord record : defaultRecords) {
+                for (DefaultScheduleOutputRecord record : defaultRecords) {
                     if (!record.getUserId().equals(userRecord.getUserId())){
                         continue;
                     }
@@ -274,7 +274,7 @@ public class getScheduleServiceImpl implements getScheduleService {
                     }
                 }
 
-                for (DefaultScheduleRecord record : commonDefaultScheduleRecords) {
+                for (DefaultScheduleOutputRecord record : commonDefaultScheduleRecords) {
                     if (schedule.matches(record, ScheduleType.COMMON_DEFAULT)) {
                         schedules.add(schedule);
                         continue outer;

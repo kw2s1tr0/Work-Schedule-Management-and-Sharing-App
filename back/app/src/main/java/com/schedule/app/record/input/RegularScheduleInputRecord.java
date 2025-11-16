@@ -3,7 +3,7 @@ package com.schedule.app.record.input;
 import lombok.Builder;
 
 @Builder
-public record RegularScheduleRecord(
+public record RegularScheduleInputRecord(
     Integer id,
     String userId,
     String startTime,
