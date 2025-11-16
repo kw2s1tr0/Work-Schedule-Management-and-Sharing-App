@@ -99,9 +99,4 @@ public class Schedule {
         this.scheduleType = scheduleType;
         return true;
     }
-
-    public boolean isOverlaps(RegularScheduleOutputRecord record) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isOverlaps'");
-    }
 }

@@ -2,26 +2,26 @@ package com.schedule.app.applicationservice.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.PostDefaultScheduleService;
+import com.schedule.app.applicationservice.PatchDefaultScheduleService;
 import com.schedule.app.domainservice.DefaultScheduleService;
 import com.schedule.app.entity.DefaultSchedule;
 import com.schedule.app.form.DefaultScheduleForm;
 import com.schedule.app.record.input.DefaultScheduleInputRecord;
 import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.repository.ScheduleCreateMapper;
+import com.schedule.app.repository.ScheduleUpdateMapper;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleService{
-    private final ScheduleCreateMapper scheduleCreateMapper;
+public class PatchDefaultScheduleServiceImpl implements PatchDefaultScheduleService{
+    private final ScheduleUpdateMapper scheduleUpdateMapper;
     private final DefaultScheduleService defaultScheduleService;
 
-    public void postDefaultScheduleService(DefaultScheduleForm form){
+    public void patchDefaultScheduleService(DefaultScheduleForm form){
         DefaultSchedule DefaultSchedule = toDefaultScheduleEintity(form);
         DefaultScheduleInputRecord record = toDefaultScheduleRecord(DefaultSchedule);
-        postDefaultSchedule(record);
+        patchDefaultSchedule(record);
     }
 
     public DefaultSchedule toDefaultScheduleEintity(DefaultScheduleForm form){
@@ -35,14 +35,18 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
                                         .build();
         return entity;
     }
-    
+
     public DefaultScheduleInputRecord toDefaultScheduleRecord(DefaultSchedule DefaultSchedule){
+
+        String userId = "00001"; //ログイン機能を使用するか仮に
+
+        defaultScheduleService.existDefaultSchedule(DefaultSchedule.getId(), userId);
 
         ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
                                         .from(DefaultSchedule.getStartDate())
                                         .to(DefaultSchedule.getEndDate())
                                         .build();
-
+        
         defaultScheduleService.checkDefaultSchedule(scheduleSearchRecord,DefaultSchedule);
 
         DefaultScheduleInputRecord record = DefaultScheduleInputRecord.builder()
@@ -57,8 +61,7 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
         return record;
     }
 
-    public void postDefaultSchedule(DefaultScheduleInputRecord record) {
-        scheduleCreateMapper.createDefaultSchedule(record);
+    public void patchDefaultSchedule(DefaultScheduleInputRecord record) {
+        scheduleUpdateMapper.updateDefaultSchedule(record);
     }
-   
 }

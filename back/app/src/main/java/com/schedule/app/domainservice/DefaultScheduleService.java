@@ -21,7 +21,7 @@ public class DefaultScheduleService {
     private final ScheduleExistMapper scheduleExistMapper;
     private final ScheduleSearchMapper scheduleSearchMapper;
 
-    public void existDefaultSchedule(int scheduleId, int userId) {
+    public void existDefaultSchedule(int scheduleId, String userId) {
         if (!scheduleExistMapper.existDefaultSchedule(scheduleId, userId)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Default schedule already exist for ID: " + scheduleId);
         }

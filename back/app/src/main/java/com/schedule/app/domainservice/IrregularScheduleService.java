@@ -20,7 +20,7 @@ public class IrregularScheduleService {
     private final ScheduleExistMapper scheduleExistMapper;
     private final ScheduleSearchMapper scheduleSearchMapper;
 
-    public boolean existIrregularSchedule(int scheduleId, int userId) {
+    public boolean existIrregularSchedule(int scheduleId, String userId) {
         if (!scheduleExistMapper.existIrregularSchedule(scheduleId, userId)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Irregular schedule already exist for ID: " + scheduleId);
         }

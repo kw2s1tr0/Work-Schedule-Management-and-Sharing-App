@@ -22,7 +22,7 @@ public class RegularScheduleService {
     private final ScheduleExistMapper scheduleExistMapper;
     private final ScheduleSearchMapper scheduleSearchMapper;
 
-    public void existRegularSchedule(int scheduleId, int userId) {
+    public void existRegularSchedule(int scheduleId, String userId) {
         if (!scheduleExistMapper.existRegularSchedule(scheduleId, userId)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Regular schedule already exist for ID: " + scheduleId);
         }

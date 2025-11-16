@@ -2,10 +2,16 @@ package com.schedule.app.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.schedule.app.applicationservice.DeleteDefaultScheduleService;
+import com.schedule.app.applicationservice.DeleteIrregularScheduleService;
+import com.schedule.app.applicationservice.DeleteRegularScheduleService;
 import com.schedule.app.applicationservice.GetDefaultScheduleService;
 import com.schedule.app.applicationservice.GetIrregularScheduleService;
 import com.schedule.app.applicationservice.GetRegularScheduleService;
@@ -19,6 +25,9 @@ import com.schedule.app.form.IrregularScheduleForm;
 import com.schedule.app.form.RegularScheduleForm;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.applicationservice.GetScheduleService;
+import com.schedule.app.applicationservice.PatchDefaultScheduleService;
+import com.schedule.app.applicationservice.PatchIrregularScheduleService;
+import com.schedule.app.applicationservice.PatchRegularScheduleService;
 import com.schedule.app.applicationservice.PostDefaultScheduleService;
 import com.schedule.app.applicationservice.PostIrregularScheduleService;
 import com.schedule.app.applicationservice.PostRegularScheduleService;
@@ -37,6 +46,12 @@ public class ScheduleController {
     private final PostIrregularScheduleService postIrregularScheduleService;
     private final PostRegularScheduleService postRegularScheduleService;
     private final PostDefaultScheduleService postDefaultScheduleService;
+    private final PatchIrregularScheduleService patchIrregularScheduleService;
+    private final PatchRegularScheduleService patchRegularScheduleService;
+    private final PatchDefaultScheduleService patchDefaultScheduleService;
+    private final DeleteIrregularScheduleService deleteIrregularScheduleService;
+    private final DeleteRegularScheduleService deleteRegularScheduleService;    
+    private final DeleteDefaultScheduleService deleteDefaultScheduleService;
 
     /**
      * スケジュール検索
@@ -82,5 +97,35 @@ public class ScheduleController {
     @PostMapping("/api/defaultSchedule")
     public void postDefaultSchedule(@Valid DefaultScheduleForm form) {
         postDefaultScheduleService.postDefaultScheduleService(form);
+    }
+
+    @PatchMapping("/api/irregularSchedule")
+    public void patchIrregularSchedule(@Valid IrregularScheduleForm form) {
+        patchIrregularScheduleService.patchIrregularScheduleService(form);
+    }
+
+    @PatchMapping("/api/regularSchedule")
+    public void patchRegularSchedule(@Valid RegularScheduleForm form) {
+        patchRegularScheduleService.patchRegularScheduleService(form);
+    }
+
+    @PatchMapping("/api/defaultSchedule")
+    public void patchDefaultSchedule(@Valid DefaultScheduleForm form) {
+        patchDefaultScheduleService.patchDefaultScheduleService(form);
+    }
+
+    @DeleteMapping("/api/irregularSchedule/{id}")
+    public void deleteIrregularSchedule(@PathVariable Integer id) {
+        deleteIrregularScheduleService.deleteIrregularScheduleService(id);
+    }
+
+    @DeleteMapping("/api/regularSchedule/{id}")
+    public void deleteRegularSchedule(@PathVariable Integer id) {
+        deleteRegularScheduleService.deleteRegularScheduleService(id);
+    }
+
+    @DeleteMapping("/api/defaultSchedule/{id}")
+    public void deleteDefaultSchedule(@PathVariable Integer id) {
+        deleteDefaultScheduleService.deleteDefaultScheduleService(id);
     }
 }

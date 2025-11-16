@@ -1,7 +1,7 @@
 package com.schedule.app.repository;
 
 public interface ScheduleExistMapper {
-    boolean existDefaultSchedule(int scheduleId,int userId);
-    boolean existRegularSchedule(int scheduleId, int userId);
-    boolean existIrregularSchedule(int scheduleId, int userId);
+    boolean existDefaultSchedule(int scheduleId,String userId);
+    boolean existRegularSchedule(int scheduleId, String userId);
+    boolean existIrregularSchedule(int scheduleId, String userId);
 }

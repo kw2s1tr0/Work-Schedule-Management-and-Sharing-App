@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.repository.ScheduleUpdateMapper">
+
+    <update id="updateDefaultSchedule">
+        UPDATE
+            default_schedule
+        SET
+            start_time = #{startTime},
+            end_time = #{endTime},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            work_type_id = #{workTypeId}
+        WHERE
+            id = #{id}
+    </update>
+
+    <update id="updateRegularSchedule">
+        UPDATE
+            regular_schedule
+        SET
+            start_time = #{startTime},
+            end_time = #{endTime},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            days_of_week = #{daysOfWeek},
+            interval_weeks = #{intervalWeeks},
+            work_type_id = #{workTypeId}
+        WHERE
+            id = #{id}
+    </update>
+
+    </update id="updateIrregularSchedule">
+        UPDATE
+            irregular_schedule
+        SET
+            date = #{date},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            work_type_id = #{workTypeId}
+        WHERE
+            id = #{id}
+
+</mapper>
