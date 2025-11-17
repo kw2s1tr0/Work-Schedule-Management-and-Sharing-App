@@ -30,7 +30,7 @@
             id = #{id}
     </update>
 
-    </update id="updateIrregularSchedule">
+    <update id="updateIrregularSchedule">
         UPDATE
             irregular_schedule
         SET
@@ -40,5 +40,5 @@
             work_type_id = #{workTypeId}
         WHERE
             id = #{id}
-
+    </update>
 </mapper>

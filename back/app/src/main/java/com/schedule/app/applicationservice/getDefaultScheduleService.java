@@ -8,9 +8,9 @@ import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.record.output.DefaultScheduleOutputRecord;
 
 public interface GetDefaultScheduleService {
-    List<DefaultScheduleDTO> defaultScheduleSearchService(SingleScheduleSearchForm form);
+    List<DefaultScheduleDTO> defaultScheduleSearchService(SingleScheduleSearchForm form, String userId);
 
-    ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form);
+    ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form, String userId);
 
     List<DefaultScheduleOutputRecord> readDefaultSchedule(ScheduleSearchRecord record);
 

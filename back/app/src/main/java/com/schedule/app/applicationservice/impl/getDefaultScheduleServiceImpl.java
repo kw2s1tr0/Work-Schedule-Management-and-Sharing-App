@@ -20,29 +20,56 @@ public class GetDefaultScheduleServiceImpl implements GetDefaultScheduleService 
 
     private final ScheduleSearchMapper scheduleSearchMapper;
 
+    /**
+     * デフォルトスケジュールを取得する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID
+     * @return デフォルトスケジュールDTOリスト
+     */
     @Override
-    public List<DefaultScheduleDTO> defaultScheduleSearchService(SingleScheduleSearchForm form) {
-        ScheduleSearchRecord record = toScheduleRecord(form);
+    public List<DefaultScheduleDTO> defaultScheduleSearchService(SingleScheduleSearchForm form, String userId) {
+        ScheduleSearchRecord record = toScheduleRecord(form, userId);
         List<DefaultScheduleOutputRecord> records = readDefaultSchedule(record);
         List<DefaultScheduleDTO> dtos = toScheduleDTOList(records);
         return dtos;
     }
 
+    /**
+     * フォームをレコードに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID
+     * @return スケジュール検索レコード
+     */
     @Override
-    public ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form) {
+    public ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form, String userId) {
         ScheduleSearchRecord record = ScheduleSearchRecord.builder()
+                .userId(userId)
                 .from(form.from())
                 .to(form.to())
                 .build();
         return record;
     }
 
+    /**
+     * デフォルトスケジュールを読み取る
+     * 
+     * @param record スケジュール検索レコード
+     * @return デフォルトスケジュール出力レコードリスト
+     */
     @Override
     public List<DefaultScheduleOutputRecord> readDefaultSchedule(ScheduleSearchRecord record) {
         List<DefaultScheduleOutputRecord> records = scheduleSearchMapper.readDefaultScheduleRecord(record);
         return records;
     }
 
+    /**
+     * デフォルトスケジュール出力レコードリストをDTOリストに変換する
+     * 
+     * @param records デフォルトスケジュール出力レコードリスト
+     * @return デフォルトスケジュールDTOリスト
+     */
     @Override
     public List<DefaultScheduleDTO> toScheduleDTOList(List<DefaultScheduleOutputRecord> records) {
         List<DefaultScheduleDTO> dtos = new ArrayList<>();

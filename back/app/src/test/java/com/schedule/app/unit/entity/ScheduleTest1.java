@@ -1,4 +1,4 @@
-package com.schedule.app.unit.entity.item;
+package com.schedule.app.unit.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +16,7 @@ import com.schedule.app.record.output.DefaultScheduleOutputRecord;
 import com.schedule.app.record.output.IrregularScheduleOutputRecord;
 import com.schedule.app.record.output.RegularScheduleOutputRecord;
 
-class ScheduleTest {
+class ScheduleTest1 {
 
     private Schedule schedule;
     private LocalDate testDate;

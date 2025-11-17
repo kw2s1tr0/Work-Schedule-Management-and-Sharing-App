@@ -6,8 +6,8 @@ import com.schedule.app.record.input.RegularScheduleInputRecord;
 
 public interface PatchRegularScheduleService {
 
-    public void patchRegularScheduleService(RegularScheduleForm form);
-    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form);
+    public void patchRegularScheduleService(RegularScheduleForm form, String userId);
+    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form, String userId);
     public RegularScheduleInputRecord toRegularScheduleRecord(RegularSchedule regularSchedule);
     public void patchRegularSchedule(RegularScheduleInputRecord record);
 }

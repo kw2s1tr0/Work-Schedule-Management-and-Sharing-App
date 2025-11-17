@@ -7,6 +7,7 @@ import com.schedule.app.domainservice.RegularScheduleService;
 import com.schedule.app.entity.RegularSchedule;
 import com.schedule.app.form.RegularScheduleForm;
 import com.schedule.app.record.input.RegularScheduleInputRecord;
+import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.repository.ScheduleUpdateMapper;
 
 import lombok.AllArgsConstructor;
@@ -17,15 +18,30 @@ public class PatchRegularScheduleServiceImpl implements PatchRegularScheduleServ
     private final ScheduleUpdateMapper scheduleUpdateMapper;
     private final RegularScheduleService regularScheduleService;
 
-    public void patchRegularScheduleService(RegularScheduleForm form){
-        RegularSchedule regularSchedule = toRegularScheduleEntity(form);
+    /**
+     * デフォルトスケジュールを更新する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID
+     */
+    @Override
+    public void patchRegularScheduleService(RegularScheduleForm form, String userId){
+        RegularSchedule regularSchedule = toRegularScheduleEntity(form, userId);
         RegularScheduleInputRecord record = toRegularScheduleRecord(regularSchedule);
         patchRegularSchedule(record);
     }
 
-    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form){
+    /**
+     * フォームをエンティティに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID 
+     * @return レギュラースケジュールエンティティ
+     */
+    @Override
+    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form, String userId){
         RegularSchedule entity = RegularSchedule.builder()
-                                        .userId("00001") //ログイン機能を使用するか仮に
+                                        .userId(userId) //ログイン機能を使用するか仮に
                                         .startTime(form.startTime())
                                         .endTime(form.endTime())
                                         .startDate(form.startDate())
@@ -35,14 +51,29 @@ public class PatchRegularScheduleServiceImpl implements PatchRegularScheduleServ
         return entity;
     }
 
+    /**
+     * エンティティをレコードに変換する
+     * 
+     * @param regularSchedule レギュラースケジュールエンティティ
+     * @return レギュラースケジュール入力レコード
+     */
+    @Override 
     public RegularScheduleInputRecord toRegularScheduleRecord(RegularSchedule regularSchedule){
 
-        String userId = "00001"; //ログイン機能を使用するか仮に
+        // レギュラースケジュールの存在チェック
+        regularScheduleService.existRegularSchedule(regularSchedule.getId(), regularSchedule.getUserId());
 
-        regularScheduleService.existRegularSchedule(regularSchedule.getId(), userId);
+        // チェック用の検索レコードを作成
+        ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
+                                        .from(regularSchedule.getStartDate())
+                                        .to(regularSchedule.getEndDate())
+                                        .build();
+
+        // レギュラースケジュールの重複チェック
+        regularScheduleService.checkRegularSchedule(scheduleSearchRecord, regularSchedule);
 
         RegularScheduleInputRecord record = RegularScheduleInputRecord.builder()
-                                                .userId("00001") //ログイン機能を使用するか仮に
+                                                .userId(regularSchedule.getUserId())
                                                 .startTime(regularSchedule.getStartTime())
                                                 .endTime(regularSchedule.getEndTime())
                                                 .startDate(regularSchedule.getStartDate())
@@ -52,6 +83,12 @@ public class PatchRegularScheduleServiceImpl implements PatchRegularScheduleServ
         return record;
     }
 
+    /**
+     * レギュラースケジュールを更新する
+     * 
+     * @param record レギュラースケジュール入力レコード
+     */
+    @Override   
     public void patchRegularSchedule(RegularScheduleInputRecord record){
         scheduleUpdateMapper.updateRegularSchedule(record);
     }

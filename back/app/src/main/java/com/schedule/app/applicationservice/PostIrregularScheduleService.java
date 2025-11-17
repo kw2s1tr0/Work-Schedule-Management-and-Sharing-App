@@ -5,7 +5,7 @@ import com.schedule.app.record.input.IrregularScheduleInputRecord;
 
 public interface PostIrregularScheduleService {
     
-    public void postIrregularScheduleService(IrregularScheduleForm form);
-    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form);
+    public void postIrregularScheduleService(IrregularScheduleForm form, String userId);
+    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form, String userId);
     public void postIrregularSchedule(IrregularScheduleInputRecord record);
 }

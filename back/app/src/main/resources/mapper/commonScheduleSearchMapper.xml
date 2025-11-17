@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.schedule.app.repository.CommonScheduleSearchMapper">
     <!-- readDefaultScheduleRecord -->
-    <select id="readDefaultScheduleRecord" resultType="com.schedule.app.record.output.DefaultScheduleRecord">
+    <select id="readDefaultScheduleRecord" resultType="com.schedule.app.record.output.DefaultScheduleOutputRecord">
         SELECT
             NULL AS userId,
             ds.id,
@@ -27,7 +27,7 @@
     </select>
 
     <!-- readRegularScheduleRecord -->
-    <select id="readRegularScheduleRecord" resultType="com.schedule.app.record.output.RegularScheduleRecord">
+    <select id="readRegularScheduleRecord" resultType="com.schedule.app.record.output.RegularScheduleOutputRecord">
         SELECT
             NULL AS userId,
             rs.id,
@@ -54,7 +54,7 @@
     </select>
 
     <!-- readIrregularScheduleRecord -->
-    <select id="readIrregularScheduleRecord" resultType="com.schedule.app.record.output.IrregularScheduleRecord">
+    <select id="readIrregularScheduleRecord" resultType="com.schedule.app.record.output.IrregularScheduleOutputRecord">
         SELECT
             NULL AS userId,
             irs.id,

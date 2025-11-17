@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.repository.OrganizationSearchMapper">
+    <select id="readOrganizationRecord" resultType="com.schedule.app.record.output.OrganizationRecord">
+        SELECT
+            organization_code AS organizationCode,
+            organization_name AS organizationName
+        FROM
+            organization
+        ORDER BY 
+            organization_code ASC
+    </select>
+</mapper>

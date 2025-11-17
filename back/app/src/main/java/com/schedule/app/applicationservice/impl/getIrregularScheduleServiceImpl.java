@@ -20,29 +20,56 @@ public class GetIrregularScheduleServiceImpl implements GetIrregularScheduleServ
 
     private final ScheduleSearchMapper scheduleSearchMapper;
 
+    /**
+     * イレギュラースケジュールを取得する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID
+     * @return イレギュラースケジュールDTOリスト
+     */
     @Override
-    public List<IrregularScheduleDTO> irregularScheduleSearchService(SingleScheduleSearchForm form) {
-        ScheduleSearchRecord record = toScheduleRecord(form);
+    public List<IrregularScheduleDTO> irregularScheduleSearchService(SingleScheduleSearchForm form, String userId) {
+        ScheduleSearchRecord record = toScheduleRecord(form, userId);
         List<IrregularScheduleOutputRecord> records = readIrregularSchedule(record);
         List<IrregularScheduleDTO> dtos = toScheduleDTOList(records);
         return dtos;
     }
 
+    /**
+     * フォームをレコードに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID
+     * @return スケジュール検索レコード
+     */
     @Override
-    public ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form) {
+    public ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form, String userId) {
         ScheduleSearchRecord record = ScheduleSearchRecord.builder()
+                .userId(userId)
                 .from(form.from())
                 .to(form.to())
                 .build();
         return record;
     }
 
+    /**
+     * イレギュラースケジュールを読み取る
+     * 
+     * @param record スケジュール検索レコード
+     * @return イレギュラースケジュール出力レコードリスト
+     */
     @Override
     public List<IrregularScheduleOutputRecord> readIrregularSchedule(ScheduleSearchRecord record) {
         List<IrregularScheduleOutputRecord> records = scheduleSearchMapper.readIrregularScheduleRecord(record);
         return records;
     }
 
+    /**
+     * イレギュラースケジュール出力レコードリストをDTOリストに変換する
+     * 
+     * @param records イレギュラースケジュール出力レコードリスト
+     * @return イレギュラースケジュールDTOリスト
+     */
     @Override
     public List<IrregularScheduleDTO> toScheduleDTOList(List<IrregularScheduleOutputRecord> records) {
         List<IrregularScheduleDTO> dtos = new ArrayList<>();

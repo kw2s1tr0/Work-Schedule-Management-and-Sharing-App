@@ -3,7 +3,7 @@
 <mapper namespace="com.schedule.app.repository.ScheduleSearchMapper">
 
     <!-- readDefaultScheduleRecord -->
-   <select id="readDefaultScheduleRecord" resultType="com.schedule.app.record.output.DefaultScheduleRecord">
+   <select id="readDefaultScheduleRecord" resultType="com.schedule.app.record.output.DefaultScheduleOutputRecord">
         SELECT
             u.user_id AS userId,
             ds.id,
@@ -42,7 +42,7 @@
     </select>
 
     <!-- readRegularScheduleRecord -->
-   <select id="readRegularScheduleRecord" resultType="com.schedule.app.record.output.RegularScheduleRecord">
+   <select id="readRegularScheduleRecord" resultType="com.schedule.app.record.output.RegularScheduleOutputRecord">
         SELECT
             u.user_id AS userId,
             rs.id,
@@ -76,7 +76,7 @@
                 </foreach>
             </if>
             <if test="organizationCode != null and organizationCode != ''">
-                AND o.organization_code = #{organizationCode}
+                AND u.organization_code = #{organizationCode}
             </if>
         </where>
         ORDER BY 
@@ -86,7 +86,7 @@
     </select>
 
     <!-- readIrregularScheduleRecord -->
-    <select id="readIrregularScheduleRecord" resultType="com.schedule.app.record.output.IrregularScheduleRecord">
+    <select id="readIrregularScheduleRecord" resultType="com.schedule.app.record.output.IrregularScheduleOutputRecord">
         SELECT
             u.user_id AS userId,
             irs.id,
@@ -117,7 +117,7 @@
                 </foreach>
             </if>
             <if test="organizationCode != null and organizationCode != ''">
-                AND o.organization_code = #{organizationCode}
+                AND u.organization_code = #{organizationCode}
             </if>
         </where>
         ORDER BY 

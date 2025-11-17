@@ -18,22 +18,39 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
     private final ScheduleCreateMapper scheduleCreateMapper;
     private final IrregularScheduleService irregularScheduleService;
 
-    public void postIrregularScheduleService(IrregularScheduleForm form){
-        IrregularScheduleInputRecord record = toIrregularScheduleRecord(form);
+    /**
+     * イレギュラースケジュールを登録する
+     * 
+     * @param form 画面入力フォーム 
+     * @param userId ユーザーID
+     */
+    @Override
+    public void postIrregularScheduleService(IrregularScheduleForm form, String userId){
+        IrregularScheduleInputRecord record = toIrregularScheduleRecord(form, userId);
         postIrregularSchedule(record);
     }
     
-    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form){
+    /**
+     * フォームをレコードに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID 
+     * @return イレギュラースケジュール入力レコード
+     */
+    @Override
+    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form, String userId){
 
+        // チェック用の検索レコードを作成
         ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
                                         .from(form.date())
                                         .to(form.date())
                                         .build();
 
+        // イレギュラースケジュールの重複チェック
         irregularScheduleService.checkIrregularSchedule(scheduleSearchRecord);
 
         IrregularScheduleInputRecord record = IrregularScheduleInputRecord.builder()
-                                                .userId("00001") //ログイン機能を使用するか仮に
+                                                .userId(userId) //ログイン機能を使用するか仮に
                                                 .startTime(form.startTime())
                                                 .endTime(form.endTime())
                                                 .date(form.date())
@@ -43,6 +60,12 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
         return record;
     }
 
+    /**
+     * イレギュラースケジュールを登録する
+     * 
+     * @param record イレギュラースケジュール入力レコード
+     */
+    @Override
     public void postIrregularSchedule(IrregularScheduleInputRecord record) {
         scheduleCreateMapper.createIrregularSchedule(record);
     }

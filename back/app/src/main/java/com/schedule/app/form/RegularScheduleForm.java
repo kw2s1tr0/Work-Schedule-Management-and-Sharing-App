@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
 @Builder
@@ -20,8 +21,8 @@ public record RegularScheduleForm(
         @NotNull LocalDate startDate,
         @NotNull LocalDate endDate,
         @NotNull DayOfWeek dayOfWeek,
-        @Min(1) @Max(2) Integer intervalWeeks,
-        @NotNull String workTypeId) {
+        @NotNull @Min(1) @Max(2) Integer intervalWeeks,
+        @Pattern(regexp = "([1-9]|10|11)") @NotNull String workTypeId) {
     public RegularScheduleForm {
         if (startDate.isAfter(endDate)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The 'from' date must be before or equal to the 'to' date.");

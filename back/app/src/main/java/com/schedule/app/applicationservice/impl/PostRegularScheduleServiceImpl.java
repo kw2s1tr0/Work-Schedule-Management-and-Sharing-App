@@ -18,15 +18,30 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
     private final ScheduleCreateMapper scheduleCreateMapper;
     private final RegularScheduleService regularScheduleService;
 
-    public void postRegularScheduleService(RegularScheduleForm form){
-        RegularSchedule regularSchedule = toRegularScheduleEntity(form);
+    /**
+     * レギュラースケジュールを登録する
+     * 
+     * @param form 画面入力フォーム 
+     * @param userId ユーザーID
+     */
+    @Override
+    public void postRegularScheduleService(RegularScheduleForm form, String userId){
+        RegularSchedule regularSchedule = toRegularScheduleEntity(form, userId);
         RegularScheduleInputRecord record = toRegularScheduleRecord(regularSchedule);
         postRegularSchedule(record);
     }
 
-    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form){
+    /**
+     * フォームをエンティティに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID 
+     * @return レギュラースケジュールエンティティ
+     */
+    @Override
+    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form, String userId){
         RegularSchedule entity = RegularSchedule.builder()
-                                        .userId("00001") //ログイン機能を使用するか仮に
+                                        .userId(userId) //ログイン機能を使用するか仮に
                                         .startTime(form.startTime())
                                         .endTime(form.endTime())
                                         .startDate(form.startDate())
@@ -38,17 +53,26 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
         return entity;
     }
     
+    /**
+     * エンティティをレコードに変換する
+     * 
+     * @param regularSchedule レギュラースケジュールエンティティ
+     * @return レギュラースケジュール入力レコード
+     */
+    @Override
     public RegularScheduleInputRecord toRegularScheduleRecord(RegularSchedule regularSchedule){
 
+        // レギュラースケジュールの存在チェック
         ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
                                         .from(regularSchedule.getStartDate())
                                         .to(regularSchedule.getEndDate())
                                         .build();
 
+        // レギュラースケジュールの重複チェック
         regularScheduleService.checkRegularSchedule(scheduleSearchRecord,regularSchedule);
 
         RegularScheduleInputRecord record = RegularScheduleInputRecord.builder()
-                                                .userId("00001") //ログイン機能を使用するか仮に
+                                                .userId(regularSchedule.getUserId()) //ログイン機能を使用するか仮に
                                                 .startTime(regularSchedule.getStartTime())
                                                 .endTime(regularSchedule.getEndTime())
                                                 .startDate(regularSchedule.getStartDate())
@@ -61,6 +85,12 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
         return record;
     }
 
+    /**
+     * レギュラースケジュールを登録する
+     * 
+     * @param record レギュラースケジュール入力レコード
+     */
+    @Override
     public void postRegularSchedule(RegularScheduleInputRecord record) {
         scheduleCreateMapper.createRegularSchedule(record);
     }

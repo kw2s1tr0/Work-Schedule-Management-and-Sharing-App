@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.repository.WorkTypeSearchMapper">
+    <select id="readWorkTypeRecord" resultType="com.schedule.app.record.output.WorkTypeRecord">
+        SELECT
+            id,
+            work_type_name AS workTypeName,
+            work_type_color AS workTypeColor
+        FROM
+            schedule_type
+        WHERE
+            id != '12'
+        ORDER BY 
+            id ASC
+    </select>
+</mapper>

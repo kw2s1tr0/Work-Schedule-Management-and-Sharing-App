@@ -8,9 +8,9 @@ import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.record.output.IrregularScheduleOutputRecord;
 
 public interface GetIrregularScheduleService {
-    List<IrregularScheduleDTO> irregularScheduleSearchService(SingleScheduleSearchForm form);
+    List<IrregularScheduleDTO> irregularScheduleSearchService(SingleScheduleSearchForm form, String userId);
 
-    ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form);
+    ScheduleSearchRecord toScheduleRecord(SingleScheduleSearchForm form, String userId);
 
     List<IrregularScheduleOutputRecord> readIrregularSchedule(ScheduleSearchRecord record);
 

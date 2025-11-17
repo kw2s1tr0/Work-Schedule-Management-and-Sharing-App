@@ -18,15 +18,30 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
     private final ScheduleCreateMapper scheduleCreateMapper;
     private final DefaultScheduleService defaultScheduleService;
 
-    public void postDefaultScheduleService(DefaultScheduleForm form){
-        DefaultSchedule DefaultSchedule = toDefaultScheduleEintity(form);
+    /**
+     * デフォルトスケジュールを登録する
+     * 
+     * @param form 画面入力フォーム 
+     * @param userId ユーザーID
+     */
+    @Override
+    public void postDefaultScheduleService(DefaultScheduleForm form, String userId){
+        DefaultSchedule DefaultSchedule = toDefaultScheduleEintity(form, userId);
         DefaultScheduleInputRecord record = toDefaultScheduleRecord(DefaultSchedule);
         postDefaultSchedule(record);
     }
 
-    public DefaultSchedule toDefaultScheduleEintity(DefaultScheduleForm form){
+    /**
+     * フォームをエンティティに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID 
+     * @return デフォルトスケジュールエンティティ
+     */
+    @Override
+    public DefaultSchedule toDefaultScheduleEintity(DefaultScheduleForm form, String userId){
         DefaultSchedule entity = DefaultSchedule.builder()
-                                        .userId("00001") //ログイン機能を使用するか仮に
+                                        .userId(userId) //ログイン機能を使用するか仮に
                                         .startTime(form.startTime())
                                         .endTime(form.endTime())
                                         .startDate(form.startDate())
@@ -36,17 +51,26 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
         return entity;
     }
     
+    /**
+     * エンティティをレコードに変換する
+     * 
+     * @param DefaultSchedule デフォルトスケジュールエンティティ
+     * @return デフォルトスケジュール入力レコード
+     */
+    @Override
     public DefaultScheduleInputRecord toDefaultScheduleRecord(DefaultSchedule DefaultSchedule){
 
+        // 重複チェック用の検索レコードを作成
         ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
                                         .from(DefaultSchedule.getStartDate())
                                         .to(DefaultSchedule.getEndDate())
                                         .build();
 
+        // デフォルトスケジュールの重複チェック
         defaultScheduleService.checkDefaultSchedule(scheduleSearchRecord,DefaultSchedule);
 
         DefaultScheduleInputRecord record = DefaultScheduleInputRecord.builder()
-                                                .userId("00001") //ログイン機能を使用するか仮に
+                                                .userId(DefaultSchedule.getUserId()) //ログイン機能を使用するか仮に
                                                 .startTime(DefaultSchedule.getStartTime())
                                                 .endTime(DefaultSchedule.getEndTime())
                                                 .startDate(DefaultSchedule.getStartDate())
@@ -57,6 +81,12 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
         return record;
     }
 
+    /**
+     * デフォルトスケジュールを登録する
+     * 
+     * @param record デフォルトスケジュール入力レコード
+     */
+    @Override
     public void postDefaultSchedule(DefaultScheduleInputRecord record) {
         scheduleCreateMapper.createDefaultSchedule(record);
     }

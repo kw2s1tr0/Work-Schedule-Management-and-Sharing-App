@@ -21,6 +21,12 @@ public class RegularSchedule {
     private Integer intervalWeeks;
     private String workTypeId;
 
+    /**
+     * レギュラースケジュールの重複チェック
+     * 
+     * @param record レギュラースケジュール出力レコード
+     * @return 重複があればtrue
+     */
     public boolean isOverlaps(RegularScheduleOutputRecord record) {
         if (record.getEndDate().isBefore(this.startDate) || record.getStartDate().isAfter(this.endDate)) {
             return false;

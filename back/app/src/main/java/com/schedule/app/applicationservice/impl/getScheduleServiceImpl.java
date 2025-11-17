@@ -10,11 +10,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.schedule.app.applicationservice.GetScheduleService;
+import com.schedule.app.domainservice.ScheduleService;
 import com.schedule.app.dto.ScheduleDTO;
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.entity.Schedule;
 import com.schedule.app.entity.User;
-import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.record.output.DefaultScheduleOutputRecord;
@@ -31,6 +31,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GetScheduleServiceImpl implements GetScheduleService {
 
+    private final ScheduleService scheduleService;
     private final ScheduleSearchMapper scheduleSearchMapper;
     private final CommonScheduleSearchMapper commonScheduleSearchMapper;
     private final UserSearchMapper userSearchMapper;
@@ -129,24 +130,48 @@ public class GetScheduleServiceImpl implements GetScheduleService {
         return record;
     }
 
+    /**
+     * 定期スケジュールレコードを取得する
+     * 
+     * @param record スケジュール検索条件
+     * @return 定期スケジュールレコードリスト
+     */
     @Override
     public List<RegularScheduleOutputRecord> readRegularSchedule(ScheduleSearchRecord record) {
         List<RegularScheduleOutputRecord> regularRecords = scheduleSearchMapper.readRegularScheduleRecord(record);
         return regularRecords;
     }
 
+    /**
+     * 非定期スケジュールレコードを取得する
+     * 
+     * @param record スケジュール検索条件
+     * @return 非定期スケジュールレコードリスト
+     */
     @Override
     public List<IrregularScheduleOutputRecord> readIrregularSchedule(ScheduleSearchRecord record) {
         List<IrregularScheduleOutputRecord> irregularRecords = scheduleSearchMapper.readIrregularScheduleRecord(record);
         return irregularRecords;
     }
 
+    /**
+     * デフォルトスケジュールレコードを取得する
+     * 
+     * @param record スケジュール検索条件
+     * @return デフォルトスケジュールレコードリスト
+     */
     @Override
     public List<DefaultScheduleOutputRecord> readDefaultSchedule(ScheduleSearchRecord record) {
         List<DefaultScheduleOutputRecord> defaultRecords = scheduleSearchMapper.readDefaultScheduleRecord(record);
         return defaultRecords;
     }
 
+    /**
+     * 共通デフォルトスケジュールレコードを取得する
+     * 
+     * @param record スケジュール検索条件
+     * @return 共通デフォルトスケジュールレコードリスト
+     */
     @Override
     public List<DefaultScheduleOutputRecord> readCommonDefaultScheduleRecord(ScheduleSearchRecord record) {
         List<DefaultScheduleOutputRecord> defaultScheduleRecords = commonScheduleSearchMapper
@@ -154,6 +179,12 @@ public class GetScheduleServiceImpl implements GetScheduleService {
         return defaultScheduleRecords;
     }
 
+    /**
+     * 共通定期スケジュールレコードを取得する
+     * 
+     * @param record スケジュール検索条件
+     * @return 共通定期スケジュールレコードリスト
+     */
     @Override
     public List<RegularScheduleOutputRecord> readCommonRegularUserRecords(ScheduleSearchRecord record) {
         List<RegularScheduleOutputRecord> regularScheduleRecords = commonScheduleSearchMapper
@@ -161,6 +192,12 @@ public class GetScheduleServiceImpl implements GetScheduleService {
         return regularScheduleRecords;
     }
 
+    /**
+     * 共通非定期スケジュールレコードを取得する
+     * 
+     * @param record スケジュール検索条件
+     * @return 共通非定期スケジュールレコードリスト
+     */
     @Override
     public List<IrregularScheduleOutputRecord> readCommonIrregularUserRecords(ScheduleSearchRecord record) {
         List<IrregularScheduleOutputRecord> irregularScheduleRecords = commonScheduleSearchMapper
@@ -168,6 +205,12 @@ public class GetScheduleServiceImpl implements GetScheduleService {
         return irregularScheduleRecords;
     }
 
+    /**
+     * ユーザーレコードを取得する
+     * 
+     * @param record スケジュール検索条件
+     * @return ユーザーレコードリスト
+     */
     @Override
     public List<UserRecord> readUserRecords(ScheduleSearchRecord record) {
         List<UserRecord> userRecords = userSearchMapper.readUserRecord(record);
@@ -177,9 +220,9 @@ public class GetScheduleServiceImpl implements GetScheduleService {
     /**
      * 検索結果のレコードをユーザーエンティティリストに変換する
      * 
-     * @param defaultRecords             ユーザーレコードリスト（デフォルトスケジュールリストを内包）
-     * @param regularRecords             ユーザーレコードリスト（定期スケジュールリストを内包）
-     * @param irregularRecords           ユーザーレコードリスト（非定期スケジュールリストを内包）
+     * @param defaultRecords                 ユーザーレコードリスト（デフォルトスケジュールリストを内包）
+     * @param regularRecords                 ユーザーレコードリスト（定期スケジュールリストを内包）
+     * @param irregularRecords               ユーザーレコードリスト（非定期スケジュールリストを内包）
      * @param commonDefaultScheduleRecords   共通デフォルトスケジュールレコード
      * @param commonRegularScheduleRecords   共通定期スケジュールレコード
      * @param commonIrregularScheduleRecords 共通非定期スケジュールレコード
@@ -211,7 +254,7 @@ public class GetScheduleServiceImpl implements GetScheduleService {
 
             // ユーザーのスケジュールを生成
             // 日付ごとにスケジュールをチェックし、該当するスケジュールをリストにセット
-            outer: for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
+            for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
 
                 // スケジュールエンティティを生成
                 // スケジュールが適合した場合にフィールドがセットされる仕組み
@@ -219,69 +262,11 @@ public class GetScheduleServiceImpl implements GetScheduleService {
                         .date(date)
                         .build();
 
-                // スケジュールの優先順位は以下の通り
-                // 1. 非定期スケジュール
-                // 2. 定期スケジュール
-                // 3. 共通非定期スケジュール
-                // 4. 共通定期スケジュール
-                // 5. デフォルトスケジュール
-                // 6. 共通デフォルトスケジュール
-                // 理由はREADMEを参照されたし
+                // スケジュールエンティティにマッチするスケジュール情報をセット
+                scheduleService.ScheduleService(defaultRecords, regularRecords, irregularRecords,
+                        commonDefaultScheduleRecords, commonRegularScheduleRecords, commonIrregularScheduleRecords,
+                        schedule, userRecord);
 
-                // 各スケジュールリストをチェックし、該当するスケジュールがあればリストに追加して次の日付へ
-                // 個別の場合はユーザーID照合
-                for (IrregularScheduleOutputRecord record : irregularRecords) {
-                    if (!record.getUserId().equals(userRecord.getUserId())){
-                        continue;
-                    }
-                    if (schedule.matches(record, ScheduleType.IRREGULAR)) {
-                        schedules.add(schedule);
-                        continue outer;
-                    }
-                }
-
-                for (RegularScheduleOutputRecord record : regularRecords) {
-                    if (!record.getUserId().equals(userRecord.getUserId())){
-                        continue;
-                    }
-                    if (schedule.matches(record, ScheduleType.REGULAR)) {
-                        schedules.add(schedule);
-                        continue outer;
-                    }
-                }
-
-                for (IrregularScheduleOutputRecord record : commonIrregularScheduleRecords) {
-                    if (schedule.matches(record, ScheduleType.COMMON_IRREGULAR)) {
-                        schedules.add(schedule);
-                        continue outer;
-                    }
-                }
-
-                for (RegularScheduleOutputRecord record : commonRegularScheduleRecords) {
-                    if (schedule.matches(record, ScheduleType.COMMON_REGULAR)) {
-                        schedules.add(schedule);
-                        continue outer;
-                    }
-                }
-
-                for (DefaultScheduleOutputRecord record : defaultRecords) {
-                    if (!record.getUserId().equals(userRecord.getUserId())){
-                        continue;
-                    }
-                    if (schedule.matches(record, ScheduleType.DEFAULT)) {
-                        schedules.add(schedule);
-                        continue outer;
-                    }
-                }
-
-                for (DefaultScheduleOutputRecord record : commonDefaultScheduleRecords) {
-                    if (schedule.matches(record, ScheduleType.COMMON_DEFAULT)) {
-                        schedules.add(schedule);
-                        continue outer;
-                    }
-                }
-
-                // スケジュールが何も該当しなかった場合は日付だけセットしたスケジュールを追加
                 schedules.add(schedule);
             }
 

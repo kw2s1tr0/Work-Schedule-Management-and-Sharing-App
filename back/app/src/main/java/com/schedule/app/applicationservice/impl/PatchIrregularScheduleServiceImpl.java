@@ -18,26 +18,41 @@ public class PatchIrregularScheduleServiceImpl implements PatchIrregularSchedule
     private final ScheduleUpdateMapper scheduleUpdateMapper;
     private final IrregularScheduleService irregularScheduleService;
 
-    public void patchIrregularScheduleService(IrregularScheduleForm form){
-        IrregularScheduleInputRecord record = toIrregularScheduleRecord(form);
+    /**
+     * イレギュラースケジュールを更新する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID
+     */
+    @Override
+    public void patchIrregularScheduleService(IrregularScheduleForm form, String userId){
+        IrregularScheduleInputRecord record = toIrregularScheduleRecord(form, userId);
         patchIrregularSchedule(record);
     }
+    /**
+     * フォームをレコードに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID 
+     * @return イレギュラースケジュール入力レコード
+     */
+    @Override
+    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form, String userId){
 
-    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form){
-
-        String userId = "00001"; //ログイン機能を使用するか仮に
-
+        // イレギュラースケジュールの存在チェック
         irregularScheduleService.existIrregularSchedule(form.id(), userId);
 
+        // チェック用の検索レコードを作成
         ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
                                         .from(form.date())
                                         .to(form.date())
                                         .build();
 
+        // イレギュラースケジュールの重複チェック
         irregularScheduleService.checkIrregularSchedule(scheduleSearchRecord);
 
         IrregularScheduleInputRecord record = IrregularScheduleInputRecord.builder()
-                                                .userId("00001") //ログイン機能を使用するか仮に
+                                                .userId(userId)
                                                 .startTime(form.startTime())
                                                 .endTime(form.endTime())
                                                 .date(form.date())
@@ -47,6 +62,12 @@ public class PatchIrregularScheduleServiceImpl implements PatchIrregularSchedule
         return record;
     }
 
+    /**
+     * イレギュラースケジュールを更新する
+     * 
+     * @param record イレギュラースケジュール入力レコード
+     */
+    @Override
     public void patchIrregularSchedule(IrregularScheduleInputRecord record) {
         scheduleUpdateMapper.updateIrregularSchedule(record);
     }

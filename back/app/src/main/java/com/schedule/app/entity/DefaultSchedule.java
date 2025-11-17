@@ -19,6 +19,12 @@ public class DefaultSchedule {
     private LocalDate endDate;
     private String workTypeId;
 
+    /**
+     * デフォルトスケジュールの重複チェック
+     * 
+     * @param record デフォルトスケジュール出力レコード
+     * @return 重複があればtrue
+     */
     public boolean isOverlaps(DefaultScheduleOutputRecord record) {
         if (record.getEndDate().isBefore(this.startDate) || record.getStartDate().isAfter(this.endDate)) {
             return false;

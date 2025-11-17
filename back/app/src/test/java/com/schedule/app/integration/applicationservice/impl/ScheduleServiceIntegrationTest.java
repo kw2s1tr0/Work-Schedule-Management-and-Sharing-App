@@ -1,4 +1,4 @@
-package com.schedule.app.integration.service.impl;
+package com.schedule.app.integration.applicationservice.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 

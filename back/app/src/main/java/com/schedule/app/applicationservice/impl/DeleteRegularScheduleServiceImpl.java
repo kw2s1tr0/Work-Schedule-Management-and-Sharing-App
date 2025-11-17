@@ -15,16 +15,35 @@ public class DeleteRegularScheduleServiceImpl implements DeleteRegularScheduleSe
     private final ScheduleDeleteMapper scheduleDeleteMapper;
     private final RegularScheduleService regularScheduleService;
     
-    public void deleteRegularScheduleService(int scheduleId) {
-        existRegularSchedule(scheduleId);
+    /**
+     * レギュラースケジュールを削除する
+     * 
+     * @param scheduleId スケジュールID
+     * @param userId ユーザーID
+     */
+    @Override
+    public void deleteRegularScheduleService(int scheduleId, String userId) {
+        existRegularSchedule(scheduleId, userId);
         deleteRegularSchedule(scheduleId);
     }
 
-    public void existRegularSchedule(int scheduleId) {
-        String userId = "00001";
+    /**
+     * レギュラースケジュールの存在チェック
+     * 
+     * @param scheduleId スケジュールID
+     * @param userId ユーザーID
+     */
+    @Override
+    public void existRegularSchedule(int scheduleId, String userId) {
         regularScheduleService.existRegularSchedule(scheduleId, userId);
     }
 
+    /**
+     * レギュラースケジュールを削除する
+     * 
+     * @param scheduleId スケジュールID
+     */
+    @Override
     public void deleteRegularSchedule(int scheduleId) {
         scheduleDeleteMapper.deleteRegularSchedule(scheduleId);
     }

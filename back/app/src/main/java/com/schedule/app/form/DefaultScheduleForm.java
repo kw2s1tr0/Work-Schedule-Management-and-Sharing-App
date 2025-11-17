@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
 @Builder
@@ -16,7 +17,7 @@ public record DefaultScheduleForm(
         @NotNull LocalTime endTime,
         @NotNull LocalDate startDate,
         @NotNull LocalDate endDate,
-        @NotNull String workTypeId) {
+        @Pattern(regexp = "([1-9]|10|11)") @NotNull String workTypeId) {
     public DefaultScheduleForm {
         if (startDate.isAfter(endDate)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

@@ -14,16 +14,35 @@ public class DeleteIrregularScheduleServiceImpl implements DeleteIrregularSchedu
     private final ScheduleDeleteMapper scheduleDeleteMapper;
     private final IrregularScheduleService irregularScheduleService;
 
-    public void deleteIrregularScheduleService(int scheduleId) {
-        existIrregularSchedule(scheduleId);
+    /**
+     * イレギュラースケジュールを削除する
+     * 
+     * @param scheduleId スケジュールID
+     * @param userId ユーザーID
+     */
+    @Override
+    public void deleteIrregularScheduleService(int scheduleId, String userId) {
+        existIrregularSchedule(scheduleId, userId);
         deleteIrregularSchedule(scheduleId);
     }
 
-    public void existIrregularSchedule(int scheduleId) {
-        String userId = "00001";
+    /**
+     * イレギュラースケジュールの存在チェック
+     * 
+     * @param scheduleId スケジュールID
+     * @param userId ユーザーID
+     */
+    @Override
+    public void existIrregularSchedule(int scheduleId, String userId) {
         irregularScheduleService.existIrregularSchedule(scheduleId, userId);
     }
 
+    /**
+     * イレギュラースケジュールを削除する
+     * 
+     * @param scheduleId スケジュールID
+     */
+    @Override
     public void deleteIrregularSchedule(int scheduleId) {
         scheduleDeleteMapper.deleteIrregularSchedule(scheduleId);
     }

@@ -18,15 +18,30 @@ public class PatchDefaultScheduleServiceImpl implements PatchDefaultScheduleServ
     private final ScheduleUpdateMapper scheduleUpdateMapper;
     private final DefaultScheduleService defaultScheduleService;
 
-    public void patchDefaultScheduleService(DefaultScheduleForm form){
-        DefaultSchedule DefaultSchedule = toDefaultScheduleEintity(form);
+    /**
+     * デフォルトスケジュールを更新する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID
+     */
+    @Override
+    public void patchDefaultScheduleService(DefaultScheduleForm form, String userId){
+        DefaultSchedule DefaultSchedule = toDefaultScheduleEintity(form, userId);
         DefaultScheduleInputRecord record = toDefaultScheduleRecord(DefaultSchedule);
         patchDefaultSchedule(record);
     }
 
-    public DefaultSchedule toDefaultScheduleEintity(DefaultScheduleForm form){
+    /**
+     * フォームをエンティティに変換する
+     * 
+     * @param form 画面入力フォーム
+     * @param userId ユーザーID 
+     * @return デフォルトスケジュールエンティティ
+     */
+    @Override
+    public DefaultSchedule toDefaultScheduleEintity(DefaultScheduleForm form, String userId){
         DefaultSchedule entity = DefaultSchedule.builder()
-                                        .userId("00001") //ログイン機能を使用するか仮に
+                                        .userId(userId) //ログイン機能を使用するか仮に
                                         .startTime(form.startTime())
                                         .endTime(form.endTime())
                                         .startDate(form.startDate())
@@ -36,21 +51,29 @@ public class PatchDefaultScheduleServiceImpl implements PatchDefaultScheduleServ
         return entity;
     }
 
+    /**
+     * エンティティをレコードに変換する
+     * 
+     * @param DefaultSchedule デフォルトスケジュールエンティティ
+     * @return デフォルトスケジュール入力レコード
+     */
+    @Override
     public DefaultScheduleInputRecord toDefaultScheduleRecord(DefaultSchedule DefaultSchedule){
 
-        String userId = "00001"; //ログイン機能を使用するか仮に
+        // デフォルトスケジュールの存在チェック
+        defaultScheduleService.existDefaultSchedule(DefaultSchedule.getId(), DefaultSchedule.getUserId());
 
-        defaultScheduleService.existDefaultSchedule(DefaultSchedule.getId(), userId);
-
+        // チェック用の検索レコードを作成
         ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
                                         .from(DefaultSchedule.getStartDate())
                                         .to(DefaultSchedule.getEndDate())
                                         .build();
         
+        // デフォルトスケジュールの重複チェック
         defaultScheduleService.checkDefaultSchedule(scheduleSearchRecord,DefaultSchedule);
 
         DefaultScheduleInputRecord record = DefaultScheduleInputRecord.builder()
-                                                .userId("00001") //ログイン機能を使用するか仮に
+                                                .userId(DefaultSchedule.getUserId())
                                                 .startTime(DefaultSchedule.getStartTime())
                                                 .endTime(DefaultSchedule.getEndTime())
                                                 .startDate(DefaultSchedule.getStartDate())
@@ -61,6 +84,12 @@ public class PatchDefaultScheduleServiceImpl implements PatchDefaultScheduleServ
         return record;
     }
 
+    /**
+     * デフォルトスケジュールを更新する
+     * 
+     * @param record デフォルトスケジュール入力レコード
+     */
+    @Override
     public void patchDefaultSchedule(DefaultScheduleInputRecord record) {
         scheduleUpdateMapper.updateDefaultSchedule(record);
     }
