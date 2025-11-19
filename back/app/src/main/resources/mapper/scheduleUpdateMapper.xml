@@ -23,8 +23,7 @@
             end_time = #{endTime},
             start_date = #{startDate},
             end_date = #{endDate},
-            days_of_week = #{daysOfWeek},
-            interval_weeks = #{intervalWeeks},
+            days_of_week = #{dayOfWeek},
             work_type_id = #{workTypeId}
         WHERE
             id = #{id}

@@ -2,7 +2,6 @@ package com.schedule.app.entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 
 import com.schedule.app.enums.ScheduleType;
 import com.schedule.app.record.output.DefaultScheduleOutputRecord;
@@ -51,6 +50,7 @@ public class Schedule {
      */
     public boolean matches(RegularScheduleOutputRecord record, ScheduleType scheduleType) {
 
+        // 日付が範囲外の場合は非該当
         if (date.isBefore(record.getStartDate()) || date.isAfter(record.getEndDate())) {
             return false;
         }
@@ -58,15 +58,6 @@ public class Schedule {
         // 曜日の一致確認
         if (!record.getDaysOfWeek().equals(date.getDayOfWeek().name())) {
             return false;
-        }
-
-        // 間隔週の確認（2週間間隔など）
-        if (record.getIntervalWeeks() == 2) {
-            LocalDate startDate = record.getStartDate();
-            long weeksBetween = ChronoUnit.WEEKS.between(startDate, date);
-            if (weeksBetween % 2 != 0) {
-                return false;
-            }
         }
 
         this.scheduleId = record.getId();

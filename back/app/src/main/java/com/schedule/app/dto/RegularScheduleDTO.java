@@ -1,5 +1,6 @@
 package com.schedule.app.dto;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -12,8 +13,8 @@ public record RegularScheduleDTO(
         LocalTime endTime,
         LocalDate startDate,
         LocalDate endDate,
-        String daysOfWeek,
-        Integer intervalWeeks,
+        DayOfWeek daysOfWeek,
+
         String worktypeName,
         String worktypeColor
 ) {}

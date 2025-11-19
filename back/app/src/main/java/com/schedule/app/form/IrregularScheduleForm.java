@@ -16,8 +16,13 @@ public record IrregularScheduleForm(
         @NotNull LocalTime startTime,
         @NotNull LocalTime endTime,
         @NotNull LocalDate date,
-        @Pattern(regexp = "([1-9]|10|11)") @NotNull String workTypeId) {
+        @Pattern(regexp = "(0[1-9]|10|11)") @NotNull String workTypeId) {
     public IrregularScheduleForm {
+        if (startTime == null || endTime == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Both 'start' and 'end' times must be provided.");
+        }
+
         if (startTime.isAfter(endTime)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The 'start' time must be before or equal to the 'end' time.");

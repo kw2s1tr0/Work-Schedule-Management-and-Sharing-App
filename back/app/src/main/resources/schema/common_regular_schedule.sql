@@ -6,6 +6,5 @@ CREATE TABLE common_regular_schedule (
     start_date DATE NOT NULL,              -- 適用開始日
     end_date DATE,                -- 適用終了日
     days_of_week VARCHAR(10) NOT NULL,     -- 曜日
-    interval_weeks INTEGER NOT NULL,       -- 間隔週数
     work_type_id VARCHAR(10) NOT NULL      -- 勤怠種別ID（例: 出社、在宅、有給）
 );

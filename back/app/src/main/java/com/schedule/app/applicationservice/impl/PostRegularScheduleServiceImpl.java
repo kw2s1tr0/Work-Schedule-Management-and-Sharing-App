@@ -7,7 +7,6 @@ import com.schedule.app.domainservice.RegularScheduleService;
 import com.schedule.app.entity.RegularSchedule;
 import com.schedule.app.form.RegularScheduleForm;
 import com.schedule.app.record.input.RegularScheduleInputRecord;
-import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.repository.ScheduleCreateMapper;
 
 import lombok.AllArgsConstructor;
@@ -46,8 +45,7 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
                                         .endTime(form.endTime())
                                         .startDate(form.startDate())
                                         .endDate(form.endDate())
-                                        .dayOfWeek(form.dayOfWeek().name())
-                                        .intervalWeeks(form.intervalWeeks())
+                                        .dayOfWeek(form.dayOfWeek())
                                         .workTypeId(form.workTypeId())
                                         .build();
         return entity;
@@ -62,14 +60,8 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
     @Override
     public RegularScheduleInputRecord toRegularScheduleRecord(RegularSchedule regularSchedule){
 
-        // レギュラースケジュールの存在チェック
-        ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
-                                        .from(regularSchedule.getStartDate())
-                                        .to(regularSchedule.getEndDate())
-                                        .build();
-
         // レギュラースケジュールの重複チェック
-        regularScheduleService.checkRegularSchedule(scheduleSearchRecord,regularSchedule);
+        regularScheduleService.checkRegularSchedule(regularSchedule.getId(), regularSchedule.getUserId(), regularSchedule.getStartDate(), regularSchedule.getEndDate(),regularSchedule);
 
         RegularScheduleInputRecord record = RegularScheduleInputRecord.builder()
                                                 .userId(regularSchedule.getUserId()) //ログイン機能を使用するか仮に
@@ -77,8 +69,7 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
                                                 .endTime(regularSchedule.getEndTime())
                                                 .startDate(regularSchedule.getStartDate())
                                                 .endDate(regularSchedule.getEndDate())
-                                                .dayOfWeek(regularSchedule.getDayOfWeek())
-                                                .intervalWeeks(regularSchedule.getIntervalWeeks())
+                                                .dayOfWeek(regularSchedule.getDayOfWeek().name())
                                                 .workTypeId(regularSchedule.getWorkTypeId())
                                                 .build();
 

@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.schedule.app.applicationservice.DeleteDefaultScheduleService;
@@ -117,7 +118,7 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/irregularSchedule")
-    public void postIrregularSchedule(@Valid IrregularScheduleForm form) {
+    public void postIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form) {
         String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
         postIrregularScheduleService.postIrregularScheduleService(form, userId);
     }
@@ -128,7 +129,7 @@ public class ScheduleController {
         * @param form 画面入力フォーム
         */
     @PostMapping("/api/regularSchedule")
-    public void postRegularSchedule(@Valid RegularScheduleForm form) {
+    public void postRegularSchedule(@Valid @RequestBody RegularScheduleForm form) {
         String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
         postRegularScheduleService.postRegularScheduleService(form, userId);
     }
@@ -139,7 +140,7 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/defaultSchedule")
-    public void postDefaultSchedule(@Valid DefaultScheduleForm form) {
+    public void postDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form) {
         String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
         postDefaultScheduleService.postDefaultScheduleService(form, userId);
     }
@@ -149,8 +150,8 @@ public class ScheduleController {
      * 
      * @param form 画面入力フォーム
      */
-    @PatchMapping("/api/irregularSchedule")
-    public void patchIrregularSchedule(@Valid IrregularScheduleForm form) {
+    @PutMapping("/api/irregularSchedule")
+    public void patchIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form) {
         String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
         patchIrregularScheduleService.patchIrregularScheduleService(form, userId);
     }
@@ -160,8 +161,8 @@ public class ScheduleController {
      * 
      * @param form 画面入力フォーム
      */
-    @PatchMapping("/api/regularSchedule")
-    public void patchRegularSchedule(@Valid RegularScheduleForm form) {
+    @PutMapping("/api/regularSchedule")
+    public void patchRegularSchedule(@Valid @RequestBody RegularScheduleForm form) {
         String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
         patchRegularScheduleService.patchRegularScheduleService(form, userId);
     }
@@ -171,8 +172,8 @@ public class ScheduleController {
      * 
      * @param form 画面入力フォーム
      */
-    @PatchMapping("/api/defaultSchedule")
-    public void patchDefaultSchedule(@Valid DefaultScheduleForm form) {
+    @PutMapping("/api/defaultSchedule")
+    public void patchDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form) {
         String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
         patchDefaultScheduleService.patchDefaultScheduleService(form, userId);
     }

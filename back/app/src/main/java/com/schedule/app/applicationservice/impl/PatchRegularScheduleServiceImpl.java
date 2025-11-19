@@ -7,7 +7,6 @@ import com.schedule.app.domainservice.RegularScheduleService;
 import com.schedule.app.entity.RegularSchedule;
 import com.schedule.app.form.RegularScheduleForm;
 import com.schedule.app.record.input.RegularScheduleInputRecord;
-import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.repository.ScheduleUpdateMapper;
 
 import lombok.AllArgsConstructor;
@@ -41,11 +40,13 @@ public class PatchRegularScheduleServiceImpl implements PatchRegularScheduleServ
     @Override
     public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form, String userId){
         RegularSchedule entity = RegularSchedule.builder()
+                                        .id(form.id())
                                         .userId(userId) //ログイン機能を使用するか仮に
                                         .startTime(form.startTime())
                                         .endTime(form.endTime())
                                         .startDate(form.startDate())
                                         .endDate(form.endDate())
+                                        .dayOfWeek(form.dayOfWeek())
                                         .workTypeId(form.workTypeId())
                                         .build();
         return entity;
@@ -63,21 +64,17 @@ public class PatchRegularScheduleServiceImpl implements PatchRegularScheduleServ
         // レギュラースケジュールの存在チェック
         regularScheduleService.existRegularSchedule(regularSchedule.getId(), regularSchedule.getUserId());
 
-        // チェック用の検索レコードを作成
-        ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
-                                        .from(regularSchedule.getStartDate())
-                                        .to(regularSchedule.getEndDate())
-                                        .build();
-
         // レギュラースケジュールの重複チェック
-        regularScheduleService.checkRegularSchedule(scheduleSearchRecord, regularSchedule);
+        regularScheduleService.checkRegularSchedule(regularSchedule.getId(), regularSchedule.getUserId(), regularSchedule.getStartDate(), regularSchedule.getEndDate(),regularSchedule);
 
         RegularScheduleInputRecord record = RegularScheduleInputRecord.builder()
+                                                .id(regularSchedule.getId())
                                                 .userId(regularSchedule.getUserId())
                                                 .startTime(regularSchedule.getStartTime())
                                                 .endTime(regularSchedule.getEndTime())
                                                 .startDate(regularSchedule.getStartDate())
                                                 .endDate(regularSchedule.getEndDate())
+                                                .dayOfWeek(regularSchedule.getDayOfWeek().name())
                                                 .workTypeId(regularSchedule.getWorkTypeId())
                                                 .build();
         return record;

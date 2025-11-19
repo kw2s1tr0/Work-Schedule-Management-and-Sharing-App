@@ -28,7 +28,6 @@
             start_date,
             end_date,
             days_of_week,
-            interval_weeks,
             work_type_id
         ) VALUES (
             #{userId},
@@ -36,8 +35,7 @@
             #{endTime},
             #{startDate},
             #{endDate},
-            #{daysOfWeek},
-            #{intervalWeeks},
+            #{dayOfWeek},
             #{workTypeId}
         )
     </insert>

@@ -51,7 +51,6 @@
             rs.start_date AS startDate,
             rs.end_date AS endDate,
             rs.days_of_week AS daysOfWeek,
-            rs.interval_weeks AS intervalWeeks,
             st.work_type_name AS worktypeName,
             st.work_type_color AS worktypeColor
         FROM

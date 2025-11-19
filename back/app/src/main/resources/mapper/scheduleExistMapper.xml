@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.repository.ScheduleExistMapper">
+    <select id="existDefaultSchedule">
+        SELECT COUNT(*)
+        FROM
+            default_schedule
+        WHERE
+            id = #{scheduleId}
+        AND
+            user_id = #{userId}
+    </select>
+    
+    <select id="existRegularSchedule">
+        SELECT COUNT(*)
+        FROM
+            regular_schedule
+        WHERE
+            id = #{scheduleId}
+        AND
+            user_id = #{userId}
+    </select>
+    <select id="existIrregularSchedule">
+        SELECT COUNT(*)
+        FROM
+            irregular_schedule
+        WHERE
+            id = #{scheduleId}
+        AND
+            user_id = #{userId}
+    </select>
+</mapper>

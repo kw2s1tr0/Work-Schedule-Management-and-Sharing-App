@@ -206,6 +206,382 @@ paths:
                     error: "Bad Request"
                     message: "Validation failed for parameter 'week'"
 
+  /api/irregularSchedule:
+    get:
+      summary: 非定期スケジュール一覧取得
+      description: 指定された検索条件に基づき、ユーザーの非定期スケジュール一覧を取得します。
+      operationId: getIrregularSchedule
+      tags:
+        - 非定期スケジュール
+      parameters:
+        - name: from
+          in: query
+          description: 検索開始日（YYYY-MM-DD形式）
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2025-01-01"
+        - name: to
+          in: query
+          description: 検索終了日（YYYY-MM-DD形式）
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2025-12-31"
+      responses:
+        '200':
+          description: 正常に非定期スケジュールを取得
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IrregularScheduleDTO'
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: 非定期スケジュール登録
+      description: 新しい非定期スケジュールを登録します。
+      operationId: postIrregularSchedule
+      tags:
+        - 非定期スケジュール
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IrregularScheduleForm'
+      responses:
+        '200':
+          description: 正常に登録完了
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: 非定期スケジュール更新
+      description: 既存の非定期スケジュールを更新します。
+      operationId: patchIrregularSchedule
+      tags:
+        - 非定期スケジュール
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IrregularScheduleForm'
+      responses:
+        '200':
+          description: 正常に更新完了
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/irregularSchedule/{id}:
+    delete:
+      summary: 非定期スケジュール削除
+      description: 指定されたIDの非定期スケジュールを削除します。
+      operationId: deleteIrregularSchedule
+      tags:
+        - 非定期スケジュール
+      parameters:
+        - name: id
+          in: path
+          description: スケジュールID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 正常に削除完了
+        '400':
+          description: エラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/regularSchedule:
+    get:
+      summary: 定期スケジュール一覧取得
+      description: 指定された検索条件に基づき、ユーザーの定期スケジュール一覧を取得します。
+      operationId: getRegularSchedule
+      tags:
+        - 定期スケジュール
+      parameters:
+        - name: from
+          in: query
+          description: 検索開始日（YYYY-MM-DD形式）
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2025-01-01"
+        - name: to
+          in: query
+          description: 検索終了日（YYYY-MM-DD形式）
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2025-12-31"
+      responses:
+        '200':
+          description: 正常に定期スケジュールを取得
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegularScheduleDTO'
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: 定期スケジュール登録
+      description: 新しい定期スケジュールを登録します。
+      operationId: postRegularSchedule
+      tags:
+        - 定期スケジュール
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegularScheduleForm'
+      responses:
+        '200':
+          description: 正常に登録完了
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: 定期スケジュール更新
+      description: 既存の定期スケジュールを更新します。
+      operationId: patchRegularSchedule
+      tags:
+        - 定期スケジュール
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegularScheduleForm'
+      responses:
+        '200':
+          description: 正常に更新完了
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/regularSchedule/{id}:
+    delete:
+      summary: 定期スケジュール削除
+      description: 指定されたIDの定期スケジュールを削除します。
+      operationId: deleteRegularSchedule
+      tags:
+        - 定期スケジュール
+      parameters:
+        - name: id
+          in: path
+          description: スケジュールID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 正常に削除完了
+        '400':
+          description: エラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/defaultSchedule:
+    get:
+      summary: デフォルトスケジュール一覧取得
+      description: 指定された検索条件に基づき、ユーザーのデフォルトスケジュール一覧を取得します。
+      operationId: getDefaultSchedule
+      tags:
+        - デフォルトスケジュール
+      parameters:
+        - name: from
+          in: query
+          description: 検索開始日（YYYY-MM-DD形式）
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2025-01-01"
+        - name: to
+          in: query
+          description: 検索終了日（YYYY-MM-DD形式）
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2025-12-31"
+      responses:
+        '200':
+          description: 正常にデフォルトスケジュールを取得
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DefaultScheduleDTO'
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: デフォルトスケジュール登録
+      description: 新しいデフォルトスケジュールを登録します。
+      operationId: postDefaultSchedule
+      tags:
+        - デフォルトスケジュール
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DefaultScheduleForm'
+      responses:
+        '200':
+          description: 正常に登録完了
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: デフォルトスケジュール更新
+      description: 既存のデフォルトスケジュールを更新します。
+      operationId: patchDefaultSchedule
+      tags:
+        - デフォルトスケジュール
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DefaultScheduleForm'
+      responses:
+        '200':
+          description: 正常に更新完了
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/defaultSchedule/{id}:
+    delete:
+      summary: デフォルトスケジュール削除
+      description: 指定されたIDのデフォルトスケジュールを削除します。
+      operationId: deleteDefaultSchedule
+      tags:
+        - デフォルトスケジュール
+      parameters:
+        - name: id
+          in: path
+          description: スケジュールID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 正常に削除完了
+        '400':
+          description: エラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/organizations:
+    get:
+      summary: 組織一覧取得
+      description: 全ての組織のコードと名称を取得します。
+      operationId: getOrganizations
+      tags:
+        - マスタデータ
+      responses:
+        '200':
+          description: 正常に組織一覧を取得
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationDTO'
+              example:
+                - organizationCode: "001"
+                  organizationName: "総務部"
+                - organizationCode: "006"
+                  organizationName: "開発部"
+
+  /api/workTypes:
+    get:
+      summary: 勤怠種別一覧取得
+      description: 全ての勤怠種別（休日を除く）のID、名称、カラーコードを取得します。
+      operationId: getWorkTypes
+      tags:
+        - マスタデータ
+      responses:
+        '200':
+          description: 正常に勤怠種別一覧を取得
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkTypeDTO'
+              example:
+                - id: "1"
+                  workTypeName: "出社"
+                  workTypeColor: "#4CAF50"
+                - id: "2"
+                  workTypeName: "在宅勤務"
+                  workTypeColor: "#2196F3"
+                - id: "3"
+                  workTypeName: "有給休暇"
+                  workTypeColor: "#FF9800"
+
 components:
   schemas:
     UserDTO:
@@ -330,6 +706,346 @@ components:
           description: エラーの詳細メッセージ
           example: "Only one of week or month can be provided"
 
+    IrregularScheduleDTO:
+      type: object
+      description: 非定期スケジュール情報
+      required:
+        - id
+        - date
+        - workTypeId
+      properties:
+        id:
+          type: integer
+          description: スケジュールID
+          example: 1
+        date:
+          type: string
+          format: date
+          description: スケジュールの対象日
+          example: "2025-01-15"
+        startTime:
+          type: string
+          format: time
+          nullable: true
+          description: 開始時刻（HH:mm:ss形式）
+          example: "10:00:00"
+        endTime:
+          type: string
+          format: time
+          nullable: true
+          description: 終了時刻（HH:mm:ss形式）
+          example: "15:00:00"
+        workTypeId:
+          type: string
+          description: 勤怠種別ID
+          example: "3"
+        workTypeName:
+          type: string
+          description: 勤怠種別名
+          example: "有給休暇"
+        workTypeColor:
+          type: string
+          description: 表示用カラーコード
+          example: "#FF9800"
+          pattern: '^#[0-9A-F]{6}$'
+
+    IrregularScheduleForm:
+      type: object
+      description: 非定期スケジュール登録・更新フォーム
+      required:
+        - date
+        - workTypeId
+      properties:
+        id:
+          type: integer
+          description: スケジュールID（更新時のみ必須）
+          example: 1
+        date:
+          type: string
+          format: date
+          description: スケジュールの対象日
+          example: "2025-01-15"
+        startTime:
+          type: string
+          format: time
+          nullable: true
+          description: 開始時刻（HH:mm:ss形式）
+          example: "10:00:00"
+        endTime:
+          type: string
+          format: time
+          nullable: true
+          description: 終了時刻（HH:mm:ss形式）
+          example: "15:00:00"
+        workTypeId:
+          type: string
+          description: 勤怠種別ID
+          example: "3"
+
+    RegularScheduleDTO:
+      type: object
+      description: 定期スケジュール情報
+      required:
+        - id
+        - startDate
+        - dayOfWeek
+        - intervalWeeks
+        - workTypeId
+      properties:
+        id:
+          type: integer
+          description: スケジュールID
+          example: 1
+        startDate:
+          type: string
+          format: date
+          description: 適用開始日
+          example: "2025-01-01"
+        endDate:
+          type: string
+          format: date
+          nullable: true
+          description: 適用終了日
+          example: "2025-12-31"
+        startTime:
+          type: string
+          format: time
+          nullable: true
+          description: 開始時刻（HH:mm:ss形式）
+          example: "09:00:00"
+        endTime:
+          type: string
+          format: time
+          nullable: true
+          description: 終了時刻（HH:mm:ss形式）
+          example: "18:00:00"
+        dayOfWeek:
+          type: string
+          description: 曜日
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+          example: "MONDAY"
+        intervalWeeks:
+          type: integer
+          description: 間隔週数（1=毎週、2=隔週）
+          example: 1
+        workTypeId:
+          type: string
+          description: 勤怠種別ID
+          example: "2"
+        workTypeName:
+          type: string
+          description: 勤怠種別名
+          example: "在宅勤務"
+        workTypeColor:
+          type: string
+          description: 表示用カラーコード
+          example: "#2196F3"
+          pattern: '^#[0-9A-F]{6}$'
+
+    RegularScheduleForm:
+      type: object
+      description: 定期スケジュール登録・更新フォーム
+      required:
+        - startDate
+        - dayOfWeek
+        - intervalWeeks
+        - workTypeId
+      properties:
+        id:
+          type: integer
+          description: スケジュールID（更新時のみ必須）
+          example: 1
+        startDate:
+          type: string
+          format: date
+          description: 適用開始日
+          example: "2025-01-01"
+        endDate:
+          type: string
+          format: date
+          nullable: true
+          description: 適用終了日
+          example: "2025-12-31"
+        startTime:
+          type: string
+          format: time
+          nullable: true
+          description: 開始時刻（HH:mm:ss形式）
+          example: "09:00:00"
+        endTime:
+          type: string
+          format: time
+          nullable: true
+          description: 終了時刻（HH:mm:ss形式）
+          example: "18:00:00"
+        dayOfWeek:
+          type: string
+          description: 曜日
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+          example: "MONDAY"
+        intervalWeeks:
+          type: integer
+          description: 間隔週数（1=毎週、2=隔週）
+          example: 1
+        workTypeId:
+          type: string
+          description: 勤怠種別ID
+          example: "2"
+
+    DefaultScheduleDTO:
+      type: object
+      description: デフォルトスケジュール情報
+      required:
+        - id
+        - startDate
+        - workTypeId
+      properties:
+        id:
+          type: integer
+          description: スケジュールID
+          example: 1
+        startDate:
+          type: string
+          format: date
+          description: 適用開始日
+          example: "2025-01-01"
+        endDate:
+          type: string
+          format: date
+          nullable: true
+          description: 適用終了日
+          example: "2025-12-31"
+        startTime:
+          type: string
+          format: time
+          nullable: true
+          description: 開始時刻（HH:mm:ss形式）
+          example: "09:00:00"
+        endTime:
+          type: string
+          format: time
+          nullable: true
+          description: 終了時刻（HH:mm:ss形式）
+          example: "18:00:00"
+        workTypeId:
+          type: string
+          description: 勤怠種別ID
+          example: "1"
+        workTypeName:
+          type: string
+          description: 勤怠種別名
+          example: "出社"
+        workTypeColor:
+          type: string
+          description: 表示用カラーコード
+          example: "#4CAF50"
+          pattern: '^#[0-9A-F]{6}$'
+
+    DefaultScheduleForm:
+      type: object
+      description: デフォルトスケジュール登録・更新フォーム
+      required:
+        - startDate
+        - workTypeId
+      properties:
+        id:
+          type: integer
+          description: スケジュールID（更新時のみ必須）
+          example: 1
+        startDate:
+          type: string
+          format: date
+          description: 適用開始日
+          example: "2025-01-01"
+        endDate:
+          type: string
+          format: date
+          nullable: true
+          description: 適用終了日
+          example: "2025-12-31"
+        startTime:
+          type: string
+          format: time
+          nullable: true
+          description: 開始時刻（HH:mm:ss形式）
+          example: "09:00:00"
+        endTime:
+          type: string
+          format: time
+          nullable: true
+          description: 終了時刻（HH:mm:ss形式）
+          example: "18:00:00"
+        workTypeId:
+          type: string
+          description: 勤怠種別ID
+          example: "1"
+
+    OrganizationDTO:
+      type: object
+      description: 組織情報
+      required:
+        - organizationCode
+        - organizationName
+      properties:
+        organizationCode:
+          type: string
+          description: 組織コード
+          example: "006"
+          maxLength: 10
+        organizationName:
+          type: string
+          description: 組織名
+          example: "開発部"
+          maxLength: 100
+
+    WorkTypeDTO:
+      type: object
+      description: 勤怠種別情報
+      required:
+        - id
+        - workTypeName
+        - workTypeColor
+      properties:
+        id:
+          type: string
+          description: 勤怠種別ID
+          example: "1"
+          maxLength: 10
+        workTypeName:
+          type: string
+          description: 勤怠種別名
+          example: "出社"
+          maxLength: 10
+        workTypeColor:
+          type: string
+          description: 表示用カラーコード（16進数）
+          example: "#4CAF50"
+          pattern: '^#[0-9A-F]{6}$'
+          maxLength: 9
+
 tags:
   - name: スケジュール
     description: スケジュール管理に関するAPI
+  - name: 非定期スケジュール
+    description: 非定期スケジュールのCRUD操作
+  - name: 定期スケジュール
+    description: 定期スケジュールのCRUD操作
+  - name: デフォルトスケジュール
+    description: デフォルトスケジュールのCRUD操作
+  - name: マスタデータ
+    description: 組織・勤怠種別などのマスタデータ取得
+

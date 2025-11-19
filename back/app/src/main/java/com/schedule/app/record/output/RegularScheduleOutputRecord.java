@@ -16,7 +16,6 @@ public class RegularScheduleOutputRecord {
     private LocalDate startDate;
     private LocalDate endDate;
     private String daysOfWeek;
-    private Integer intervalWeeks;
     private String worktypeName;
     private String worktypeColor;
 }

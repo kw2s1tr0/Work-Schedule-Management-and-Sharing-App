@@ -1,5 +1,6 @@
 package com.schedule.app.applicationservice.impl;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,9 +79,11 @@ public class GetRegularScheduleServiceImpl implements GetRegularScheduleService 
                     .scheduleId(record.getId())
                     .startTime(record.getStartTime())
                     .endTime(record.getEndTime())
+                    .startDate(record.getStartDate())
+                    .endDate(record.getEndDate())
                     .worktypeName(record.getWorktypeName())
                     .worktypeColor(record.getWorktypeColor())
-                    .daysOfWeek(record.getDaysOfWeek())
+                    .daysOfWeek(DayOfWeek.valueOf(record.getDaysOfWeek()))
                     .build();
             dtos.add(dto);
         }

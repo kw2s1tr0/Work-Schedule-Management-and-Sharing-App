@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.repository.ScheduleFindMapper">
+    <select id="findDefaultSchedule" resultType="int">
+        SELECT COUNT(*)
+        FROM
+            default_schedule
+        WHERE
+            user_id = #{userId}
+        AND end_date &gt;= #{startDate}
+        AND start_date &lt;= #{endDate}
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
+    
+    <select id="findRegularSchedule" resultType="string">
+        SELECT
+            days_of_week AS daysOfWeek
+        FROM
+            regular_schedule
+        WHERE
+            user_id = #{userId}
+        AND end_date &gt;= #{startDate}
+        AND start_date &lt;= #{endDate}
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
+    <select id="findIrregularSchedule" resultType="int">
+        SELECT COUNT(*)
+        FROM
+            irregular_schedule
+        WHERE
+            user_id = #{userId}
+        AND date &gt;= #{startDate}
+        AND date &lt;= #{endDate}
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
+</mapper>

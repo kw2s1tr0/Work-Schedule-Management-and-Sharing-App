@@ -1,16 +1,13 @@
 package com.schedule.app.domainservice;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.schedule.app.entity.DefaultSchedule;
-import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.DefaultScheduleOutputRecord;
 import com.schedule.app.repository.ScheduleExistMapper;
-import com.schedule.app.repository.ScheduleSearchMapper;
+import com.schedule.app.repository.ScheduleFindMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -19,7 +16,7 @@ import lombok.AllArgsConstructor;
 public class DefaultScheduleService {
 
     private final ScheduleExistMapper scheduleExistMapper;
-    private final ScheduleSearchMapper scheduleSearchMapper;
+    private final ScheduleFindMapper scheduleFindMapper;
 
     /**
      * デフォルトスケジュールの存在確認
@@ -29,9 +26,20 @@ public class DefaultScheduleService {
      */
     public void existDefaultSchedule(int scheduleId, String userId) {
         // 存在しない場合は例外をスロー
-        if (!scheduleExistMapper.existDefaultSchedule(scheduleId, userId)) {
+        if (existDefaultScheduleCount(scheduleId, userId) == 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Default schedule already exist for ID: " + scheduleId);
         }
+    }
+    /**
+     * デフォルトスケジュールの存在確認カウント取得
+     * 
+     * @param scheduleId スケジュールID
+     * @param userId ユーザーID
+     * @return 存在カウント
+     */
+    public int existDefaultScheduleCount(int scheduleId,String userId) {
+        int result = scheduleExistMapper.existDefaultSchedule(scheduleId, userId);
+        return result;
     }
 
     /**
@@ -41,17 +49,13 @@ public class DefaultScheduleService {
      * @param defaultSchedule デフォルトスケジュールエンティティ
      * @return 重複がなければtrue
      */
-    public boolean checkDefaultSchedule(ScheduleSearchRecord scheduleSearchRecord, DefaultSchedule defaultSchedule) {
-        List<DefaultScheduleOutputRecord> records = readDefaultSchedule(scheduleSearchRecord);
+    public boolean checkDefaultSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate) {
+        // 登録する期間に該当するデフォルトスケジュールを取得
+        int result = findDefaultSchedule(id, userId, startDate, endDate);
         // 空でなければ重複チェックを行う
-        if (!records.isEmpty()) {
-            for (DefaultScheduleOutputRecord record : records) {
-                // 重複があれば例外をスロー
-                if(defaultSchedule.isOverlaps(record)) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No default schedules found for the given criteria.");
-                }
+        if (result > 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Default schedules already exist for the given criteria.");
             }
-        }
         return true;
     }
 
@@ -61,8 +65,8 @@ public class DefaultScheduleService {
      * @param record スケジュール検索レコード
      * @return デフォルトスケジュール出力レコードリスト
      */
-    public List<DefaultScheduleOutputRecord> readDefaultSchedule(ScheduleSearchRecord record) {
-        List<DefaultScheduleOutputRecord> records = scheduleSearchMapper.readDefaultScheduleRecord(record);
-        return records;
+    public int findDefaultSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate) {
+        int result = scheduleFindMapper.findDefaultSchedule(id,userId,startDate,endDate);
+        return result;
     }
 }

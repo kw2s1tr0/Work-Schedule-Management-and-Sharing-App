@@ -6,7 +6,6 @@ import com.schedule.app.applicationservice.PatchIrregularScheduleService;
 import com.schedule.app.domainservice.IrregularScheduleService;
 import com.schedule.app.form.IrregularScheduleForm;
 import com.schedule.app.record.input.IrregularScheduleInputRecord;
-import com.schedule.app.record.input.ScheduleSearchRecord;
 import com.schedule.app.repository.ScheduleUpdateMapper;
 
 import lombok.AllArgsConstructor;
@@ -42,16 +41,11 @@ public class PatchIrregularScheduleServiceImpl implements PatchIrregularSchedule
         // イレギュラースケジュールの存在チェック
         irregularScheduleService.existIrregularSchedule(form.id(), userId);
 
-        // チェック用の検索レコードを作成
-        ScheduleSearchRecord scheduleSearchRecord = ScheduleSearchRecord.builder()
-                                        .from(form.date())
-                                        .to(form.date())
-                                        .build();
-
         // イレギュラースケジュールの重複チェック
-        irregularScheduleService.checkIrregularSchedule(scheduleSearchRecord);
+        irregularScheduleService.checkIrregularSchedule(form.id(), userId, form.date(), form.date());
 
         IrregularScheduleInputRecord record = IrregularScheduleInputRecord.builder()
+                                                .id(form.id())
                                                 .userId(userId)
                                                 .startTime(form.startTime())
                                                 .endTime(form.endTime())

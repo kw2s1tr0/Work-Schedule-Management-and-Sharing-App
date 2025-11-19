@@ -1,15 +1,13 @@
 package com.schedule.app.domainservice;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.schedule.app.record.input.ScheduleSearchRecord;
-import com.schedule.app.record.output.IrregularScheduleOutputRecord;
 import com.schedule.app.repository.ScheduleExistMapper;
-import com.schedule.app.repository.ScheduleSearchMapper;
+import com.schedule.app.repository.ScheduleFindMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -18,7 +16,7 @@ import lombok.AllArgsConstructor;
 public class IrregularScheduleService {
 
     private final ScheduleExistMapper scheduleExistMapper;
-    private final ScheduleSearchMapper scheduleSearchMapper;
+    private final ScheduleFindMapper scheduleFindMapper;
 
     /**
      * イレギュラースケジュールの存在確認
@@ -28,10 +26,22 @@ public class IrregularScheduleService {
      */ 
     public boolean existIrregularSchedule(int scheduleId, String userId) {
         // 存在しない場合は例外をスロー
-        if (!scheduleExistMapper.existIrregularSchedule(scheduleId, userId)) {
+        if (scheduleExistMapper.existIrregularSchedule(scheduleId, userId) == 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Irregular schedule already exist for ID: " + scheduleId);
         }
         return true;
+    }
+
+    /**
+     * イレギュラースケジュールの存在確認カウント取得
+     * 
+     * @param scheduleId スケジュールID
+     * @param userId ユーザーID
+     * @return 存在カウント
+     */
+    public int existIrregularScheduleCount(int scheduleId,String userId) {
+        int result = scheduleExistMapper.existIrregularSchedule(scheduleId, userId);
+        return result;
     }
 
     /**
@@ -40,11 +50,12 @@ public class IrregularScheduleService {
      * @param record スケジュール検索レコード
      * @return 重複がなければtrue
      */
-    public boolean checkIrregularSchedule(ScheduleSearchRecord record) {
-        List<IrregularScheduleOutputRecord> records = readIrregularSchedule(record);
+    public boolean checkIrregularSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate) {
+        // 登録する期間に該当するイレギュラースケジュールを取得
+        int result = findIrregularSchedule(id, userId, startDate, endDate);
         // 空でなければ例外をスロー
-        if (!records.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No irregular schedules found for the given criteria.");
+        if (result > 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Irregular schedules already exist for the given criteria.");
         }
         return true;
     }
@@ -55,8 +66,8 @@ public class IrregularScheduleService {
      * @param record スケジュール検索レコード
      * @return イレギュラースケジュール出力レコードリスト
      */
-    public List<IrregularScheduleOutputRecord> readIrregularSchedule(ScheduleSearchRecord record){
-        List<IrregularScheduleOutputRecord> records = scheduleSearchMapper.readIrregularScheduleRecord(record);
-        return records;
+    public int findIrregularSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate){
+        int result = scheduleFindMapper.findIrregularSchedule(id,userId,startDate,endDate);
+        return result;
     }
 }

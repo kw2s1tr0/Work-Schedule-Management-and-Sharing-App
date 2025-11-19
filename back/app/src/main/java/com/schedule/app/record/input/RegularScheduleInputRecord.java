@@ -14,7 +14,6 @@ public record RegularScheduleInputRecord(
     LocalDate startDate,
     LocalDate endDate,
     String dayOfWeek,
-    Integer intervalWeeks,
     String workTypeId
 ) {
 }

@@ -76,6 +76,7 @@ public class GetIrregularScheduleServiceImpl implements GetIrregularScheduleServ
         for (IrregularScheduleOutputRecord record : records) {
             IrregularScheduleDTO dto = IrregularScheduleDTO.builder()
                     .scheduleId(record.getId())
+                    .date(record.getDate())
                     .startTime(record.getStartTime())
                     .endTime(record.getEndTime())
                     .worktypeName(record.getWorktypeName())
