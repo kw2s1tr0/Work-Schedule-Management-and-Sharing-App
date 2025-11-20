@@ -4,7 +4,7 @@ import com.schedule.app.entity.RegularSchedule;
 import com.schedule.app.form.RegularScheduleForm;
 import com.schedule.app.record.input.RegularScheduleInputRecord;
 
-public interface PatchRegularScheduleService {
+public interface PutRegularScheduleService {
 
     public void patchRegularScheduleService(RegularScheduleForm form, String userId);
     public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form, String userId);

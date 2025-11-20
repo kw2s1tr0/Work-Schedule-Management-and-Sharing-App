@@ -2,7 +2,7 @@ package com.schedule.app.applicationservice.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.PatchIrregularScheduleService;
+import com.schedule.app.applicationservice.PutIrregularScheduleService;
 import com.schedule.app.domainservice.IrregularScheduleService;
 import com.schedule.app.form.IrregularScheduleForm;
 import com.schedule.app.record.input.IrregularScheduleInputRecord;
@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class PatchIrregularScheduleServiceImpl implements PatchIrregularScheduleService{
+public class PutIrregularScheduleServiceImpl implements PutIrregularScheduleService{
     
     private final ScheduleUpdateMapper scheduleUpdateMapper;
     private final IrregularScheduleService irregularScheduleService;

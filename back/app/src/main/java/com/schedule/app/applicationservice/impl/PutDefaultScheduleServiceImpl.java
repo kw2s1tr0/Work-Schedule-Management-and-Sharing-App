@@ -2,7 +2,7 @@ package com.schedule.app.applicationservice.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.schedule.app.applicationservice.PatchDefaultScheduleService;
+import com.schedule.app.applicationservice.PutDefaultScheduleService;
 import com.schedule.app.domainservice.DefaultScheduleService;
 import com.schedule.app.form.DefaultScheduleForm;
 import com.schedule.app.record.input.DefaultScheduleInputRecord;
@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class PatchDefaultScheduleServiceImpl implements PatchDefaultScheduleService{
+public class PutDefaultScheduleServiceImpl implements PutDefaultScheduleService{
     private final ScheduleUpdateMapper scheduleUpdateMapper;
     private final DefaultScheduleService defaultScheduleService;
 
