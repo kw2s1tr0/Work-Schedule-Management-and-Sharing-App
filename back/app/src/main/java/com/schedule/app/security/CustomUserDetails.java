@@ -8,10 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails{
 
-    private final Authentication authentication;
+    private final AuthUser authUser;
 
-    public CustomUserDetails(Authentication authentication) {
-        this.authentication = authentication;
+    public CustomUserDetails(AuthUser authUser) {
+        this.authUser = authUser;
     }
 
     @Override
@@ -21,12 +21,12 @@ public class CustomUserDetails implements UserDetails{
 
     @Override
     public String getPassword() {
-        return authentication.getPassword();
+        return authUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return authentication.getUsername();
+        return authUser.getUserId();
     }
 
     @Override

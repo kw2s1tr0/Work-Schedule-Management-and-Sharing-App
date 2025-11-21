@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.app.repository.AuthUserMapper">
+
+    <select id="readAuthUser" parameterType="string" resultType="com.schedule.app.security.AuthUser">
+        SELECT
+            user_id AS userId,
+            password
+        FROM
+            authuser
+        WHERE
+            user_id = #{userId}
+    </select>
+</mapper>
