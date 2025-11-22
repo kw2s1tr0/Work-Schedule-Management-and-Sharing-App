@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.schedule.app.applicationservice.PutIrregularScheduleService;
 import com.schedule.app.domainservice.IrregularScheduleService;
-import com.schedule.app.form.IrregularScheduleForm;
+import com.schedule.app.form.IrregularScheduleUpdateForm;
 import com.schedule.app.record.input.IrregularScheduleInputRecord;
 import com.schedule.app.repository.ScheduleUpdateMapper;
 
@@ -24,7 +24,7 @@ public class PutIrregularScheduleServiceImpl implements PutIrregularScheduleServ
      * @param userId ユーザーID
      */
     @Override
-    public void patchIrregularScheduleService(IrregularScheduleForm form, String userId){
+    public void patchIrregularScheduleService(IrregularScheduleUpdateForm form, String userId){
         IrregularScheduleInputRecord record = toIrregularScheduleRecord(form, userId);
         patchIrregularSchedule(record);
     }
@@ -36,7 +36,7 @@ public class PutIrregularScheduleServiceImpl implements PutIrregularScheduleServ
      * @return イレギュラースケジュール入力レコード
      */
     @Override
-    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form, String userId){
+    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleUpdateForm form, String userId){
 
         // イレギュラースケジュールの存在チェック
         irregularScheduleService.existIrregularSchedule(form.id(), userId);

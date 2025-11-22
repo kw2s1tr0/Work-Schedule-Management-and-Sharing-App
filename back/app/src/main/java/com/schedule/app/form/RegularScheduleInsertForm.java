@@ -12,15 +12,14 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
 @Builder
-public record RegularScheduleForm(
-        Integer id,
+public record RegularScheduleInsertForm(
         @NotNull LocalTime startTime,
         @NotNull LocalTime endTime,
         @NotNull LocalDate startDate,
         @NotNull LocalDate endDate,
         @NotNull DayOfWeek dayOfWeek,
         @Pattern(regexp = "(0[1-9]|10|11)") @NotNull String workTypeId) {
-    public RegularScheduleForm {
+    public RegularScheduleInsertForm {
         if (startDate == null || endDate == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Both 'from' and 'to' dates must be provided.");
         }

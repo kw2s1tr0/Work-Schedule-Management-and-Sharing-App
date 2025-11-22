@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.schedule.app.applicationservice.PostRegularScheduleService;
 import com.schedule.app.domainservice.RegularScheduleService;
 import com.schedule.app.entity.RegularSchedule;
-import com.schedule.app.form.RegularScheduleForm;
+import com.schedule.app.form.RegularScheduleInsertForm;
 import com.schedule.app.record.input.RegularScheduleInputRecord;
 import com.schedule.app.repository.ScheduleCreateMapper;
 
@@ -24,7 +24,7 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
      * @param userId ユーザーID
      */
     @Override
-    public void postRegularScheduleService(RegularScheduleForm form, String userId){
+    public void postRegularScheduleService(RegularScheduleInsertForm form, String userId){
         RegularSchedule regularSchedule = toRegularScheduleEntity(form, userId);
         RegularScheduleInputRecord record = toRegularScheduleRecord(regularSchedule);
         postRegularSchedule(record);
@@ -38,7 +38,7 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
      * @return レギュラースケジュールエンティティ
      */
     @Override
-    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form, String userId){
+    public RegularSchedule toRegularScheduleEntity(RegularScheduleInsertForm form, String userId){
         RegularSchedule entity = RegularSchedule.builder()
                                         .userId(userId) //ログイン機能を使用するか仮に
                                         .startTime(form.startTime())

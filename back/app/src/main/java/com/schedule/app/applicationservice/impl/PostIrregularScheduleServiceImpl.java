@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.schedule.app.applicationservice.PostIrregularScheduleService;
 import com.schedule.app.domainservice.IrregularScheduleService;
-import com.schedule.app.form.IrregularScheduleForm;
+import com.schedule.app.form.IrregularScheduleInsertForm;
 import com.schedule.app.record.input.IrregularScheduleInputRecord;
 import com.schedule.app.repository.ScheduleCreateMapper;
 
@@ -24,7 +24,7 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
      * @param userId ユーザーID
      */
     @Override
-    public void postIrregularScheduleService(IrregularScheduleForm form, String userId){
+    public void postIrregularScheduleService(IrregularScheduleInsertForm form, String userId){
         IrregularScheduleInputRecord record = toIrregularScheduleRecord(form, userId);
         postIrregularSchedule(record);
     }
@@ -37,11 +37,11 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
      * @return イレギュラースケジュール入力レコード
      */
     @Override
-    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleForm form, String userId){
+    public IrregularScheduleInputRecord toIrregularScheduleRecord(IrregularScheduleInsertForm form, String userId){
 
 
         // イレギュラースケジュールの重複チェック
-        irregularScheduleService.checkIrregularSchedule(form.id(), userId, form.date(), form.date());
+        irregularScheduleService.checkIrregularSchedule(userId, form.date(), form.date());
 
         IrregularScheduleInputRecord record = IrregularScheduleInputRecord.builder()
                                                 .userId(userId) //ログイン機能を使用するか仮に

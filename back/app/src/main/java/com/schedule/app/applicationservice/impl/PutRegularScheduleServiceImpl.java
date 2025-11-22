@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.schedule.app.applicationservice.PutRegularScheduleService;
 import com.schedule.app.domainservice.RegularScheduleService;
 import com.schedule.app.entity.RegularSchedule;
-import com.schedule.app.form.RegularScheduleForm;
+import com.schedule.app.form.RegularScheduleUpdateForm;
 import com.schedule.app.record.input.RegularScheduleInputRecord;
 import com.schedule.app.repository.ScheduleUpdateMapper;
 
@@ -24,7 +24,7 @@ public class PutRegularScheduleServiceImpl implements PutRegularScheduleService{
      * @param userId ユーザーID
      */
     @Override
-    public void patchRegularScheduleService(RegularScheduleForm form, String userId){
+    public void patchRegularScheduleService(RegularScheduleUpdateForm form, String userId){
         RegularSchedule regularSchedule = toRegularScheduleEntity(form, userId);
         RegularScheduleInputRecord record = toRegularScheduleRecord(regularSchedule);
         patchRegularSchedule(record);
@@ -38,7 +38,7 @@ public class PutRegularScheduleServiceImpl implements PutRegularScheduleService{
      * @return レギュラースケジュールエンティティ
      */
     @Override
-    public RegularSchedule toRegularScheduleEntity(RegularScheduleForm form, String userId){
+    public RegularSchedule toRegularScheduleEntity(RegularScheduleUpdateForm form, String userId){
         RegularSchedule entity = RegularSchedule.builder()
                                         .id(form.id())
                                         .userId(userId) //ログイン機能を使用するか仮に

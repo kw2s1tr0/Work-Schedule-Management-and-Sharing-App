@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.schedule.app.applicationservice.PutDefaultScheduleService;
 import com.schedule.app.domainservice.DefaultScheduleService;
-import com.schedule.app.form.DefaultScheduleForm;
+import com.schedule.app.form.DefaultScheduleUpdateForm;
 import com.schedule.app.record.input.DefaultScheduleInputRecord;
 import com.schedule.app.repository.ScheduleUpdateMapper;
 
@@ -23,7 +23,7 @@ public class PutDefaultScheduleServiceImpl implements PutDefaultScheduleService{
      * @param userId ユーザーID
      */
     @Override
-    public void patchDefaultScheduleService(DefaultScheduleForm form, String userId){
+    public void patchDefaultScheduleService(DefaultScheduleUpdateForm form, String userId){
         DefaultScheduleInputRecord record = toDefaultScheduleRecord(form,userId);
         patchDefaultSchedule(record);
     }
@@ -36,7 +36,7 @@ public class PutDefaultScheduleServiceImpl implements PutDefaultScheduleService{
      * @return デフォルトスケジュール入力レコード
      */
     @Override
-    public DefaultScheduleInputRecord toDefaultScheduleRecord(DefaultScheduleForm form, String userId){
+    public DefaultScheduleInputRecord toDefaultScheduleRecord(DefaultScheduleUpdateForm form, String userId){
 
         // デフォルトスケジュールの存在チェック
         defaultScheduleService.existDefaultSchedule(form.id(), userId);

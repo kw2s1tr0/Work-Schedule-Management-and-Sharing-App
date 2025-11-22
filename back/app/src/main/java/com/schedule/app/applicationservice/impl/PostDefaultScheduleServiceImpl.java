@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.schedule.app.applicationservice.PostDefaultScheduleService;
 import com.schedule.app.domainservice.DefaultScheduleService;
-import com.schedule.app.form.DefaultScheduleForm;
+import com.schedule.app.form.DefaultScheduleInsertForm;
 import com.schedule.app.record.input.DefaultScheduleInputRecord;
 import com.schedule.app.repository.ScheduleCreateMapper;
 
@@ -23,7 +23,7 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
      * @param userId ユーザーID
      */
     @Override
-    public void postDefaultScheduleService(DefaultScheduleForm form, String userId){
+    public void postDefaultScheduleService(DefaultScheduleInsertForm form, String userId){
         DefaultScheduleInputRecord record = toDefaultScheduleRecord(form, userId);
         postDefaultSchedule(record);
     }
@@ -36,11 +36,11 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
      * @return デフォルトスケジュールエンティティ
      */
     @Override
-    public DefaultScheduleInputRecord toDefaultScheduleRecord(DefaultScheduleForm form, String userId){
+    public DefaultScheduleInputRecord toDefaultScheduleRecord(DefaultScheduleInsertForm form, String userId){
 
 
         // デフォルトスケジュールの重複チェック
-        defaultScheduleService.checkDefaultSchedule(form.id(), userId, form.startDate(), form.endDate());
+        defaultScheduleService.checkDefaultSchedule(userId, form.startDate(), form.endDate());
 
         DefaultScheduleInputRecord record = DefaultScheduleInputRecord.builder()
                                                 .userId(userId) //ログイン機能を使用するか仮に

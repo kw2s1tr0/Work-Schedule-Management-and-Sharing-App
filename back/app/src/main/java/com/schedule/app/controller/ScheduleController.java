@@ -27,9 +27,12 @@ import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.WorkTypeDTO;
 import com.schedule.app.form.SingleScheduleSearchForm;
 import com.schedule.app.security.CustomUserDetails;
-import com.schedule.app.form.DefaultScheduleForm;
-import com.schedule.app.form.IrregularScheduleForm;
-import com.schedule.app.form.RegularScheduleForm;
+import com.schedule.app.form.DefaultScheduleInsertForm;
+import com.schedule.app.form.DefaultScheduleUpdateForm;
+import com.schedule.app.form.IrregularScheduleInsertForm;
+import com.schedule.app.form.IrregularScheduleUpdateForm;
+import com.schedule.app.form.RegularScheduleInsertForm;
+import com.schedule.app.form.RegularScheduleUpdateForm;
 import com.schedule.app.form.ScheduleSearchForm;
 import com.schedule.app.applicationservice.GetScheduleService;
 import com.schedule.app.applicationservice.PutDefaultScheduleService;
@@ -120,7 +123,7 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/irregularSchedule")
-    public void postIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public void postIrregularSchedule(@Valid @RequestBody IrregularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         postIrregularScheduleService.postIrregularScheduleService(form, userId);
     }
@@ -131,7 +134,7 @@ public class ScheduleController {
         * @param form 画面入力フォーム
         */
     @PostMapping("/api/regularSchedule")
-    public void postRegularSchedule(@Valid @RequestBody RegularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public void postRegularSchedule(@Valid @RequestBody RegularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         postRegularScheduleService.postRegularScheduleService(form, userId);
     }
@@ -142,7 +145,7 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/defaultSchedule")
-    public void postDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public void postDefaultSchedule(@Valid @RequestBody DefaultScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         postDefaultScheduleService.postDefaultScheduleService(form, userId);
     }
@@ -153,7 +156,7 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/irregularSchedule")
-    public void patchIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public void patchIrregularSchedule(@Valid @RequestBody IrregularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         patchIrregularScheduleService.patchIrregularScheduleService(form, userId);
     }
@@ -164,7 +167,7 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/regularSchedule")
-    public void patchRegularSchedule(@Valid @RequestBody RegularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public void patchRegularSchedule(@Valid @RequestBody RegularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         patchRegularScheduleService.patchRegularScheduleService(form, userId);
     }
@@ -175,7 +178,7 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/defaultSchedule")
-    public void patchDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public void patchDefaultSchedule(@Valid @RequestBody DefaultScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         patchDefaultScheduleService.patchDefaultScheduleService(form, userId);
     }
