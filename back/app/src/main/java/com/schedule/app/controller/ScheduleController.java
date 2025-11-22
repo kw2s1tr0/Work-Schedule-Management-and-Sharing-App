@@ -2,6 +2,7 @@ package com.schedule.app.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import com.schedule.app.dto.RegularScheduleDTO;
 import com.schedule.app.dto.UserDTO;
 import com.schedule.app.dto.WorkTypeDTO;
 import com.schedule.app.form.SingleScheduleSearchForm;
+import com.schedule.app.security.CustomUserDetails;
 import com.schedule.app.form.DefaultScheduleForm;
 import com.schedule.app.form.IrregularScheduleForm;
 import com.schedule.app.form.RegularScheduleForm;
@@ -80,8 +82,8 @@ public class ScheduleController {
      * @return イレギュラースケジュールDTOリスト
      */
     @GetMapping("/api/irregularSchedule")
-    public List<IrregularScheduleDTO> getIrregularSchedule(@Valid SingleScheduleSearchForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public List<IrregularScheduleDTO> getIrregularSchedule(@Valid SingleScheduleSearchForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         List<IrregularScheduleDTO> userDTOs = irregularScheduleService.irregularScheduleSearchService(form, userId);
         return userDTOs;
     }
@@ -93,8 +95,8 @@ public class ScheduleController {
         * @return レギュラースケジュールDTOリスト
         */
     @GetMapping("/api/regularSchedule")
-    public List<RegularScheduleDTO> getRegularSchedule(@Valid SingleScheduleSearchForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public List<RegularScheduleDTO> getRegularSchedule(@Valid SingleScheduleSearchForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         List<RegularScheduleDTO> regularSchedules = regularScheduleService.regularScheduleSearchService(form, userId);
         return regularSchedules;
     }
@@ -106,8 +108,8 @@ public class ScheduleController {
      * @return デフォルトスケジュールDTOリスト
      */
     @GetMapping("/api/defaultSchedule")
-    public List<DefaultScheduleDTO> getDefaultSchedule(@Valid SingleScheduleSearchForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public List<DefaultScheduleDTO> getDefaultSchedule(@Valid SingleScheduleSearchForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         List<DefaultScheduleDTO> defaultSchedules = defaultScheduleService.defaultScheduleSearchService(form, userId);
         return defaultSchedules;
     }
@@ -118,8 +120,8 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/irregularSchedule")
-    public void postIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void postIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         postIrregularScheduleService.postIrregularScheduleService(form, userId);
     }
 
@@ -129,8 +131,8 @@ public class ScheduleController {
         * @param form 画面入力フォーム
         */
     @PostMapping("/api/regularSchedule")
-    public void postRegularSchedule(@Valid @RequestBody RegularScheduleForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void postRegularSchedule(@Valid @RequestBody RegularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         postRegularScheduleService.postRegularScheduleService(form, userId);
     }
 
@@ -140,8 +142,8 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/defaultSchedule")
-    public void postDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void postDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         postDefaultScheduleService.postDefaultScheduleService(form, userId);
     }
 
@@ -151,8 +153,8 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/irregularSchedule")
-    public void patchIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void patchIrregularSchedule(@Valid @RequestBody IrregularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         patchIrregularScheduleService.patchIrregularScheduleService(form, userId);
     }
 
@@ -162,8 +164,8 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/regularSchedule")
-    public void patchRegularSchedule(@Valid @RequestBody RegularScheduleForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void patchRegularSchedule(@Valid @RequestBody RegularScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         patchRegularScheduleService.patchRegularScheduleService(form, userId);
     }
 
@@ -173,8 +175,8 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/defaultSchedule")
-    public void patchDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void patchDefaultSchedule(@Valid @RequestBody DefaultScheduleForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         patchDefaultScheduleService.patchDefaultScheduleService(form, userId);
     }
 
@@ -184,8 +186,8 @@ public class ScheduleController {
      * @param id スケジュールID
      */
     @DeleteMapping("/api/irregularSchedule/{id}")
-    public void deleteIrregularSchedule(@PathVariable Integer id) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void deleteIrregularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         deleteIrregularScheduleService.deleteIrregularScheduleService(id, userId);
     }
 
@@ -195,8 +197,8 @@ public class ScheduleController {
      * @param id スケジュールID
      */
     @DeleteMapping("/api/regularSchedule/{id}")
-    public void deleteRegularSchedule(@PathVariable Integer id) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void deleteRegularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         deleteRegularScheduleService.deleteRegularScheduleService(id, userId);
     }
 
@@ -206,8 +208,8 @@ public class ScheduleController {
      * @param id スケジュールID
      */
     @DeleteMapping("/api/defaultSchedule/{id}")
-    public void deleteDefaultSchedule(@PathVariable Integer id) {
-        String userId = "00001"; // 仮のユーザーID、実際には認証情報などから取得する
+    public void deleteDefaultSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userId = userDetails.getUsername();
         deleteDefaultScheduleService.deleteDefaultScheduleService(id, userId);
     }
 

@@ -21,7 +21,12 @@ public class SecurityConfig {
                 .requestMatchers("/api/login").permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin(login -> login.disable())
+            .formLogin(login -> login
+                .loginProcessingUrl("/api/login")
+                .usernameParameter("userId")
+                .passwordParameter("password")
+                .permitAll()
+            )
             .logout(logout -> logout
                 .logoutUrl("/api/logout")
                 .invalidateHttpSession(true)
