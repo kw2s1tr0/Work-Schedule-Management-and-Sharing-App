@@ -1,9 +1,8 @@
 package com.schedule.app.repository;
 
+import com.schedule.app.record.output.OrganizationRecord;
 import java.util.List;
 
-import com.schedule.app.record.output.OrganizationRecord;
-
 public interface OrganizationSearchMapper {
-    List<OrganizationRecord> readOrganizationRecord();
+  List<OrganizationRecord> readOrganizationRecord();
 }

@@ -1,5 +1,9 @@
 package com.schedule.app.config;
 
+import com.schedule.app.handler.JsonAccessDeniedHandler;
+import com.schedule.app.handler.JsonAuthEntryPoint;
+import com.schedule.app.handler.JsonAuthFailureHandler;
+import com.schedule.app.handler.JsonAuthSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -8,55 +12,50 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.schedule.app.handler.JsonAccessDeniedHandler;
-import com.schedule.app.handler.JsonAuthEntryPoint;
-import com.schedule.app.handler.JsonAuthFailureHandler;
-import com.schedule.app.handler.JsonAuthSuccessHandler;
-
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(
-        HttpSecurity http,
-        JsonAuthSuccessHandler successHandler,
-        JsonAuthFailureHandler failureHandler,
-        JsonAuthEntryPoint entryPoint,
-        JsonAccessDeniedHandler accessDeniedHandler) throws Exception {
+  @Bean
+  public SecurityFilterChain filterChain(
+      HttpSecurity http,
+      JsonAuthSuccessHandler successHandler,
+      JsonAuthFailureHandler failureHandler,
+      JsonAuthEntryPoint entryPoint,
+      JsonAccessDeniedHandler accessDeniedHandler)
+      throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/login").permitAll()
-                .anyRequest().authenticated()
-            )
-            .exceptionHandling(exception -> exception
-                .authenticationEntryPoint(entryPoint)
-                .accessDeniedHandler(accessDeniedHandler)
-            )
-            .formLogin(login -> login
-                .loginProcessingUrl("/api/login")
-                .usernameParameter("userId")
-                .passwordParameter("password")
-                .successHandler(successHandler)
-                .failureHandler(failureHandler)
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/api/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-            )
-            .httpBasic(basic -> basic.disable());
+    http.csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(
+            authorize ->
+                authorize.requestMatchers("/api/login").permitAll().anyRequest().authenticated())
+        .exceptionHandling(
+            exception ->
+                exception
+                    .authenticationEntryPoint(entryPoint)
+                    .accessDeniedHandler(accessDeniedHandler))
+        .formLogin(
+            login ->
+                login
+                    .loginProcessingUrl("/api/login")
+                    .usernameParameter("userId")
+                    .passwordParameter("password")
+                    .successHandler(successHandler)
+                    .failureHandler(failureHandler)
+                    .permitAll())
+        .logout(
+            logout ->
+                logout
+                    .logoutUrl("/api/logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID"))
+        .httpBasic(basic -> basic.disable());
 
-        
-        return http.build();
-    }
+    return http.build();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-    
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

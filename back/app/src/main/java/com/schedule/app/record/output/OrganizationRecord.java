@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class OrganizationRecord {
-    private String organizationCode;
-    private String organizationName;
+  private String organizationCode;
+  private String organizationName;
 }

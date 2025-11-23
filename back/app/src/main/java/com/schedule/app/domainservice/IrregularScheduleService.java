@@ -1,73 +1,74 @@
 package com.schedule.app.domainservice;
 
-import java.time.LocalDate;
-
-import org.springframework.stereotype.Service;
-
 import com.schedule.app.enums.DomainError;
 import com.schedule.app.exception.DomainException;
 import com.schedule.app.repository.ScheduleExistMapper;
 import com.schedule.app.repository.ScheduleFindMapper;
-
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class IrregularScheduleService {
 
-    private final ScheduleExistMapper scheduleExistMapper;
-    private final ScheduleFindMapper scheduleFindMapper;
+  private final ScheduleExistMapper scheduleExistMapper;
+  private final ScheduleFindMapper scheduleFindMapper;
 
-    /**
-     * イレギュラースケジュールの存在確認
-     * 
-     * @param scheduleId スケジュールID
-     * @param userId ユーザーID
-     */ 
-    public boolean existIrregularSchedule(int scheduleId, String userId) {
-        // 存在しない場合は例外をスロー
-        if (scheduleExistMapper.existIrregularSchedule(scheduleId, userId) == 0) {
-            throw new DomainException(DomainError.NOT_FOUND, "Irregular schedule does not exist for ID: " + scheduleId);
-        }
-        return true;
+  /**
+   * イレギュラースケジュールの存在確認
+   *
+   * @param scheduleId スケジュールID
+   * @param userId ユーザーID
+   */
+  public boolean existIrregularSchedule(int scheduleId, String userId) {
+    // 存在しない場合は例外をスロー
+    if (scheduleExistMapper.existIrregularSchedule(scheduleId, userId) == 0) {
+      throw new DomainException(
+          DomainError.NOT_FOUND, "Irregular schedule does not exist for ID: " + scheduleId);
     }
+    return true;
+  }
 
-    /**
-     * イレギュラースケジュールの存在確認カウント取得
-     * 
-     * @param scheduleId スケジュールID
-     * @param userId ユーザーID
-     * @return 存在カウント
-     */
-    public int existIrregularScheduleCount(int scheduleId,String userId) {
-        int result = scheduleExistMapper.existIrregularSchedule(scheduleId, userId);
-        return result;
-    }
+  /**
+   * イレギュラースケジュールの存在確認カウント取得
+   *
+   * @param scheduleId スケジュールID
+   * @param userId ユーザーID
+   * @return 存在カウント
+   */
+  public int existIrregularScheduleCount(int scheduleId, String userId) {
+    int result = scheduleExistMapper.existIrregularSchedule(scheduleId, userId);
+    return result;
+  }
 
-    /**
-     * イレギュラースケジュールの重複チェック
-     * 
-     * @param record スケジュール検索レコード
-     * @return 重複がなければtrue
-     */
-    public boolean checkIrregularSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate) {
-        // 登録する期間に該当するイレギュラースケジュールを取得
-        int result = findIrregularSchedule(id, userId, startDate, endDate);
-        // 空でなければ例外をスロー
-        if (result > 0) {
-            throw new DomainException(DomainError.CONFLICT, "Irregular schedules already exist for the given criteria.");
-        }
-        return true;
+  /**
+   * イレギュラースケジュールの重複チェック
+   *
+   * @param record スケジュール検索レコード
+   * @return 重複がなければtrue
+   */
+  public boolean checkIrregularSchedule(
+      Integer id, String userId, LocalDate startDate, LocalDate endDate) {
+    // 登録する期間に該当するイレギュラースケジュールを取得
+    int result = findIrregularSchedule(id, userId, startDate, endDate);
+    // 空でなければ例外をスロー
+    if (result > 0) {
+      throw new DomainException(
+          DomainError.CONFLICT, "Irregular schedules already exist for the given criteria.");
     }
+    return true;
+  }
 
-    /**
-     * イレギュラースケジュールを読み取る
-     * 
-     * @param record スケジュール検索レコード
-     * @return イレギュラースケジュール出力レコードリスト
-     */
-    public int findIrregularSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate){
-        int result = scheduleFindMapper.findIrregularSchedule(id,userId,startDate,endDate);
-        return result;
-    }
+  /**
+   * イレギュラースケジュールを読み取る
+   *
+   * @param record スケジュール検索レコード
+   * @return イレギュラースケジュール数出力レコードリスト
+   */
+  public int findIrregularSchedule(
+      Integer id, String userId, LocalDate startDate, LocalDate endDate) {
+    int result = scheduleFindMapper.findIrregularSchedule(id, userId, startDate, endDate);
+    return result;
+  }
 }

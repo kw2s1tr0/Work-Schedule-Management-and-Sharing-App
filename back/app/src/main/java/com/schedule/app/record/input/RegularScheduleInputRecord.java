@@ -2,7 +2,6 @@ package com.schedule.app.record.input;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import lombok.Builder;
 
 @Builder
@@ -14,6 +13,4 @@ public record RegularScheduleInputRecord(
     LocalDate startDate,
     LocalDate endDate,
     String dayOfWeek,
-    String workTypeId
-) {
-}
+    String workTypeId) {}

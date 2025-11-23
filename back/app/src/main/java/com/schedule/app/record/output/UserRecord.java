@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class UserRecord {
-    private String userId;
-    private String name;
-    private String organizationName;
+  private String userId;
+  private String name;
+  private String organizationName;
 }

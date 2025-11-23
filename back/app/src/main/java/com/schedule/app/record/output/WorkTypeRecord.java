@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class WorkTypeRecord {
-    private String id;
-    private String workTypeName;
-    private String workTypeColor;
+  private String id;
+  private String workTypeName;
+  private String workTypeColor;
 }

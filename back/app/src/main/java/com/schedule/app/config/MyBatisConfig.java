@@ -5,6 +5,4 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @MapperScan("com.schedule.app.repository")
-public class MyBatisConfig {
-
-}
+public class MyBatisConfig {}
