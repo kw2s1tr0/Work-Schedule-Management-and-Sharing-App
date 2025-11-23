@@ -84,6 +84,7 @@ public class ScheduleController {
      * イレギュラースケジュール取得
      * 
      * @param form 画面入力フォーム
+     * @param userDetails 認証ユーザー情報
      * @return イレギュラースケジュールDTOリスト
      */
     @GetMapping("/api/irregularSchedule")
@@ -97,6 +98,7 @@ public class ScheduleController {
         * レギュラースケジュール取得
         * 
         * @param form 画面入力フォーム
+        * @param userDetails 認証ユーザー情報
         * @return レギュラースケジュールDTOリスト
         */
     @GetMapping("/api/regularSchedule")
@@ -110,6 +112,7 @@ public class ScheduleController {
      * デフォルトスケジュール取得
      * 
      * @param form 画面入力フォーム
+     * @param userDetails 認証ユーザー情報
      * @return デフォルトスケジュールDTOリスト
      */
     @GetMapping("/api/defaultSchedule")
@@ -123,6 +126,8 @@ public class ScheduleController {
      * イレギュラースケジュール登録
      * 
      * @param form 画面入力フォーム
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 201 CREATED
      */
     @PostMapping("/api/irregularSchedule")
     public ResponseEntity<Void> postIrregularSchedule(@Valid @RequestBody IrregularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -135,6 +140,8 @@ public class ScheduleController {
         * レギュラースケジュール登録
         * 
         * @param form 画面入力フォーム
+        * @param userDetails 認証ユーザー情報
+        * @return ResponseEntity<Void> 201 CREATED
         */
     @PostMapping("/api/regularSchedule")
     public ResponseEntity<Void> postRegularSchedule(@Valid @RequestBody RegularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -147,6 +154,8 @@ public class ScheduleController {
      * デフォルトスケジュール登録
      * 
      * @param form 画面入力フォーム
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 201 CREATED
      */
     @PostMapping("/api/defaultSchedule")
     public ResponseEntity<Void> postDefaultSchedule(@Valid @RequestBody DefaultScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -159,6 +168,8 @@ public class ScheduleController {
      * イレギュラースケジュール更新
      * 
      * @param form 画面入力フォーム
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 204 NO CONTENT
      */
     @PutMapping("/api/irregularSchedule")
     public ResponseEntity<Void> patchIrregularSchedule(@Valid @RequestBody IrregularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -171,6 +182,8 @@ public class ScheduleController {
      * レギュラースケジュール更新
      * 
      * @param form 画面入力フォーム
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 204 NO CONTENT
      */
     @PutMapping("/api/regularSchedule")
     public ResponseEntity<Void> patchRegularSchedule(@Valid @RequestBody RegularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -183,6 +196,8 @@ public class ScheduleController {
      * デフォルトスケジュール更新
      * 
      * @param form 画面入力フォーム
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 204 NO CONTENT
      */
     @PutMapping("/api/defaultSchedule")
     public ResponseEntity<Void> patchDefaultSchedule(@Valid @RequestBody DefaultScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -195,6 +210,8 @@ public class ScheduleController {
      * イレギュラースケジュール削除
      * 
      * @param id スケジュールID
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 204 NO CONTENT
      */
     @DeleteMapping("/api/irregularSchedule/{id}")
     public ResponseEntity<Void> deleteIrregularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -207,6 +224,8 @@ public class ScheduleController {
      * レギュラースケジュール削除
      * 
      * @param id スケジュールID
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 204 NO CONTENT
      */
     @DeleteMapping("/api/regularSchedule/{id}")
     public ResponseEntity<Void> deleteRegularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -219,6 +238,8 @@ public class ScheduleController {
      * デフォルトスケジュール削除
      * 
      * @param id スケジュールID
+     * @param userDetails 認証ユーザー情報
+     * @return ResponseEntity<Void> 204 NO CONTENT
      */
     @DeleteMapping("/api/defaultSchedule/{id}")
     public ResponseEntity<Void> deleteDefaultSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {

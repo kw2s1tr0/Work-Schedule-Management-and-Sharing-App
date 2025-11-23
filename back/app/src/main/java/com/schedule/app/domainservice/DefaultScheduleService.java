@@ -50,9 +50,9 @@ public class DefaultScheduleService {
      * @return 重複がなければtrue
      */
     public boolean checkDefaultSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate) {
-        // 登録する期間に該当するデフォルトスケジュールを取得
+        // 登録する期間に該当するデフォルトスケジュール数を取得
         int result = findDefaultSchedule(id, userId, startDate, endDate);
-        // 空でなければ重複チェックを行う
+        // 空でなければ例外をスロー
         if (result > 0) {
             throw new DomainException(DomainError.CONFLICT, "Default schedules already exist for the given criteria.");
             }
@@ -63,7 +63,7 @@ public class DefaultScheduleService {
      * デフォルトスケジュールを読み取る
      * 
      * @param record スケジュール検索レコード
-     * @return デフォルトスケジュール出力レコードリスト
+     * @return デフォルトスケジュール数
      */
     public int findDefaultSchedule(Integer id,String userId,LocalDate startDate,LocalDate endDate) {
         int result = scheduleFindMapper.findDefaultSchedule(id,userId,startDate,endDate);

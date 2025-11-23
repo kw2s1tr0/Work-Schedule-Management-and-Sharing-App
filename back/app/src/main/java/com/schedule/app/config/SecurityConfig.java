@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.schedule.app.handler.JsonAccessDeniedHandler;
 import com.schedule.app.handler.JsonAuthEntryPoint;
 import com.schedule.app.handler.JsonAuthFailureHandler;
 import com.schedule.app.handler.JsonAuthSuccessHandler;
@@ -17,7 +18,12 @@ import com.schedule.app.handler.JsonAuthSuccessHandler;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JsonAuthSuccessHandler successHandler, JsonAuthFailureHandler failureHandler, JsonAuthEntryPoint entryPoint) throws Exception {
+    public SecurityFilterChain filterChain(
+        HttpSecurity http,
+        JsonAuthSuccessHandler successHandler,
+        JsonAuthFailureHandler failureHandler,
+        JsonAuthEntryPoint entryPoint,
+        JsonAccessDeniedHandler accessDeniedHandler) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
@@ -27,6 +33,7 @@ public class SecurityConfig {
             )
             .exceptionHandling(exception -> exception
                 .authenticationEntryPoint(entryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
             )
             .formLogin(login -> login
                 .loginProcessingUrl("/api/login")
