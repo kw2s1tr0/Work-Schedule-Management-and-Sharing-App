@@ -2,6 +2,8 @@ package com.schedule.app.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -123,9 +125,10 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/irregularSchedule")
-    public void postIrregularSchedule(@Valid @RequestBody IrregularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> postIrregularSchedule(@Valid @RequestBody IrregularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         postIrregularScheduleService.postIrregularScheduleService(form, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
         /**
@@ -134,9 +137,10 @@ public class ScheduleController {
         * @param form 画面入力フォーム
         */
     @PostMapping("/api/regularSchedule")
-    public void postRegularSchedule(@Valid @RequestBody RegularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> postRegularSchedule(@Valid @RequestBody RegularScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         postRegularScheduleService.postRegularScheduleService(form, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
@@ -145,9 +149,10 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PostMapping("/api/defaultSchedule")
-    public void postDefaultSchedule(@Valid @RequestBody DefaultScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> postDefaultSchedule(@Valid @RequestBody DefaultScheduleInsertForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         postDefaultScheduleService.postDefaultScheduleService(form, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
@@ -156,9 +161,10 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/irregularSchedule")
-    public void patchIrregularSchedule(@Valid @RequestBody IrregularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> patchIrregularSchedule(@Valid @RequestBody IrregularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         patchIrregularScheduleService.patchIrregularScheduleService(form, userId);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -167,9 +173,10 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/regularSchedule")
-    public void patchRegularSchedule(@Valid @RequestBody RegularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> patchRegularSchedule(@Valid @RequestBody RegularScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         patchRegularScheduleService.patchRegularScheduleService(form, userId);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -178,9 +185,10 @@ public class ScheduleController {
      * @param form 画面入力フォーム
      */
     @PutMapping("/api/defaultSchedule")
-    public void patchDefaultSchedule(@Valid @RequestBody DefaultScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> patchDefaultSchedule(@Valid @RequestBody DefaultScheduleUpdateForm form,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         patchDefaultScheduleService.patchDefaultScheduleService(form, userId);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -189,9 +197,10 @@ public class ScheduleController {
      * @param id スケジュールID
      */
     @DeleteMapping("/api/irregularSchedule/{id}")
-    public void deleteIrregularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> deleteIrregularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         deleteIrregularScheduleService.deleteIrregularScheduleService(id, userId);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -200,9 +209,10 @@ public class ScheduleController {
      * @param id スケジュールID
      */
     @DeleteMapping("/api/regularSchedule/{id}")
-    public void deleteRegularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> deleteRegularSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         deleteRegularScheduleService.deleteRegularScheduleService(id, userId);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -211,9 +221,10 @@ public class ScheduleController {
      * @param id スケジュールID
      */
     @DeleteMapping("/api/defaultSchedule/{id}")
-    public void deleteDefaultSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> deleteDefaultSchedule(@PathVariable Integer id,@AuthenticationPrincipal CustomUserDetails userDetails) {
         String userId = userDetails.getUsername();
         deleteDefaultScheduleService.deleteDefaultScheduleService(id, userId);
+        return ResponseEntity.noContent().build();
     }
 
     /**

@@ -40,7 +40,7 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
 
 
         // デフォルトスケジュールの重複チェック
-        defaultScheduleService.checkDefaultSchedule(userId, form.startDate(), form.endDate());
+        defaultScheduleService.checkDefaultSchedule(null,userId, form.startDate(), form.endDate());
 
         DefaultScheduleInputRecord record = DefaultScheduleInputRecord.builder()
                                                 .userId(userId) //ログイン機能を使用するか仮に

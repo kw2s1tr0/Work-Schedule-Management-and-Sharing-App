@@ -3,10 +3,9 @@ package com.schedule.app.domainservice;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.schedule.app.entity.RegularSchedule;
+import com.schedule.app.enums.DomainError;
+import com.schedule.app.exception.DomainException;
 import com.schedule.app.repository.ScheduleExistMapper;
 import com.schedule.app.repository.ScheduleFindMapper;
 
@@ -30,7 +29,7 @@ public class RegularScheduleService {
     public void existRegularSchedule(int scheduleId, String userId) {
         // 存在しない場合は例外をスロー
         if (existRegularScheduleCount(scheduleId, userId) == 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Regular schedule already exist for ID: " + scheduleId);
+            throw new DomainException(DomainError.NOT_FOUND, "Regular schedule does not exist for ID: " + scheduleId);
         }
     }
 
@@ -53,7 +52,7 @@ public class RegularScheduleService {
             for (String dayOfWeek : DayOfWeeks) {
                 // 重複があれば例外をスロー
                 if(regularSchedule.isOverlaps(dayOfWeek)) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No regular schedules found for the given criteria.");
+                    throw new DomainException(DomainError.CONFLICT, "Regular schedules already exist for the given criteria.");
                 }
             }
         }

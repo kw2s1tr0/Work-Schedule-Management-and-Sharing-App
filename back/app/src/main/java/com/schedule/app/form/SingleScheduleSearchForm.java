@@ -2,8 +2,8 @@ package com.schedule.app.form;
 
 import java.time.LocalDate;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import com.schedule.app.enums.DomainError;
+import com.schedule.app.exception.DomainException;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -15,9 +15,9 @@ public record SingleScheduleSearchForm(
         @NotNull LocalDate to) {
 
     public SingleScheduleSearchForm {
-        if (from.isAfter(to)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "The 'from' date must be before or equal to the 'to' date.");
+        if (from != null && to != null && from.isAfter(to)) {
+            throw new DomainException(DomainError.VALIDATION_ERROR,
+                    "date: The 'from' date must be before or equal to the 'to' date.");
         }
     }
 }

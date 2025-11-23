@@ -2,10 +2,10 @@ package com.schedule.app.domainservice;
 
 import java.time.LocalDate;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.schedule.app.enums.DomainError;
+import com.schedule.app.exception.DomainException;
 import com.schedule.app.repository.ScheduleExistMapper;
 import com.schedule.app.repository.ScheduleFindMapper;
 
@@ -27,7 +27,7 @@ public class IrregularScheduleService {
     public boolean existIrregularSchedule(int scheduleId, String userId) {
         // 存在しない場合は例外をスロー
         if (scheduleExistMapper.existIrregularSchedule(scheduleId, userId) == 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Irregular schedule already exist for ID: " + scheduleId);
+            throw new DomainException(DomainError.NOT_FOUND, "Irregular schedule does not exist for ID: " + scheduleId);
         }
         return true;
     }
@@ -55,7 +55,7 @@ public class IrregularScheduleService {
         int result = findIrregularSchedule(id, userId, startDate, endDate);
         // 空でなければ例外をスロー
         if (result > 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Irregular schedules already exist for the given criteria.");
+            throw new DomainException(DomainError.CONFLICT, "Irregular schedules already exist for the given criteria.");
         }
         return true;
     }

@@ -1,9 +1,8 @@
 package com.schedule.app.form;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
+import com.schedule.app.enums.DomainError;
 import com.schedule.app.enums.ViewMode;
+import com.schedule.app.exception.DomainException;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -21,16 +20,16 @@ public record ScheduleSearchForm(
         @Pattern(regexp = "^\\d{0,3}$") String organizationCode) {
     public ScheduleSearchForm {
         if (week != null && month != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one of week or month can be provided");
+            throw new DomainException(DomainError.VALIDATION_ERROR, "period: Only one of week or month can be provided");
         }
         if (week == null && month == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Either week or month must be provided");
+            throw new DomainException(DomainError.VALIDATION_ERROR, "period: Either week or month must be provided");
         }
         if (viewMode == ViewMode.WEEK && week == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Week must be provided when viewMode is WEEK");
+            throw new DomainException(DomainError.VALIDATION_ERROR, "viewMode: Week must be provided when viewMode is WEEK");
         }
         if (viewMode == ViewMode.MONTH && month == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Month must be provided when viewMode is MONTH");
+            throw new DomainException(DomainError.VALIDATION_ERROR, "viewMode: Month must be provided when viewMode is MONTH");
         }
     }
 }

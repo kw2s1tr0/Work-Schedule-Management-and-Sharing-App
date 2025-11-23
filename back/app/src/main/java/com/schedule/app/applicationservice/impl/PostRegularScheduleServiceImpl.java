@@ -61,7 +61,7 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
     public RegularScheduleInputRecord toRegularScheduleRecord(RegularSchedule regularSchedule){
 
         // レギュラースケジュールの重複チェック
-        regularScheduleService.checkRegularSchedule(regularSchedule.getId(), regularSchedule.getUserId(), regularSchedule.getStartDate(), regularSchedule.getEndDate(),regularSchedule);
+        regularScheduleService.checkRegularSchedule(null, regularSchedule.getUserId(), regularSchedule.getStartDate(), regularSchedule.getEndDate(),regularSchedule);
 
         RegularScheduleInputRecord record = RegularScheduleInputRecord.builder()
                                                 .userId(regularSchedule.getUserId()) //ログイン機能を使用するか仮に

@@ -2,10 +2,10 @@ package com.schedule.app.domainservice;
 
 import java.time.LocalDate;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.schedule.app.enums.DomainError;
+import com.schedule.app.exception.DomainException;
 import com.schedule.app.repository.ScheduleExistMapper;
 import com.schedule.app.repository.ScheduleFindMapper;
 
@@ -27,7 +27,7 @@ public class DefaultScheduleService {
     public void existDefaultSchedule(int scheduleId, String userId) {
         // 存在しない場合は例外をスロー
         if (existDefaultScheduleCount(scheduleId, userId) == 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Default schedule already exist for ID: " + scheduleId);
+            throw new DomainException(DomainError.NOT_FOUND, "Default schedule does not exist.");
         }
     }
     /**
@@ -54,7 +54,7 @@ public class DefaultScheduleService {
         int result = findDefaultSchedule(id, userId, startDate, endDate);
         // 空でなければ重複チェックを行う
         if (result > 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Default schedules already exist for the given criteria.");
+            throw new DomainException(DomainError.CONFLICT, "Default schedules already exist for the given criteria.");
             }
         return true;
     }

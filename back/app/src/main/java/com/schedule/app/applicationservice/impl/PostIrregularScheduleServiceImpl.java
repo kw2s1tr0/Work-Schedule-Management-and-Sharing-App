@@ -41,7 +41,7 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
 
 
         // イレギュラースケジュールの重複チェック
-        irregularScheduleService.checkIrregularSchedule(userId, form.date(), form.date());
+        irregularScheduleService.checkIrregularSchedule(null,userId, form.date(), form.date());
 
         IrregularScheduleInputRecord record = IrregularScheduleInputRecord.builder()
                                                 .userId(userId) //ログイン機能を使用するか仮に
