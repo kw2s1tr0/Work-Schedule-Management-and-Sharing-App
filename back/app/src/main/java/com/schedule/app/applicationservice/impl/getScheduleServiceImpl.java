@@ -272,7 +272,7 @@ public class GetScheduleServiceImpl implements GetScheduleService {
         Schedule schedule = Schedule.builder().date(date).build();
 
         // スケジュールエンティティにマッチするスケジュール情報をセット
-        scheduleService.ScheduleService(
+        scheduleService.scheduleService(
             defaultRecords,
             regularRecords,
             irregularRecords,

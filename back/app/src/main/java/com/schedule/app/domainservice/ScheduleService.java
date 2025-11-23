@@ -25,7 +25,7 @@ public class ScheduleService {
    * @param userRecord
    * @return ユーザーエンティティ
    */
-  public Schedule ScheduleService(
+  public Schedule scheduleService(
       List<DefaultScheduleOutputRecord> defaultRecords,
       List<RegularScheduleOutputRecord> regularRecords,
       List<IrregularScheduleOutputRecord> irregularRecords,

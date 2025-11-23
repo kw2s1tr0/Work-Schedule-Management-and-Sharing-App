@@ -10,9 +10,31 @@ spring:
       mode: always
       continue-on-error: false
       schema-locations:
-        - classpath:schema/*.sql
+        - classpath:schema/drop.sql
+        - classpath:schema/enum.sql
+        - classpath:schema/organization.sql
+        - classpath:schema/position.sql
+        - classpath:schema/users.sql
+        - classpath:schema/authuser.sql
+        - classpath:schema/schedule_type.sql
+        - classpath:schema/regular_schedule.sql
+        - classpath:schema/irregular_schedule.sql
+        - classpath:schema/default_schedule.sql
+        - classpath:schema/common_regular_schedule.sql
+        - classpath:schema/common_irregular_schedule.sql
+        - classpath:schema/common_default_schedule.sql
       data-locations:
-        - classpath:data/*.sql
+        - classpath:data/organization_data.sql
+        - classpath:data/position_data.sql
+        - classpath:data/user_data.sql
+        - classpath:data/authuser_data.sql
+        - classpath:data/schedule_type_data.sql
+        - classpath:data/common_regular_schedule_data.sql
+        - classpath:data/common_irregular_schedule_data.sql
+        - classpath:data/common_default_schedule_data.sql
+        - classpath:data/regular_schedule_data.sql
+        - classpath:data/irregular_schedule_data.sql
+        - classpath:data/default_schedule_data.sql
 logging:
   level:
     org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG

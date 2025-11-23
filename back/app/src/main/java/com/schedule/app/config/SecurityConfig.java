@@ -4,6 +4,8 @@ import com.schedule.app.handler.JsonAccessDeniedHandler;
 import com.schedule.app.handler.JsonAuthEntryPoint;
 import com.schedule.app.handler.JsonAuthFailureHandler;
 import com.schedule.app.handler.JsonAuthSuccessHandler;
+import com.schedule.app.handler.JsonLogoutHandler;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -22,7 +24,8 @@ public class SecurityConfig {
       JsonAuthSuccessHandler successHandler,
       JsonAuthFailureHandler failureHandler,
       JsonAuthEntryPoint entryPoint,
-      JsonAccessDeniedHandler accessDeniedHandler)
+      JsonAccessDeniedHandler accessDeniedHandler,
+      JsonLogoutHandler logoutHandler)
       throws Exception {
 
     http.csrf(csrf -> csrf.disable())
@@ -47,6 +50,7 @@ public class SecurityConfig {
             logout ->
                 logout
                     .logoutUrl("/api/logout")
+                    .logoutSuccessHandler(logoutHandler)
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID"))
         .httpBasic(basic -> basic.disable());
