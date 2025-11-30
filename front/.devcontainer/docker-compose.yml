@@ -1,0 +1,22 @@
+name: WSMSA-front
+services:
+  node:
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ../
+        target: /schedule
+      - type: volume
+        source: npm-Work-Schedule-Management-and-Sharing-App-front
+        target: /root/.npm
+    ports:
+      - "3000:3000"
+    networks:
+      - schedule-network
+    tty: true
+volumes:
+  npm-Work-Schedule-Management-and-Sharing-App-front:
+networks:
+   schedule-network:
