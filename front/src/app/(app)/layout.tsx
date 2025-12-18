@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogoutButton from "./logoutbutton";
 
 export default function ScheduleLayout({
     children,
@@ -14,9 +15,7 @@ export default function ScheduleLayout({
                     <li><Link href="/edit/default">登録</Link></li>
                     <li><Link href="/search">検索</Link></li>
                 </ul>
-                <ul>
-                    <li><Link href="/logout">ログアウト</Link></li>
-                </ul>
+                <LogoutButton></LogoutButton>
             </nav>
         </header>
             <main>

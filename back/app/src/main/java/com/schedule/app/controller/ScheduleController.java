@@ -287,4 +287,14 @@ public class ScheduleController {
   public List<WorkTypeDTO> getWorkTypes() {
     return workTypeService.getWorkTypeList();
   }
+
+  /**
+   * ログインしているか確認用
+   * 
+   * @return ResponseEntity<Void> 200 OK
+   */
+  @GetMapping("/api/session")
+  public ResponseEntity<Void> getMyUserInfo() {
+    return ResponseEntity.ok().build();
+  }
 }

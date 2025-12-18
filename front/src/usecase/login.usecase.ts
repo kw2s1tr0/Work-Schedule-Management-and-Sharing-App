@@ -1,12 +1,10 @@
 import { Loginform } from "@/type/form/login.form";
 import { Loginreq } from "@/type/req/login.req";
-import { Loginres } from "@/type/res/login.res";
-import { ExpectedError } from "@/Error/LoginError";
+import { ExpectedError } from "@/Error/ExpectedError";
 
 export async function loginUsecase(loginform: Loginform): Promise<void> {
     const loginreq: Loginreq = toreq(loginform);
-    const loginres: Loginres = await post(loginreq);
-    throwIfError(loginres);
+    await post(loginreq);
 }
 
 function toreq (loginform: Loginform): Loginreq {
@@ -17,7 +15,7 @@ function toreq (loginform: Loginform): Loginreq {
     return loginreq;
 }
 
-async function post (loginreq: Loginreq): Promise<Loginres> {
+async function post (loginreq: Loginreq): Promise<void> {
     const response = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -27,18 +25,10 @@ async function post (loginreq: Loginreq): Promise<Loginres> {
     })
 
     const data = await response.json();
-    const status: number = response.status;
 
-    const loginres: Loginres = {
-        status: status,
-        data: data
-    };
-
-    return loginres;
-}
-
-function throwIfError (loginres: Loginres): void {
-    if (loginres.status !== 200) {
-        throw new ExpectedError(loginres.status, [loginres.data.message]);
+    if (response.status !== 200) {
+        throw new ExpectedError(response.status, [data.message]);
     }
+
+    return;
 }

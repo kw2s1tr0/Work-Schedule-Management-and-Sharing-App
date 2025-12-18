@@ -1,20 +1,28 @@
 export async function POST(request: Request) {
     const body = await request.json();
 
-    const data = await fetch("http://localhost:8080/api/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    })
+    const params = new URLSearchParams();
+    params.append("userId", body.userId);
+    params.append("password", body.password);
+
+    const data = await fetch("http://host.docker.internal:8080/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: params.toString()
+        })
 
     const result = await data.json();
 
-    return Response.json(result, {
+    const response = Response.json(result, {
         status: data.status,
-        headers: {
-            "Content-Type": "application/json"
-        }
     });
-} 
+
+    const cookies = data.headers.get("set-cookie");
+    if (cookies) {
+        response.headers.set("set-cookie", cookies);
+    }
+
+    return response;
+}
