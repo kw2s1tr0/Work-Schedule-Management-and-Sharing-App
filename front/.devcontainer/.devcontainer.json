@@ -1,16 +1,14 @@
 {
-    "name": "devcontainer",
-    "dockerComposeFile": [
-        "docker-compose.yml"
-    ],
-    "service": "node",
-    "workspaceFolder": "/schedule",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "xabikos.JavaScriptSnippets",
-                "ms-vscode.vscode-typescript-next"
-            ]
-        }
+  "name": "devcontainer",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "node",
+  "workspaceFolder": "/schedule",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "xabikos.JavaScriptSnippets",
+        "ms-vscode.vscode-typescript-next"
+      ]
     }
+  }
 }

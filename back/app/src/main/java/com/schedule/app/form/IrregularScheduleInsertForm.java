@@ -10,7 +10,6 @@ import lombok.Builder;
 
 @Builder
 public record IrregularScheduleInsertForm(
-    Integer id,
     @NotNull LocalTime startTime,
     @NotNull LocalTime endTime,
     @NotNull LocalDate date,

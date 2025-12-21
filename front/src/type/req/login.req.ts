@@ -1,4 +1,4 @@
 export type Loginreq = {
-    userId: string;
-    password: string;
-}
+  userId: string;
+  password: string;
+};

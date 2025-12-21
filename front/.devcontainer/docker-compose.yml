@@ -12,7 +12,7 @@ services:
         source: node_modules
         target: /schedule/node_modules
     ports:
-      - "3000:3000"
+      - '3000:3000'
     networks:
       - schedule-network
     tty: true
@@ -23,4 +23,4 @@ services:
 volumes:
   node_modules:
 networks:
-   schedule-network:
+  schedule-network:

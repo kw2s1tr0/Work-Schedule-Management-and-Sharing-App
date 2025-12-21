@@ -1,4 +1,4 @@
 export type Loginform = {
-    userId: string;
-    password: string;
-}
+  userId: string;
+  password: string;
+};

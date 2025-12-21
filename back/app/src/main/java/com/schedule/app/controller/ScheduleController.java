@@ -290,11 +290,24 @@ public class ScheduleController {
 
   /**
    * ログインしているか確認用
-   * 
+   *
    * @return ResponseEntity<Void> 200 OK
    */
   @GetMapping("/api/session")
-  public ResponseEntity<Void> getMyUserInfo() {
+  public ResponseEntity<Void> getLoginInfo() {
     return ResponseEntity.ok().build();
+  }
+
+  /**
+   * 認証ユーザー情報取得
+   *
+   * @param userDetails 認証ユーザー情報
+   * @return ユーザーID
+   */
+  @GetMapping("/api/me")
+  public ResponseEntity<String> getUserInfo(
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+    String userId = userDetails.getUsername();
+    return ResponseEntity.ok(userId);
   }
 }
