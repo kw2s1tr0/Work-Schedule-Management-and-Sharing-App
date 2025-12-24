@@ -19,11 +19,13 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
    *
    * @param form 画面入力フォーム
    * @param userId ユーザーID
+   * @return 生成されたID
    */
   @Override
-  public void postDefaultScheduleService(DefaultScheduleInsertForm form, String userId) {
+  public Integer postDefaultScheduleService(DefaultScheduleInsertForm form, String userId) {
     DefaultScheduleInputRecord record = toDefaultScheduleRecord(form, userId);
-    postDefaultSchedule(record);
+    int id = postDefaultSchedule(record);
+    return id;
   }
 
   /**
@@ -57,9 +59,12 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
    * デフォルトスケジュールを登録する
    *
    * @param record デフォルトスケジュール入力レコード
+   * @return 生成されたID
    */
   @Override
-  public void postDefaultSchedule(DefaultScheduleInputRecord record) {
+  public Integer postDefaultSchedule(DefaultScheduleInputRecord record) {
     scheduleCreateMapper.createDefaultSchedule(record);
+    int id = record.id();
+    return id;
   }
 }

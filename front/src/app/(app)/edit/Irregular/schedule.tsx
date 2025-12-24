@@ -15,6 +15,8 @@ export default function Schedule({ irregularscheduleDTO }: Props) {
         <p>{startTime}-{endTime}</p>
         <p>{date}</p>
         <p style={{ backgroundColor: worktypeColor }}>{worktypeName}</p>
+        <button>編集</button>
+        <button>削除</button>
       </div>
     </React.Fragment>
     </>

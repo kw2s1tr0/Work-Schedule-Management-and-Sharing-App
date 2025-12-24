@@ -3,11 +3,11 @@ import { ServerOrClientEnum } from '@/enum/serverOrClient.enum';
 import { ExpectedError } from '@/Error/ExpectedError';
 import { fetcher } from '@/fetch/fetch';
 
-export async function DeleteDefaultScheduleUsecase(id: string, type: ServerOrClientEnum): Promise<void> {
-  await deleteSchedule(id, type);
+export async function DeleteDefaultScheduleUsecase(id: string, type: ServerOrClientEnum): Promise<string> {
+  return await deleteSchedule(id, type);
 }
 
-async function deleteSchedule(id: string, type: ServerOrClientEnum): Promise<void> {
+async function deleteSchedule(id: string, type: ServerOrClientEnum): Promise<string> {
   const response = await fetcher(`/api/defaultSchedule/${id}`, MethodEnum.DELETE, type);
 
   const data = await response.json();
@@ -16,5 +16,5 @@ async function deleteSchedule(id: string, type: ServerOrClientEnum): Promise<voi
     throw new ExpectedError(response.status, [data.message]);
   }
 
-  return;
+  return data.id;
 }

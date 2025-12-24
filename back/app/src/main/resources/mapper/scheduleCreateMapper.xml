@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.schedule.app.repository.ScheduleCreateMapper">
     
-    <insert id="createDefaultSchedule">
+    <insert id="createDefaultSchedule" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO default_schedule (
             user_id,
             start_time,
@@ -20,7 +20,7 @@
         )
     </insert>
 
-    <insert id="createRegularSchedule">
+    <insert id="createRegularSchedule" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO regular_schedule (
             user_id,
             start_time,
@@ -40,7 +40,7 @@
         )
     </insert>
 
-    <insert id="createIrregularSchedule">
+    <insert id="createIrregularSchedule" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO irregular_schedule (
             user_id,
             date,

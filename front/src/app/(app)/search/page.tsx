@@ -33,7 +33,7 @@ export default async function Search() {
   return (
     <>
       <h1>Search</h1>
-      <Searchpage userDTOlist={userDTOlist} organizationDTOlist={organizationDTOlist}></Searchpage>
+      <Searchpage userDTOlist={userDTOlist} organizationDTOlist={organizationDTOlist} week={week}></Searchpage>
     </>
   );
 }

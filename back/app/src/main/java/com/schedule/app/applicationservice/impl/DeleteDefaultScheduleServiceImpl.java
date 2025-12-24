@@ -17,11 +17,13 @@ public class DeleteDefaultScheduleServiceImpl implements DeleteDefaultScheduleSe
    *
    * @param scheduleId スケジュールID
    * @param userId ユーザーID
+   * @return 削除したID
    */
   @Override
-  public void deleteDefaultScheduleService(int scheduleId, String userId) {
+  public Integer deleteDefaultScheduleService(int scheduleId, String userId) {
     existDefaultSchedule(scheduleId, userId);
-    deleteDefaultSchedule(scheduleId);
+    int id = deleteDefaultSchedule(scheduleId);
+    return id;
   }
 
   /**
@@ -39,9 +41,12 @@ public class DeleteDefaultScheduleServiceImpl implements DeleteDefaultScheduleSe
    * デフォルトスケジュールを削除する
    *
    * @param scheduleId スケジュールID
+   * @return 削除したID
    */
   @Override
-  public void deleteDefaultSchedule(int scheduleId) {
+  public Integer deleteDefaultSchedule(int scheduleId) {
     scheduleDeleteMapper.deleteDefaultSchedule(scheduleId);
+    int id = scheduleId;
+    return id;
   }
 }

@@ -20,11 +20,13 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
    *
    * @param form 画面入力フォーム
    * @param userId ユーザーID
+   * @return 生成されたID
    */
   @Override
-  public void postIrregularScheduleService(IrregularScheduleInsertForm form, String userId) {
+  public Integer postIrregularScheduleService(IrregularScheduleInsertForm form, String userId) {
     IrregularScheduleInputRecord record = toIrregularScheduleRecord(form, userId);
-    postIrregularSchedule(record);
+    int id = postIrregularSchedule(record);
+    return id;
   }
 
   /**
@@ -57,9 +59,12 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
    * イレギュラースケジュールを登録する
    *
    * @param record イレギュラースケジュール入力レコード
+   * @return 生成されたID
    */
   @Override
-  public void postIrregularSchedule(IrregularScheduleInputRecord record) {
+  public Integer postIrregularSchedule(IrregularScheduleInputRecord record) {
     scheduleCreateMapper.createIrregularSchedule(record);
+    int id = record.id();
+    return id;
   }
 }

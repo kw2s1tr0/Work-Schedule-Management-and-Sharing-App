@@ -16,6 +16,8 @@ export default function Schedule({ regularscheduleDTO }: Props) {
         <p>{startDate}-{endDate}</p>
         <p>{daysOfWeek}</p>
         <p style={{ backgroundColor: worktypeColor }}>{worktypeName}</p>
+        <button>編集</button>
+        <button>削除</button>
       </div>
     </React.Fragment>
     </>

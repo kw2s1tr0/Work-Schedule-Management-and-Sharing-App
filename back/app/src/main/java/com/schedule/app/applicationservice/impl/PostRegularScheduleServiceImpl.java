@@ -20,12 +20,14 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
    *
    * @param form 画面入力フォーム
    * @param userId ユーザーID
+   * @return 生成されたID
    */
   @Override
-  public void postRegularScheduleService(RegularScheduleInsertForm form, String userId) {
+  public Integer postRegularScheduleService(RegularScheduleInsertForm form, String userId) {
     RegularSchedule regularSchedule = toRegularScheduleEntity(form, userId);
     RegularScheduleInputRecord record = toRegularScheduleRecord(regularSchedule);
-    postRegularSchedule(record);
+    int id = postRegularSchedule(record);
+    return id;
   }
 
   /**
@@ -85,9 +87,12 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
    * レギュラースケジュールを登録する
    *
    * @param record レギュラースケジュール入力レコード
+   * @return 生成されたID
    */
   @Override
-  public void postRegularSchedule(RegularScheduleInputRecord record) {
+  public Integer postRegularSchedule(RegularScheduleInputRecord record) {
     scheduleCreateMapper.createRegularSchedule(record);
+    int id = record.id();
+    return id;
   }
 }

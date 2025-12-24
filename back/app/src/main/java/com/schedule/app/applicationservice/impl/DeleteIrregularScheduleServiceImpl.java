@@ -17,11 +17,13 @@ public class DeleteIrregularScheduleServiceImpl implements DeleteIrregularSchedu
    *
    * @param scheduleId スケジュールID
    * @param userId ユーザーID
+   * @return 削除したID
    */
   @Override
-  public void deleteIrregularScheduleService(int scheduleId, String userId) {
+  public Integer deleteIrregularScheduleService(int scheduleId, String userId) {
     existIrregularSchedule(scheduleId, userId);
-    deleteIrregularSchedule(scheduleId);
+    int id = deleteIrregularSchedule(scheduleId);
+    return id;
   }
 
   /**
@@ -39,9 +41,11 @@ public class DeleteIrregularScheduleServiceImpl implements DeleteIrregularSchedu
    * イレギュラースケジュールを削除する
    *
    * @param scheduleId スケジュールID
+   * @return 削除したID
    */
   @Override
-  public void deleteIrregularSchedule(int scheduleId) {
+  public Integer deleteIrregularSchedule(int scheduleId) {
     scheduleDeleteMapper.deleteIrregularSchedule(scheduleId);
+    return scheduleId;
   }
 }

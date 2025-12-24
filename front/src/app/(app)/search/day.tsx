@@ -7,11 +7,12 @@ type Props = {
 
 export default function Day({ scheduleDTO }: Props) {
 
-    const { startTime, endTime, worktypeName, worktypeColor } = scheduleDTO;
+    const { startTime, endTime, date, worktypeName, worktypeColor } = scheduleDTO;
 
   return (
     <React.Fragment>
       <div>
+        <p>{date}</p>
         <p>{startTime}-{endTime}</p>
         <p style={{ backgroundColor: worktypeColor }}>{worktypeName}</p>
       </div>

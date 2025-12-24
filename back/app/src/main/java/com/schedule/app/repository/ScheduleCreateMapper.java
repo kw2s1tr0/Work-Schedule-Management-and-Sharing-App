@@ -5,9 +5,9 @@ import com.schedule.app.record.input.IrregularScheduleInputRecord;
 import com.schedule.app.record.input.RegularScheduleInputRecord;
 
 public interface ScheduleCreateMapper {
-  void createDefaultSchedule(DefaultScheduleInputRecord record);
+  Integer createDefaultSchedule(DefaultScheduleInputRecord record);
 
-  void createRegularSchedule(RegularScheduleInputRecord record);
+  Integer createRegularSchedule(RegularScheduleInputRecord record);
 
-  void createIrregularSchedule(IrregularScheduleInputRecord record);
+  Integer createIrregularSchedule(IrregularScheduleInputRecord record);
 }

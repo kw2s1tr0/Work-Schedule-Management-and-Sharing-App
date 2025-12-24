@@ -132,15 +132,15 @@ public class ScheduleController {
    *
    * @param form 画面入力フォーム
    * @param userDetails 認証ユーザー情報
-   * @return ResponseEntity<Void> 201 CREATED
+   * @return ResponseEntity<Integer> 生成されたID
    */
   @PostMapping("/api/irregularSchedule")
-  public ResponseEntity<Void> postIrregularSchedule(
+  public ResponseEntity<Integer> postIrregularSchedule(
       @Valid @RequestBody IrregularScheduleInsertForm form,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
     String userId = userDetails.getUsername();
-    postIrregularScheduleService.postIrregularScheduleService(form, userId);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    Integer id = postIrregularScheduleService.postIrregularScheduleService(form, userId);
+    return ResponseEntity.status(HttpStatus.CREATED).body(id);
   }
 
   /**
@@ -148,15 +148,15 @@ public class ScheduleController {
    *
    * @param form 画面入力フォーム
    * @param userDetails 認証ユーザー情報
-   * @return ResponseEntity<Void> 201 CREATED
+   * @return ResponseEntity<Integer> 生成されたID
    */
   @PostMapping("/api/regularSchedule")
-  public ResponseEntity<Void> postRegularSchedule(
+  public ResponseEntity<Integer> postRegularSchedule(
       @Valid @RequestBody RegularScheduleInsertForm form,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
     String userId = userDetails.getUsername();
-    postRegularScheduleService.postRegularScheduleService(form, userId);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    Integer id = postRegularScheduleService.postRegularScheduleService(form, userId);
+    return ResponseEntity.status(HttpStatus.CREATED).body(id);
   }
 
   /**
@@ -164,15 +164,15 @@ public class ScheduleController {
    *
    * @param form 画面入力フォーム
    * @param userDetails 認証ユーザー情報
-   * @return ResponseEntity<Void> 201 CREATED
+   * @return ResponseEntity<Integer> 生成されたID
    */
   @PostMapping("/api/defaultSchedule")
-  public ResponseEntity<Void> postDefaultSchedule(
+  public ResponseEntity<Integer> postDefaultSchedule(
       @Valid @RequestBody DefaultScheduleInsertForm form,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
     String userId = userDetails.getUsername();
-    postDefaultScheduleService.postDefaultScheduleService(form, userId);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    Integer id = postDefaultScheduleService.postDefaultScheduleService(form, userId);
+    return ResponseEntity.status(HttpStatus.CREATED).body(id);
   }
 
   /**
@@ -228,14 +228,14 @@ public class ScheduleController {
    *
    * @param id スケジュールID
    * @param userDetails 認証ユーザー情報
-   * @return ResponseEntity<Void> 204 NO CONTENT
+   * @return ResponseEntity<Integer> 削除したID
    */
   @DeleteMapping("/api/irregularSchedule/{id}")
-  public ResponseEntity<Void> deleteIrregularSchedule(
+  public ResponseEntity<Integer> deleteIrregularSchedule(
       @PathVariable Integer id, @AuthenticationPrincipal CustomUserDetails userDetails) {
     String userId = userDetails.getUsername();
-    deleteIrregularScheduleService.deleteIrregularScheduleService(id, userId);
-    return ResponseEntity.noContent().build();
+    Integer deletedId = deleteIrregularScheduleService.deleteIrregularScheduleService(id, userId);
+    return ResponseEntity.ok(deletedId);
   }
 
   /**
@@ -243,14 +243,14 @@ public class ScheduleController {
    *
    * @param id スケジュールID
    * @param userDetails 認証ユーザー情報
-   * @return ResponseEntity<Void> 204 NO CONTENT
+   * @return ResponseEntity<Integer> 削除したID
    */
   @DeleteMapping("/api/regularSchedule/{id}")
-  public ResponseEntity<Void> deleteRegularSchedule(
+  public ResponseEntity<Integer> deleteRegularSchedule(
       @PathVariable Integer id, @AuthenticationPrincipal CustomUserDetails userDetails) {
     String userId = userDetails.getUsername();
-    deleteRegularScheduleService.deleteRegularScheduleService(id, userId);
-    return ResponseEntity.noContent().build();
+    Integer deletedId = deleteRegularScheduleService.deleteRegularScheduleService(id, userId);
+    return ResponseEntity.ok(deletedId);
   }
 
   /**
@@ -258,14 +258,14 @@ public class ScheduleController {
    *
    * @param id スケジュールID
    * @param userDetails 認証ユーザー情報
-   * @return ResponseEntity<Void> 204 NO CONTENT
+   * @return ResponseEntity<Integer> 削除したID
    */
   @DeleteMapping("/api/defaultSchedule/{id}")
-  public ResponseEntity<Void> deleteDefaultSchedule(
+  public ResponseEntity<Integer> deleteDefaultSchedule(
       @PathVariable Integer id, @AuthenticationPrincipal CustomUserDetails userDetails) {
     String userId = userDetails.getUsername();
-    deleteDefaultScheduleService.deleteDefaultScheduleService(id, userId);
-    return ResponseEntity.noContent().build();
+    Integer deletedId = deleteDefaultScheduleService.deleteDefaultScheduleService(id, userId);
+    return ResponseEntity.ok(deletedId);
   }
 
   /**

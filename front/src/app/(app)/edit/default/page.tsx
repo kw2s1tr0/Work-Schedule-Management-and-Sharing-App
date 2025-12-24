@@ -4,6 +4,8 @@ import { GetSingleScheduleForm } from "@/type/form/getsingleschedule.form";
 import { GetDefaultScheduleUsecase } from "@/usecase/getdefaultschedule.usecase";
 import { ServerOrClientEnum } from "@/enum/serverOrClient.enum";
 import { DefaultScheduleDTO } from "@/type/dto/defaultschedule.dto";
+import { WorkTypeDTO } from "@/type/dto/worktype.dto";
+import { GetWorkTypeUsecase } from "@/usecase/getworltype.usecase";
 
 export const dynamic = 'force-dynamic';
 
@@ -28,11 +30,13 @@ export default async function Default() {
 
   const defaultscheduleDTOList: DefaultScheduleDTO[] = await GetDefaultScheduleUsecase(getSingleScheduleForm, ServerOrClientEnum.SERVER, cookie);
 
+  const worktypeDTOList: WorkTypeDTO[] = await GetWorkTypeUsecase(ServerOrClientEnum.SERVER, cookie);
+
   return (
     <>
       <h1>Edit</h1>
       <h2>Default</h2>
-      <DefaultPage defaultscheduleDTOList={defaultscheduleDTOList} />
+      <DefaultPage defaultscheduleDTOList={defaultscheduleDTOList} worktypeDTOList={worktypeDTOList} from={from} to={to} />
     </>
   );
 }

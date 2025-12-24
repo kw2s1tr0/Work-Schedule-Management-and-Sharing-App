@@ -32,7 +32,7 @@ export default async function Irregular() {
     <>
       <h1>Edit</h1>
       <h2>Irregular</h2>
-      <IrregularPage irregularscheduleDTOList={irregularscheduleDTOList} />
+      <IrregularPage irregularscheduleDTOList={irregularscheduleDTOList} from={from} to={to} />
     </>
   );
 }

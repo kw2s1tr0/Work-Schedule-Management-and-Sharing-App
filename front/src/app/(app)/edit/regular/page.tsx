@@ -32,7 +32,7 @@ export default async function Regular() {
     <>
       <h1>Edit</h1>
       <h2>Regular</h2>
-      <RegularPage regularscheduleDTOList={regularscheduleDTOList} />
+      <RegularPage regularscheduleDTOList={regularscheduleDTOList} from={from} to={to} />
     </>
   );
 }

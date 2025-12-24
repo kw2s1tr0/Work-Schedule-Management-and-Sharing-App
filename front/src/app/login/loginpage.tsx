@@ -12,13 +12,6 @@ export default function Loginpage() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-
-  useEffect(() => {
-    if (errorMessage) {
-      alert(errorMessage);
-    }
-  }, [errorMessage]);
 
   const onLoginClick = async () => {
     const form: Loginform = {
@@ -29,9 +22,9 @@ export default function Loginpage() {
       await loginUsecase(form,ServerOrClientEnum.CLIENT);
     } catch (error) {
       if (error instanceof ExpectedError) {
-        setErrorMessage(error.messages.join('\n'));
+        alert(error.messages.join('\n'));
       } else {
-        setErrorMessage('An unexpected error occurred');
+        alert('An unexpected error occurred');
       }
       return;
     }

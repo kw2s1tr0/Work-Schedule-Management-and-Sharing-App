@@ -8,9 +8,9 @@ import { PostIrregularScheduleReq } from '@/type/req/postirregularschedule.req';
 export async function PostIrregularScheduleUsecase(
   postIrregularScheduleForm: PostIrregularScheduleForm,
   type: ServerOrClientEnum
-): Promise<void> {
+): Promise<string> {
   const postIrregularScheduleReq: PostIrregularScheduleReq = toreq(postIrregularScheduleForm);
-  await post(postIrregularScheduleReq, type);
+  return await post(postIrregularScheduleReq, type);
 }
 
 function toreq(postIrregularScheduleForm: PostIrregularScheduleForm): PostIrregularScheduleReq {
@@ -23,7 +23,7 @@ function toreq(postIrregularScheduleForm: PostIrregularScheduleForm): PostIrregu
   return postIrregularScheduleReq;
 }
 
-async function post(postIrregularScheduleReq: PostIrregularScheduleReq, type: ServerOrClientEnum): Promise<void> {
+async function post(postIrregularScheduleReq: PostIrregularScheduleReq, type: ServerOrClientEnum): Promise<string> {
   const response = await fetcher(`/api/irregularSchedule`, MethodEnum.POST, type, postIrregularScheduleReq);
 
   const data = await response.json();
@@ -32,5 +32,5 @@ async function post(postIrregularScheduleReq: PostIrregularScheduleReq, type: Se
     throw new ExpectedError(response.status, [data.message]);
   }
 
-  return;
+  return data.id;
 }

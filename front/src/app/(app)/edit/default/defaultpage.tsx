@@ -2,24 +2,207 @@
 
 import { DefaultScheduleDTO } from "@/type/dto/defaultschedule.dto";
 import Schedule from "./schedule";
+import { useEffect, useState } from "react";
+import { GetDefaultScheduleUsecase } from "@/usecase/getdefaultschedule.usecase";
+import { ServerOrClientEnum } from "@/enum/serverOrClient.enum";
+import { ExpectedError } from "@/Error/ExpectedError";
+import { DeleteDefaultScheduleUsecase } from "@/usecase/deletedefaultschedule.usecase";
+import { PutDefaultScheduleForm } from "@/type/form/putdefaultschedule.form";
+import { PutDefaultScheduleUsecase } from "@/usecase/putdefaultschedule.usecase";
+import { WorkTypeDTO } from "@/type/dto/worktype.dto";
+import { PostDefaultScheduleUsecase } from "@/usecase/postdefaultschedule.usecase";
+import { PostDefaultScheduleForm } from "@/type/form/postdefaultschedule.form";
+import Modal from "./modal";
+import { PostOrPut } from "@/enum/PostOrPut.enum";
+import { Modalform } from "./modalform";
 
 type Props = {
-    defaultscheduleDTOList: DefaultScheduleDTO[];
+  defaultscheduleDTOList: DefaultScheduleDTO[];
+  worktypeDTOList: WorkTypeDTO[];
+  from: string;
+  to: string;
 };
 
-export default function DefaultPage({ defaultscheduleDTOList }: Props) {
+export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, from, to }: Props) {
+
+  const [defaultscheduleDTOListState, setDefaultscheduleDTOListState] = useState<DefaultScheduleDTO[]>(defaultscheduleDTOList);
+
+  const [fromState, setFrom] = useState<string>(from);
+  const [toState, setTo] = useState<string>(to);
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const [modalform, setModalform] = useState<Modalform>({
+    startDate: '',
+    endDate: '',
+    startTime: '',
+    endTime: '',
+    workTypeId: ''
+  });
+
+  const [postOrPutState, setPostOrPutState] = useState<PostOrPut>();
+
+  const [postDefaultScheduleForm, setPostDefaultScheduleForm] = useState<PostDefaultScheduleForm>({
+    startDate: '',
+    endDate: '',
+    startTime: '',
+    endTime: '',
+    workTypeId: ''
+  });
+
+  const handleSearch = async () => {
+    const getSingleScheduleForm = {
+      from: fromState,
+      to: toState,
+    };
+
+    try {
+      const defaultscheduleDTOListFiltered: DefaultScheduleDTO[] = await GetDefaultScheduleUsecase(getSingleScheduleForm, ServerOrClientEnum.CLIENT);
+      setDefaultscheduleDTOListState(defaultscheduleDTOListFiltered);
+    } catch (error) {
+      if (error instanceof ExpectedError) {
+        alert(error.messages.join('\n'));
+      } else {
+        alert('An unexpected error occurred');
+      }
+      return;
+    }
+  }
+
+  const handleDelete = async (scheduleId: string) => {
+    try {
+      const id = await DeleteDefaultScheduleUsecase(scheduleId, ServerOrClientEnum.CLIENT);
+      const updatedList = defaultscheduleDTOListState.filter(schedule => schedule.scheduleId !== id);
+      setDefaultscheduleDTOListState(updatedList);
+    } catch (error) {
+      if (error instanceof ExpectedError) {
+        alert(error.messages.join('\n'));
+      } else {
+        alert('An unexpected error occurred');
+      }
+      return;
+    }
+  }
+
+  const handleUpdate = async (putdefaultscheduleform: PutDefaultScheduleForm) => {
+    try {
+      await PutDefaultScheduleUsecase(putdefaultscheduleform, ServerOrClientEnum.CLIENT);
+
+      let worktypeName: string;
+      let worktypeColor: string;
+      worktypeDTOList.forEach((worktype) => {
+        if (worktype.id === putdefaultscheduleform.workTypeId) {
+          worktypeName = worktype.workTypeName;
+          worktypeColor = worktype.workTypeColor;
+        }
+      });
+
+      defaultscheduleDTOListState.map((schedule) => {
+        if (schedule.scheduleId === putdefaultscheduleform.id) {
+          schedule.startTime = putdefaultscheduleform.startTime;
+          schedule.endTime = putdefaultscheduleform.endTime;
+          schedule.worktypeName = worktypeName;
+          schedule.worktypeColor = worktypeColor;
+        }
+      });
+    } catch (error) {
+      if (error instanceof ExpectedError) {
+        alert(error.messages.join('\n'));
+      } else {
+        alert('An unexpected error occurred');
+      }
+      return;
+    }
+  }
+
+  const handleCreate = async (postdefaultscheduleform: PostDefaultScheduleForm) => {
+    try {
+      const id = await PostDefaultScheduleUsecase(postdefaultscheduleform, ServerOrClientEnum.CLIENT);
+
+      let newworktypeName: string = '';
+      let newworktypeColor: string = '';
+      worktypeDTOList.forEach((worktype) => {
+        if (worktype.id === postdefaultscheduleform.workTypeId) {
+          newworktypeName = worktype.workTypeName;
+          newworktypeColor = worktype.workTypeColor;
+        }
+      });
+
+      const newSchedule: DefaultScheduleDTO = {
+        scheduleId: id,
+        startTime: postdefaultscheduleform.startTime,
+        endTime: postdefaultscheduleform.endTime,
+        worktypeName: newworktypeName,
+        worktypeColor: newworktypeColor,
+        startDate: postdefaultscheduleform.startDate,
+        endDate: postdefaultscheduleform.endDate
+      };
+
+      setDefaultscheduleDTOListState([...defaultscheduleDTOListState, newSchedule]);
+    } catch (error) {
+      if (error instanceof ExpectedError) {
+        alert(error.messages.join('\n'));
+      } else {
+        alert('An unexpected error occurred');
+      }
+      return;
+    }
+  }
+
+  const openModal = (postOrPut: PostOrPut, modalform?: Modalform) => {
+    let newModalform: Modalform;
+    switch (postOrPut) {
+     case PostOrPut.POST:
+      newModalform = {
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        workTypeId: ''
+      };
+      break;
+    case PostOrPut.PUT:
+      newModalform = modalform!;
+      break;
+    }
+    setPostOrPutState(postOrPut);
+    setModalform(newModalform);
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
+
+  const findWorkTypeId = (worktypeName: string): string => {
+    let workTypeId = '';
+    worktypeDTOList.forEach((worktype) => {
+      if (worktype.workTypeName === worktypeName) {
+        workTypeId = worktype.id;
+      }
+    });
+    return workTypeId;
+  }
+
   return (
     <>
       <form>
         <label htmlFor="from">開始日</label>
-        <input type="date" id="from" name="from" />
+        <input type="date" id="from" name="from" value={fromState} onChange={(e) => setFrom(e.target.value)} />
         <label htmlFor="to">終了日</label>
-        <input type="date" id="to" name="to" />
-        <button type="button">検索</button>
+        <input type="date" id="to" name="to" value={toState} onChange={(e) => setTo(e.target.value)} />
+        <button type="button" onClick={handleSearch}>検索</button>
       </form>
-      {defaultscheduleDTOList.map((defaultscheduleDTO) => (
-        <Schedule key={defaultscheduleDTO.scheduleId} defaultscheduleDTO={defaultscheduleDTO} />
-      ))}
+      {defaultscheduleDTOListState.length === 0 && <p>期間内にデフォルトスケジュールは登録されていません。</p>}
+      {defaultscheduleDTOListState.length > 0 &&
+        defaultscheduleDTOListState.map((defaultscheduleDTO) => (
+          <Schedule key={defaultscheduleDTO.scheduleId} defaultscheduleDTO={defaultscheduleDTO} handleDelete={handleDelete} openModal={openModal} findWorkTypeId={findWorkTypeId}/>
+        ))}
+      <button type="button" onClick={() => openModal(PostOrPut.POST)}>新規作成</button>
+      {modalOpen && (
+        <Modal worktypeDTOList={worktypeDTOList} modalform={modalform} postOrPut={postOrPutState} handleUpdate={handleUpdate} handleCreate={handleCreate} closeModal={closeModal}/>
+      )}
     </>
   );
 }
+

@@ -8,9 +8,9 @@ import { PostDefaultScheduleReq } from '@/type/req/postdefaultschedule.req';
 export async function PostDefaultScheduleUsecase(
   postDefaultScheduleForm: PostDefaultScheduleForm,
   type: ServerOrClientEnum
-): Promise<void> {
+): Promise<string> {
   const postDefaultScheduleReq: PostDefaultScheduleReq = toreq(postDefaultScheduleForm);
-  await post(postDefaultScheduleReq, type);
+  return await post(postDefaultScheduleReq, type);
 }
 
 function toreq(postDefaultScheduleForm: PostDefaultScheduleForm): PostDefaultScheduleReq {
@@ -24,7 +24,7 @@ function toreq(postDefaultScheduleForm: PostDefaultScheduleForm): PostDefaultSch
   return postDefaultScheduleReq;
 }
 
-async function post(postDefaultScheduleReq: PostDefaultScheduleReq, type: ServerOrClientEnum): Promise<void> {
+async function post(postDefaultScheduleReq: PostDefaultScheduleReq, type: ServerOrClientEnum): Promise<string> {
   const response = await fetcher(`/api/defaultSchedule`, MethodEnum.POST, type, postDefaultScheduleReq);
 
   const data = await response.json();
@@ -33,5 +33,5 @@ async function post(postDefaultScheduleReq: PostDefaultScheduleReq, type: Server
     throw new ExpectedError(response.status, [data.message]);
   }
 
-  return;
+  return data.id;
 }
