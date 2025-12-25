@@ -60,6 +60,7 @@ export default function Modal({worktypeDTOList, modalform, postOrPut, handleUpda
         };
         try {
             await handleUpdate(putDefaultScheduleForm);
+            closeModal();
         } catch (error) {
             if (error instanceof ExpectedError) {
                 alert(error.messages.join('\n'));
@@ -79,6 +80,7 @@ export default function Modal({worktypeDTOList, modalform, postOrPut, handleUpda
         };
         try {
             await handleCreate(postDefaultScheduleForm);
+            closeModal();
         } catch (error) {
             if (error instanceof ExpectedError) {
                 alert(error.messages.join('\n'));

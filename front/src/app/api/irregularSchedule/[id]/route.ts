@@ -1,5 +1,5 @@
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const id = params.id;
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const {id} = await params;
 
   const data = await fetch(`${process.env.BACKEND_BASE_URL ?? ''}/api/irregularSchedule` + '/' + id, {
     method: 'DELETE',
@@ -7,6 +7,10 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       cookie: request.headers.get('cookie') ?? '',
     },
   });
+
+  if (data.status === 204) {
+    return new Response(null, { status: 204 });
+  }
 
   const result = await data.json();
 

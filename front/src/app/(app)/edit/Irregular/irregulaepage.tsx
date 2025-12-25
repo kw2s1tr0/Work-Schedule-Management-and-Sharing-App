@@ -31,11 +31,10 @@ export default function IrregularPage({ irregularscheduleDTOList, from, to }: Pr
       const irregularscheduleDTOListFiltered: IrregularScheduleDTO[] = await GetIrregularScheduleUsecase(getSingleScheduleForm, ServerOrClientEnum.CLIENT);
       setIrregularscheduleDTOListState(irregularscheduleDTOListFiltered);
     } catch (error) {
-      if (error instanceof ExpectedError) {
+ if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');
-      }
+        alert('An unexpected error occurred');}
       return;
     }
   }

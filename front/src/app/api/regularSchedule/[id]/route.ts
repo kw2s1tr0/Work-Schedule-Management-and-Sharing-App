@@ -1,5 +1,5 @@
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const id = params.id;
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const {id} = await params;
 
   const data = await fetch(`${process.env.BACKEND_BASE_URL}/api/regularSchedule` + '/' + id, {
     method: 'DELETE',

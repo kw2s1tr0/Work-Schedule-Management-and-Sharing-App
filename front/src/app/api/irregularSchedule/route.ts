@@ -58,7 +58,8 @@ export async function PUT(request: Request) {
     body: JSON.stringify(body),
   });
 
-  const result = await data.json();
+  const text = await data.text();
+  const result = text ? JSON.parse(text) : null;
 
   const response = Response.json(result, {
     status: data.status,

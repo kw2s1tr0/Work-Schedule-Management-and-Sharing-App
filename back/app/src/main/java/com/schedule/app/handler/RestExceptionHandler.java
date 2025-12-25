@@ -57,6 +57,7 @@ public class RestExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleUnexpected(Exception ex) {
     ErrorResponse body = new ErrorResponse(List.of("Internal server error"), LocalDateTime.now());
+    System.err.println(ex.getMessage());
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
   }
 

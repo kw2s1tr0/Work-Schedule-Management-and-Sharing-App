@@ -28,9 +28,8 @@ function toreq(putDefaultScheduleForm: PutDefaultScheduleForm): PutDefaultSchedu
 async function put(putDefaultScheduleReq: PutDefaultScheduleReq, type: ServerOrClientEnum): Promise<void> {
   const response = await fetcher(`/api/defaultSchedule`, MethodEnum.PUT, type, putDefaultScheduleReq);
 
-  const data = await response.json();
-
   if (!(200 <= response.status && response.status < 300)) {
+    const data = await response.json();
     throw new ExpectedError(response.status, [data.message]);
   }
 

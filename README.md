@@ -1,18 +1,17 @@
 # Work-Schedule-Management-and-Sharing-App
 
-## 今後の課題（TODO）※反省、後悔、懺悔も含む
+## 今後の課題/反省点（TODO）
 
 ※本項目は未実装・改善点の整理であり、現状動作はします。
 
 ### BACK
 
-- GET リクエストにおけるクエリパラメータバインディング時、
-  Java record の compact constructor で発生する DomainException が
+- Java record の compact constructor で発生する DomainException が
   Spring MVC の内部処理によりラップされ、
   意図した例外ハンドリングが行えないケースがある。
   現状はやむなく許容しているが、設計上の問題であるため、
   例外ハンドリングの整理、もしくは
-  GET 用 Form 設計の見直しを今後検討する。
+  DomainExceptionではなくMethodArgumentNotValidExceptionとするなどで見直しを今後検討する。
 
 - schedule 検索時に、
   ログインユーザーのスケジュール一覧取得と検索処理を

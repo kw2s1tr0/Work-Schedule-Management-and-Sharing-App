@@ -32,5 +32,5 @@ async function post(postIrregularScheduleReq: PostIrregularScheduleReq, type: Se
     throw new ExpectedError(response.status, [data.message]);
   }
 
-  return data.id;
+  return data;
 }

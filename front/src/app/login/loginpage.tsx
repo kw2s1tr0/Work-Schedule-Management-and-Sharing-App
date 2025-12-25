@@ -21,11 +21,10 @@ export default function Loginpage() {
     try {
       await loginUsecase(form,ServerOrClientEnum.CLIENT);
     } catch (error) {
-      if (error instanceof ExpectedError) {
+ if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');
-      }
+        alert('An unexpected error occurred');}
       return;
     }
     router.push('/search');

@@ -59,6 +59,10 @@ export async function PUT(request: Request) {
     body: JSON.stringify(body),
   });
 
+  if (data.status === 204) {
+    return new Response(null, { status: 204 });
+  }
+
   const result = await data.json();
 
   const response = Response.json(result, {

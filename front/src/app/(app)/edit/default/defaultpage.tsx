@@ -15,6 +15,7 @@ import { PostDefaultScheduleForm } from "@/type/form/postdefaultschedule.form";
 import Modal from "./modal";
 import { PostOrPut } from "@/enum/PostOrPut.enum";
 import { Modalform } from "./modalform";
+import { start } from "repl";
 
 type Props = {
   defaultscheduleDTOList: DefaultScheduleDTO[];
@@ -60,11 +61,10 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
       const defaultscheduleDTOListFiltered: DefaultScheduleDTO[] = await GetDefaultScheduleUsecase(getSingleScheduleForm, ServerOrClientEnum.CLIENT);
       setDefaultscheduleDTOListState(defaultscheduleDTOListFiltered);
     } catch (error) {
-      if (error instanceof ExpectedError) {
+ if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');
-      }
+        alert('An unexpected error occurred');}
       return;
     }
   }
@@ -75,11 +75,10 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
       const updatedList = defaultscheduleDTOListState.filter(schedule => schedule.scheduleId !== id);
       setDefaultscheduleDTOListState(updatedList);
     } catch (error) {
-      if (error instanceof ExpectedError) {
+ if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');
-      }
+        alert('An unexpected error occurred');}
       return;
     }
   }
@@ -97,20 +96,30 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
         }
       });
 
+      let updatedList: DefaultScheduleDTO[] = [];
+
       defaultscheduleDTOListState.map((schedule) => {
         if (schedule.scheduleId === putdefaultscheduleform.id) {
-          schedule.startTime = putdefaultscheduleform.startTime;
-          schedule.endTime = putdefaultscheduleform.endTime;
-          schedule.worktypeName = worktypeName;
-          schedule.worktypeColor = worktypeColor;
+          const newSchedule = {
+            scheduleId: putdefaultscheduleform.id,
+            startTime: putdefaultscheduleform.startTime,
+            endTime: putdefaultscheduleform.endTime,
+            startDate: putdefaultscheduleform.startDate,
+            endDate: putdefaultscheduleform.endDate,
+            worktypeName: worktypeName!,
+            worktypeColor: worktypeColor!
+          };
+          updatedList.push(newSchedule);
+          return;
         }
+        updatedList.push(schedule);
       });
+      setDefaultscheduleDTOListState(updatedList);
     } catch (error) {
-      if (error instanceof ExpectedError) {
+ if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');
-      }
+        alert('An unexpected error occurred');}
       return;
     }
   }
@@ -140,11 +149,10 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
 
       setDefaultscheduleDTOListState([...defaultscheduleDTOListState, newSchedule]);
     } catch (error) {
-      if (error instanceof ExpectedError) {
+ if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');
-      }
+        alert('An unexpected error occurred');}
       return;
     }
   }

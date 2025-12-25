@@ -34,5 +34,5 @@ async function post(postRegularScheduleReq: PostRegularScheduleReq, type: Server
     throw new ExpectedError(response.status, [data.message]);
   }
 
-  return data.id;
+  return data;
 }

@@ -16,5 +16,5 @@ async function deleteSchedule(id: string, type: ServerOrClientEnum): Promise<str
     throw new ExpectedError(response.status, [data.message]);
   }
 
-  return data.id;
+  return data;
 }

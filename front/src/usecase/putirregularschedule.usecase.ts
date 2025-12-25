@@ -27,10 +27,11 @@ function toreq(putIrregularScheduleForm: PutIrregularScheduleForm): PutIrregular
 async function put(putIrregularScheduleReq: PutIrregularScheduleReq, type: ServerOrClientEnum): Promise<void> {
   const response = await fetcher(`/api/irregularSchedule`, MethodEnum.PUT, type, putIrregularScheduleReq);
 
-  const data = await response.json();
+  const text = await response.text();
+  const data = text ? JSON.parse(text) : null;
 
   if (!(200 <= response.status && response.status < 300)) {
-    throw new ExpectedError(response.status, [data.message]);
+    throw new ExpectedError(response.status, [data?.message || 'Unknown error']);
   }
 
   return;

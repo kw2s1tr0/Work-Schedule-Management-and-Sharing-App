@@ -34,11 +34,10 @@ export default function Default({ defaultscheduleDTO, handleDelete, openModal, f
       }
       await handleDelete(scheduleId);
     } catch (error) {
-      if (error instanceof ExpectedError) {
+ if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');
-      }
+        alert('An unexpected error occurred');}
     }
   }
 

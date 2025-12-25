@@ -29,9 +29,8 @@ function toreq(putRegularScheduleForm: PutRegularScheduleForm): PutRegularSchedu
 async function put(putRegularScheduleReq: PutRegularScheduleReq, type: ServerOrClientEnum): Promise<void> {
   const response = await fetcher(`/api/regularSchedule`, MethodEnum.PUT, type, putRegularScheduleReq);
 
-  const data = await response.json();
-
   if (!(200 <= response.status && response.status < 300)) {
+    const data = await response.json();
     throw new ExpectedError(response.status, [data.message]);
   }
 
