@@ -1,3 +1,6 @@
+/**
+ * 曜日を表す列挙型
+ */
 export enum DayOfWeek {
   SUNDAY = 'SUNDAY',
   MONDAY = 'MONDAY',

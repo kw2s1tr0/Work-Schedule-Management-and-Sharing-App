@@ -1,5 +1,8 @@
 import { DayOfWeek } from '@/enum/dayofweek.enum';
 
+/**
+ * レギュラスケジュールDTO
+ */
 export type RegularscheduleDTO = {
   scheduleId: string;
   daysOfWeek: DayOfWeek;

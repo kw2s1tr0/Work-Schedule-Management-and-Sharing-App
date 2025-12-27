@@ -5,6 +5,12 @@ import { fetcher } from '@/fetch/fetch';
 import { PutIrregularScheduleForm } from '@/type/form/putirregularschedule.form';
 import { PutIrregularScheduleReq } from '@/type/req/putirregularschedule.req';
 
+/**
+ * イレギュラスケジュール更新ユースケース
+ * @param putIrregularScheduleForm イレギュラスケジュール更新フォーム
+ * @param type サーバーorクライアント
+ * @returns
+ */
 export async function PutIrregularScheduleUsecase(
   putIrregularScheduleForm: PutIrregularScheduleForm,
   type: ServerOrClientEnum,
@@ -15,6 +21,11 @@ export async function PutIrregularScheduleUsecase(
   await put(putIrregularScheduleReq, type);
 }
 
+/**
+ * イレギュラスケジュール更新リクエスト変換
+ * @param putIrregularScheduleForm イレギュラスケジュール更新フォーム
+ * @returns イレギュラスケジュール更新リクエスト
+ */
 function toreq(
   putIrregularScheduleForm: PutIrregularScheduleForm,
 ): PutIrregularScheduleReq {
@@ -28,6 +39,12 @@ function toreq(
   return putIrregularScheduleReq;
 }
 
+/**
+ * イレギュラスケジュール更新処理
+ * @param putIrregularScheduleReq イレギュラスケジュール更新リクエスト
+ * @param type サーバーorクライアント
+ * @returns
+ */
 async function put(
   putIrregularScheduleReq: PutIrregularScheduleReq,
   type: ServerOrClientEnum,
@@ -39,13 +56,10 @@ async function put(
     putIrregularScheduleReq,
   );
 
-  const text = await response.text();
-  const data = text ? JSON.parse(text) : null;
-
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
-    throw new ExpectedError(response.status, [
-      data?.message || 'Unknown error',
-    ]);
+    const data = await response.json();
+    throw new ExpectedError(response.status, [data.message]);
   }
 
   return;

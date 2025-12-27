@@ -3,6 +3,10 @@ import styles from './page.module.css';
 
 export const dynamic = 'force-static';
 
+/**
+ * ログインページコンポーネント
+ * @returns ログインページのJSX要素
+ */
 export default function Login() {
   return (
     <div className={styles.container}>

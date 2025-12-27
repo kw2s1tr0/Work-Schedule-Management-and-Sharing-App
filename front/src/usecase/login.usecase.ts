@@ -5,6 +5,12 @@ import { Loginreq } from '@/type/req/login.req';
 import { ExpectedError } from '@/Error/ExpectedError';
 import { fetcher } from '@/fetch/fetch';
 
+/**
+ * ログインユースケース
+ * @param loginform ログインフォーム
+ * @param type サーバーorクライアント
+ * @returns
+ */
 export async function loginUsecase(
   loginform: Loginform,
   type: ServerOrClientEnum,
@@ -13,6 +19,10 @@ export async function loginUsecase(
   await post(loginreq, type);
 }
 
+/** * ログインリクエスト変換
+ * @param loginform ログインフォーム
+ * @returns ログインリクエスト
+ */
 function toreq(loginform: Loginform): Loginreq {
   const loginreq: Loginreq = {
     userId: loginform.userId,
@@ -21,6 +31,11 @@ function toreq(loginform: Loginform): Loginreq {
   return loginreq;
 }
 
+/** * ログイン処理
+ * @param loginreq ログインリクエスト
+ * @param type サーバーorクライアント
+ * @returns
+ */
 async function post(
   loginreq: Loginreq,
   type: ServerOrClientEnum,

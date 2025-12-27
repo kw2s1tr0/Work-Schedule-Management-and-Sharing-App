@@ -1,3 +1,6 @@
+/**
+ * イレギュラスケジュール更新フォーム
+ */
 export type PutIrregularScheduleForm = {
   id: string;
   startTime: string;

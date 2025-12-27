@@ -10,6 +10,13 @@ import { UserRes } from '@/type/res/user.res';
 import { ScheduleDTO } from '@/type/dto/schedule.dto';
 import { ScheduleEnum } from '@/enum/schedule.enum';
 
+/**
+ * マイスケジュール取得ユースケース
+ * @param getScheduleForm スケジュール取得フォーム
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns スケジュールDTO配列
+ */
 export async function GetMyScheduleUsecase(
   getScheduleForm: GetScheduleForm,
   type: ServerOrClientEnum,
@@ -22,6 +29,12 @@ export async function GetMyScheduleUsecase(
   return scheduleDTOList;
 }
 
+/**
+ * ログインユーザー情報取得処理
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns ユーザーID
+ */
 async function loginuserinfo(
   type: ServerOrClientEnum,
   cookie?: string,
@@ -34,6 +47,7 @@ async function loginuserinfo(
     cookie,
   );
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     const data = await response.json();
     throw new ExpectedError(response.status, [data.message]);
@@ -44,6 +58,12 @@ async function loginuserinfo(
   return userId;
 }
 
+/**
+ * スケジュール取得リクエスト変換
+ * @param getScheduleForm スケジュール取得フォーム
+ * @param userId ユーザーID
+ * @returns スケジュール取得リクエスト
+ */
 function toreq(
   getScheduleForm: GetScheduleForm,
   userId: string,
@@ -59,11 +79,19 @@ function toreq(
   return getScheduleReq;
 }
 
+/**
+ * スケジュール取得処理
+ * @param getScheduleReq スケジュール取得リクエスト
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns ユーザーレスポンス配列
+ */
 async function get(
   getScheduleReq: GetScheduleReq,
   type: ServerOrClientEnum,
   cookie?: string,
 ): Promise<UserRes[]> {
+  // URLパラメータ設定
   const params = new URLSearchParams();
   if (getScheduleReq.userId) {
     params.append('userId', getScheduleReq.userId);
@@ -94,6 +122,7 @@ async function get(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }
@@ -103,6 +132,10 @@ async function get(
   return userResList;
 }
 
+/** * スケジュールレスポンスをDTOに変換
+ * @param userResList ユーザーレスポンス配列
+ * @returns スケジュールDTO配列
+ */
 function toDTO(userResList: UserRes[]): ScheduleDTO[] {
   const scheduleResList: ScheduleRes[] = userResList[0].schedules;
   let scheduleDTOList: ScheduleDTO[] = [];
@@ -111,6 +144,7 @@ function toDTO(userResList: UserRes[]): ScheduleDTO[] {
   let dayOfWeekfirst = datefirst.getUTCDay();
   const scheduleDTOListFirst: ScheduleDTO[] = [];
 
+  // 週の始まりを月曜日に調整
   if (dayOfWeekfirst !== 1) {
     if (dayOfWeekfirst === 0) {
       dayOfWeekfirst = 7;
@@ -129,6 +163,7 @@ function toDTO(userResList: UserRes[]): ScheduleDTO[] {
     }
   }
 
+  // 実際のスケジュールをDTOに変換
   const scheduleDTOListMiddle: ScheduleDTO[] = scheduleResList.map(
     (scheduleRes: ScheduleRes) => {
       const scheduleDTO: ScheduleDTO = {
@@ -149,6 +184,7 @@ function toDTO(userResList: UserRes[]): ScheduleDTO[] {
 
   const scheduleDTOListLast: ScheduleDTO[] = [];
 
+  // 週の終わりを日曜日に調整
   if (dayOfWeeklast !== 0) {
     if (dayOfWeeklast === 0) {
       dayOfWeeklast = 7;
@@ -167,6 +203,7 @@ function toDTO(userResList: UserRes[]): ScheduleDTO[] {
     }
   }
 
+  // DTOリスト結合
   scheduleDTOList = [
     ...scheduleDTOListFirst,
     ...scheduleDTOListMiddle,

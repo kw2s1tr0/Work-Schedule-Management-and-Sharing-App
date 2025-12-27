@@ -10,10 +10,16 @@ import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * イレギュラースケジュールページコンポーネント
+ * @returns イレギュラースケジュールページコンポーネント
+ */
 export default async function Irregular() {
+  // サーバーサイドでヘッダーからクッキーを取得
   const headerList = await headers();
   const cookie = headerList.get('cookie') ?? '';
 
+  // 当月の初日と最終日を取得
   const date = new Date();
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -31,6 +37,7 @@ export default async function Irregular() {
     to: to,
   };
 
+  // イレギュラースケジュールと勤務タイプを取得
   const irregularscheduleDTOList: IrregularScheduleDTO[] =
     await GetIrregularScheduleUsecase(
       getSingleScheduleForm,

@@ -1,5 +1,13 @@
 import { MethodEnum } from '@/enum/method.enum';
 
+/**
+ * サーバーフェッチ関数
+ * @param url - リクエストURL
+ * @param method - HTTPメソッド
+ * @param body - リクエストボディ（オプション）
+ * @param cookie - クッキー（オプション）
+ * @returns レスポンスオブジェクト
+ */
 export async function serverFetch(
   url: string,
   method: MethodEnum,

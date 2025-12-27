@@ -5,6 +5,11 @@ type Props = {
   scheduleDTO: ScheduleDTO;
 };
 
+/**
+ * 日別スケジュール表示コンポーネント
+ * @param scheduleDTO スケジュールデータ転送オブジェクト
+ * @returns 日別スケジュール表示コンポーネント
+ */
 export default function Day({ scheduleDTO }: Props) {
   const { startTime, endTime, date, worktypeName, worktypeColor } = scheduleDTO;
 

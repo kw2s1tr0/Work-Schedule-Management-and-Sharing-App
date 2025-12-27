@@ -3,6 +3,12 @@ import { ServerOrClientEnum } from '@/enum/serverOrClient.enum';
 import { ExpectedError } from '@/Error/ExpectedError';
 import { fetcher } from '@/fetch/fetch';
 
+/**
+ * レギュラスケジュール削除ユースケース
+ * @param id レギュラスケジュールID
+ * @param type サーバーorクライアント
+ * @returns
+ */
 export async function DeleteRegularScheduleUsecase(
   id: string,
   type: ServerOrClientEnum,
@@ -10,6 +16,12 @@ export async function DeleteRegularScheduleUsecase(
   return await deleteSchedule(id, type);
 }
 
+/**
+ * レギュラスケジュール削除処理
+ * @param id レギュラスケジュールID
+ * @param type サーバーorクライアント
+ * @returns
+ */
 async function deleteSchedule(
   id: string,
   type: ServerOrClientEnum,
@@ -22,6 +34,7 @@ async function deleteSchedule(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }

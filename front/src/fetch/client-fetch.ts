@@ -1,5 +1,12 @@
 import { MethodEnum } from '@/enum/method.enum';
 
+/**
+ * クライアントフェッチ関数
+ * @param url - リクエストURL
+ * @param method - HTTPメソッド
+ * @param body - リクエストボディ（オプション）
+ * @returns レスポンスオブジェクト
+ */
 export async function clientFetch(
   url: string,
   method: MethodEnum,

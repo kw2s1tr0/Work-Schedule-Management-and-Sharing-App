@@ -15,6 +15,13 @@ type Props = {
   week: string;
 };
 
+/**
+ * 検索ページコンポーネント
+ * @param userDTOlist ユーザーデータ転送オブジェクトリスト
+ * @param organizationDTOlist 組織データ転送オブジェクトリスト
+ * @param week 週
+ * @returns 検索ページコンポーネント
+ */
 export default function Searchpage({
   userDTOlist,
   organizationDTOlist,
@@ -27,6 +34,7 @@ export default function Searchpage({
   const [name, setName] = useState<string>('');
   const [organizationCode, setOrganizationCode] = useState<string>('');
 
+  // 検索処理
   const handleSearch = async () => {
     const getScheduleForm = {
       userId: userId,

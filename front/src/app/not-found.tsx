@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import styles from './not-found.module.css';
 
+/**
+ * 404 Not Foundページコンポーネント
+ * @returns 404ページのJSX要素
+ */
 export default function NotFound() {
   return (
     <div className={styles.container}>

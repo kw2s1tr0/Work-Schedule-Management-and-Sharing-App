@@ -11,6 +11,13 @@ type Props = {
   findWorkTypeId: (worktypeName: string) => string;
 };
 
+/** イレギュラースケジュールコンポーネント
+ * @param irregularscheduleDTO イレギュラースケジュールデータ転送オブジェクト
+ * @param handleDelete スケジュール削除処理
+ * @param openModal モーダルオープン処理
+ * @param findWorkTypeId 勤務タイプID検索処理
+ * @returns イレギュラースケジュールコンポーネント
+ */
 export default function Schedule({
   irregularscheduleDTO,
   handleDelete,
@@ -20,6 +27,7 @@ export default function Schedule({
   const { scheduleId, startTime, endTime, date, worktypeName, worktypeColor } =
     irregularscheduleDTO;
 
+  // スケジュール編集モーダルオープン
   const opendScheduleModal = () => {
     const worktypeId = findWorkTypeId(worktypeName);
     const modalform: Modalform = {
@@ -32,6 +40,7 @@ export default function Schedule({
     openModal(PostOrPut.PUT, modalform);
   };
 
+  // スケジュール削除処理
   const handlescheduleDelete = async () => {
     try {
       if (!confirm('Deleting schedule with ID: ' + scheduleId)) {

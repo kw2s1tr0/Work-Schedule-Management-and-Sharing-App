@@ -1,3 +1,6 @@
+/**
+ * 予期されたエラー(サーバー側からのもの)を表すカスタムエラークラス
+ */
 export class ExpectedError extends Error {
   constructor(
     public status: number,

@@ -1,3 +1,9 @@
+/**
+ * デフォルトスケジュール削除APIのDELETEメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @param param1 パラメータオブジェクト（idを含む）
+ * @returns レスポンスオブジェクト
+ */
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> },

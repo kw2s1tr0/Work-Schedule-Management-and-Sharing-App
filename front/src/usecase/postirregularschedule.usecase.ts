@@ -5,6 +5,12 @@ import { fetcher } from '@/fetch/fetch';
 import { PostIrregularScheduleForm } from '@/type/form/postirregularschedule.form';
 import { PostIrregularScheduleReq } from '@/type/req/postirregularschedule.req';
 
+/**
+ * イレギュラスケジュール登録ユースケース
+ * @param postIrregularScheduleForm イレギュラスケジュール登録フォーム
+ * @param type サーバーorクライアント
+ * @returns 登録ID
+ */
 export async function PostIrregularScheduleUsecase(
   postIrregularScheduleForm: PostIrregularScheduleForm,
   type: ServerOrClientEnum,
@@ -15,6 +21,11 @@ export async function PostIrregularScheduleUsecase(
   return await post(postIrregularScheduleReq, type);
 }
 
+/**
+ *  イレギュラスケジュール登録リクエスト変換
+ * @param postIrregularScheduleForm イレギュラスケジュール登録フォーム
+ * @returns イレギュラスケジュール登録リクエスト
+ */
 function toreq(
   postIrregularScheduleForm: PostIrregularScheduleForm,
 ): PostIrregularScheduleReq {
@@ -27,6 +38,12 @@ function toreq(
   return postIrregularScheduleReq;
 }
 
+/**
+ * イレギュラスケジュール登録処理
+ * @param postIrregularScheduleReq イレギュラスケジュール登録リクエスト
+ * @param type サーバーorクライアント
+ * @returns 登録ID
+ */
 async function post(
   postIrregularScheduleReq: PostIrregularScheduleReq,
   type: ServerOrClientEnum,
@@ -40,6 +57,7 @@ async function post(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }

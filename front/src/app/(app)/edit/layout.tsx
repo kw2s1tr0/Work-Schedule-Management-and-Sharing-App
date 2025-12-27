@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import styles from './layout.module.css';
 
+/**
+ * 編集ページレイアウトコンポーネント
+ * @param children 子コンポーネント
+ * @returns 編集ページレイアウトコンポーネント
+ */
 export default function SearchLayout({
   children,
 }: Readonly<{

@@ -5,6 +5,12 @@ import { fetcher } from '@/fetch/fetch';
 import { OrganizationRes } from '@/type/res/organization.res';
 import { OrganizationDTO } from '@/type/dto/organization.dto';
 
+/**
+ * 組織取得ユースケース
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns 組織DTO配列
+ */
 export async function GetOrganizationUsecase(
   type: ServerOrClientEnum,
   cookie?: string,
@@ -14,6 +20,12 @@ export async function GetOrganizationUsecase(
   return organizationDTOList;
 }
 
+/**
+ * 組織取得処理
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns 組織レスポンス配列
+ */
 async function get(
   type: ServerOrClientEnum,
   cookie?: string,
@@ -28,6 +40,7 @@ async function get(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }
@@ -37,6 +50,10 @@ async function get(
   return organizationResList;
 }
 
+/** * 組織レスポンスをDTOに変換
+ * @param organizationResList 組織レスポンス配列
+ * @returns 組織DTO配列
+ */
 function toDTO(organizationResList: OrganizationRes[]): OrganizationDTO[] {
   const organizationDTOList: OrganizationDTO[] = organizationResList.map(
     (organizationRes) => {

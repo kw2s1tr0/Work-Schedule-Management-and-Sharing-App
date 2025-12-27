@@ -1,3 +1,6 @@
+/**
+ * イレギュラスケジュールDTO
+ */
 export type IrregularScheduleDTO = {
   scheduleId: string;
   date: string;

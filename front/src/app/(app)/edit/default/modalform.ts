@@ -1,3 +1,6 @@
+/**
+ * モーダルフォームタイプ
+ */
 export type Modalform = {
   id?: string;
   startDate: string;

@@ -1,3 +1,6 @@
+/**
+ * スケジュールレスポンス
+ */
 export type ScheduleRes = {
   scheduleId: string;
   date: string;

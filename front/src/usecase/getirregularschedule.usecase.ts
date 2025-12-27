@@ -7,6 +7,13 @@ import { GetSingleScheduleForm } from '@/type/form/getsingleschedule.form';
 import { DefaultscheduleRes } from '@/type/res/irregularschedule.res';
 import { IrregularScheduleDTO } from '@/type/dto/irregularschedule.dto';
 
+/**
+ * イレギュラスケジュール取得ユースケース
+ * @param getSingleScheduleForm イレギュラスケジュール取得フォーム
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns イレギュラスケジュールDTO配列
+ */
 export async function GetIrregularScheduleUsecase(
   getSingleScheduleForm: GetSingleScheduleForm,
   type: ServerOrClientEnum,
@@ -26,6 +33,11 @@ export async function GetIrregularScheduleUsecase(
   return irregularScheduleDTOList;
 }
 
+/**
+ * イレギュラスケジュール取得リクエスト変換
+ * @param getSingleScheduleForm イレギュラスケジュール取得フォーム
+ * @returns イレギュラスケジュール取得リクエスト
+ */
 function toreq(
   getSingleScheduleForm: GetSingleScheduleForm,
 ): GetSingleScheduleReq {
@@ -36,6 +48,13 @@ function toreq(
   return getSingleScheduleReq;
 }
 
+/**
+ * イレギュラスケジュール取得処理
+ * @param getSingleScheduleReq イレギュラスケジュール取得リクエスト
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns イレギュラスケジュールレスポンス配列
+ */
 async function get(
   getSingleScheduleReq: GetSingleScheduleReq,
   type: ServerOrClientEnum,
@@ -59,6 +78,7 @@ async function get(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }
@@ -69,6 +89,11 @@ async function get(
   return irregularscheduleResList;
 }
 
+/**
+ * イレギュラスケジュールレスポンスをDTOに変換
+ * @param irregularscheduleResList イレギュラスケジュールレスポンス配列
+ * @returns イレギュラスケジュールDTO配列
+ */
 function toDTO(
   irregularscheduleResList: DefaultscheduleRes[],
 ): IrregularScheduleDTO[] {

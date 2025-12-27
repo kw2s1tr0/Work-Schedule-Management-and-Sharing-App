@@ -1,3 +1,8 @@
+/**
+ * 定期スケジュールAPIのGET、POST、PUTメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
@@ -31,6 +36,11 @@ export async function GET(request: Request) {
   return response;
 }
 
+/**
+ * 定期スケジュール作成APIのPOSTメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function POST(request: Request) {
   const body = await request.json();
 
@@ -55,6 +65,11 @@ export async function POST(request: Request) {
   return response;
 }
 
+/**
+ * 定期スケジュール更新APIのPUTメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function PUT(request: Request) {
   const body = await request.json();
 

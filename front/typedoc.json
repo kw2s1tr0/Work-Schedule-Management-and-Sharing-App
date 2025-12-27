@@ -1,0 +1,11 @@
+{
+    "entryPoints": ["src"],
+    "entryPointStrategy": "expand",
+    "out": "docs",
+    "includeVersion": true,
+    "excludePrivate": true,
+    "excludeExternals": true,
+    "exclude": ["**/__tests__/**", "**/*.spec.ts", "**/*.test.ts"],
+    "tsconfig": "tsconfig.json",
+    "theme": "default"
+}

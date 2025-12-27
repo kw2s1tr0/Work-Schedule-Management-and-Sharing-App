@@ -1,3 +1,8 @@
+/**
+ * ログインAPIのPOSTメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function POST(request: Request) {
   const body = await request.json();
 
@@ -5,6 +10,7 @@ export async function POST(request: Request) {
   params.append('userId', body.userId);
   params.append('password', body.password);
 
+  // ログインなどはフォームURLエンコード形式で送信する
   const data = await fetch(`${process.env.BACKEND_BASE_URL}/api/login`, {
     method: 'POST',
     headers: {
@@ -19,6 +25,7 @@ export async function POST(request: Request) {
     status: data.status,
   });
 
+  // Set-Cookieヘッダーをレスポンスに追加する
   const cookies = data.headers.get('set-cookie');
   if (cookies) {
     response.headers.set('set-cookie', cookies);

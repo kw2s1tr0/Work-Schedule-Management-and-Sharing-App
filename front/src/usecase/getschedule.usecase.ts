@@ -11,6 +11,13 @@ import { UserDTO } from '@/type/dto/user.dto';
 import { ScheduleDTO } from '@/type/dto/schedule.dto';
 import { ScheduleEnum } from '@/enum/schedule.enum';
 
+/**
+ * スケジュール取得ユースケース
+ * @param getScheduleForm スケジュール取得フォーム
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns ユーザDTO配列
+ */
 export async function GetScheduleUsecase(
   getScheduleForm: GetScheduleForm,
   type: ServerOrClientEnum,
@@ -22,6 +29,10 @@ export async function GetScheduleUsecase(
   return userDTOList;
 }
 
+/** * スケジュール取得リクエスト変換
+ * @param getScheduleForm スケジュール取得フォーム
+ * @returns スケジュール取得リクエスト
+ */
 function toreq(getScheduleForm: GetScheduleForm): GetScheduleReq {
   const getScheduleReq: GetScheduleReq = {
     userId: getScheduleForm.userId,
@@ -34,6 +45,12 @@ function toreq(getScheduleForm: GetScheduleForm): GetScheduleReq {
   return getScheduleReq;
 }
 
+/** * スケジュール取得処理
+ * @param getScheduleReq スケジュール取得リクエスト
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns ユーザレスポンス配列
+ */
 async function get(
   getScheduleReq: GetScheduleReq,
   type: ServerOrClientEnum,
@@ -41,6 +58,7 @@ async function get(
 ): Promise<UserRes[]> {
   const params = new URLSearchParams();
 
+  // パラメータ設定
   if (getScheduleReq.userId) {
     params.append('userId', getScheduleReq.userId);
   }
@@ -70,6 +88,7 @@ async function get(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }
@@ -79,6 +98,10 @@ async function get(
   return userResList;
 }
 
+/** * ユーザレスポンスをDTOに変換
+ * @param userResList ユーザレスポンス配列
+ * @returns ユーザDTO配列
+ */
 function toDTO(userResList: UserRes[]): UserDTO[] {
   const userDTOList: UserDTO[] = userResList.map((userRes) => {
     const scheduleDTOList: ScheduleDTO[] = userRes.schedules.map(

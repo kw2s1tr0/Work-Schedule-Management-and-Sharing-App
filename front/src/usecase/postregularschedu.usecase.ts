@@ -5,6 +5,12 @@ import { fetcher } from '@/fetch/fetch';
 import { PostRegularScheduleForm } from '@/type/form/postregularschedule.form';
 import { PostRegularScheduleReq } from '@/type/req/postregularschedule.req';
 
+/**
+ * レギュラスケジュール登録ユースケース
+ * @param postRegularScheduleForm レギュラスケジュール登録フォーム
+ * @param type サーバーorクライアント
+ * @returns 登録ID
+ */
 export async function PostRegularScheduleUsecase(
   postRegularScheduleForm: PostRegularScheduleForm,
   type: ServerOrClientEnum,
@@ -15,6 +21,10 @@ export async function PostRegularScheduleUsecase(
   return await post(postRegularScheduleReq, type);
 }
 
+/** *  レギュラスケジュール登録リクエスト変換
+ * @param postRegularScheduleForm レギュラスケジュール登録フォーム
+ * @returns レギュラスケジュール登録リクエスト
+ */
 function toreq(
   postRegularScheduleForm: PostRegularScheduleForm,
 ): PostRegularScheduleReq {
@@ -29,6 +39,12 @@ function toreq(
   return postRegularScheduleReq;
 }
 
+/**
+ * レギュラスケジュール登録処理
+ * @param postRegularScheduleReq レギュラスケジュール登録リクエスト
+ * @param type サーバーorクライアント
+ * @returns 登録ID
+ */
 async function post(
   postRegularScheduleReq: PostRegularScheduleReq,
   type: ServerOrClientEnum,
@@ -42,6 +58,7 @@ async function post(
 
   const data = await response.json();
 
+  
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }

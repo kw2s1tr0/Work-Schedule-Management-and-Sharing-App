@@ -1,5 +1,8 @@
 import { ScheduleEnum } from '@/enum/schedule.enum';
 
+/**
+ * スケジュールDTO
+ */
 export type ScheduleDTO = {
   scheduleId: string;
   date: string;

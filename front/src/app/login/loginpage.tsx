@@ -8,12 +8,17 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from './loginpage.module.css';
 
+/**
+ * ログインページコンポーネント
+ * @returns ログインページのJSX要素
+ */
 export default function Loginpage() {
   const router = useRouter();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // ログインボタンクリック時の処理
   const onLoginClick = async () => {
     const form: Loginform = {
       userId: username,

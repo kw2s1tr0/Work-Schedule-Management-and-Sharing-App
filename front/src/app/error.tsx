@@ -2,6 +2,11 @@
 
 import styles from './error.module.css';
 
+/**
+ * エラーページコンポーネント
+ * @param param0 エラーオブジェクトとリセット関数
+ * @returns エラーページのJSX要素
+ */
 export default function Error({
   error,
   reset,

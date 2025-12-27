@@ -1,7 +1,7 @@
 'use client';
 
 import { ScheduleDTO } from '@/type/dto/schedule.dto';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Day from './day';
 import { ServerOrClientEnum } from '@/enum/serverOrClient.enum';
 import { GetMyScheduleUsecase } from '@/usecase/getmyschedule.usecase';
@@ -15,21 +15,18 @@ type Props = {
   month: string;
 };
 
+/**
+ * カレンダーページコンポーネント
+ * @param scheduleDTOlist スケジュールデータ転送オブジェクトリスト
+ * @param month 月
+ * @returns カレンダーページコンポーネント
+ */
 export default function Calenderpage({ scheduleDTOlist, month }: Props) {
-  const isFirstRender = useRef(true);
-
   const [scheduleDTOlistState, setScheduleDTOlistState] =
     useState<ScheduleDTO[]>(scheduleDTOlist);
   const [monthState, setMonthState] = useState<string>(month);
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    fetchSchedules();
-  }, [monthState]);
-
+  // スケジュール取得処理
   const fetchSchedules = async () => {
     const getScheduleForm: GetScheduleForm = {
       userId: '',
@@ -55,20 +52,25 @@ export default function Calenderpage({ scheduleDTOlist, month }: Props) {
     }
   };
 
+  // 月移動処理
   const moveMonth = (PrevipoutOrNext: PrevipoutOrNextEnum) => {
     const [year, month] = monthState.split('-').map(Number);
+    let newMonth: string;
     switch (PrevipoutOrNext) {
       case PrevipoutOrNextEnum.PREVIOUS:
         const prevMonth = month === 1 ? 12 : month - 1;
         const prevYear = month === 1 ? year - 1 : year;
-        setMonthState(`${prevYear}-${String(prevMonth).padStart(2, '0')}`);
+        newMonth = `${prevYear}-${String(prevMonth).padStart(2, '0')}`;
+        setMonthState(newMonth);
         break;
       case PrevipoutOrNextEnum.NEXT:
         const nextMonth = month === 12 ? 1 : month + 1;
         const nextYear = month === 12 ? year + 1 : year;
-        setMonthState(`${nextYear}-${String(nextMonth).padStart(2, '0')}`);
+        newMonth = `${nextYear}-${String(nextMonth).padStart(2, '0')}`;
+        setMonthState(newMonth);
         break;
     }
+    fetchSchedules();
   };
 
   return (
@@ -115,10 +117,7 @@ export default function Calenderpage({ scheduleDTOlist, month }: Props) {
       </div>
       <div className={styles.calendar}>
         {scheduleDTOlistState.map((scheduleDTO, index) => (
-          <Day
-            key={`${scheduleDTO.date}-${index}`}
-            scheduleDTO={scheduleDTO}
-          />
+          <Day key={`${scheduleDTO.date}-${index}`} scheduleDTO={scheduleDTO} />
         ))}
       </div>
     </>

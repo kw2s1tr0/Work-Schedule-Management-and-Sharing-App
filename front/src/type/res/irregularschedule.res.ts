@@ -1,3 +1,6 @@
+/**
+ * デフォルトスケジュールレスポンス
+ */
 export type DefaultscheduleRes = {
   scheduleId: string;
   date: string;

@@ -1,3 +1,9 @@
+/**
+ * 定期スケジュール削除APIのDELETEメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @param params パスパラメータオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> },

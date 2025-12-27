@@ -1,3 +1,6 @@
+/**
+ * スケジュール取得フォーム
+ */
 export type GetScheduleForm = {
   userId: string;
   week: string;

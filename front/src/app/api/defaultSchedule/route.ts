@@ -1,3 +1,8 @@
+/**
+ * デフォルトスケジュールAPIのGETメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
@@ -31,6 +36,11 @@ export async function GET(request: Request) {
   return response;
 }
 
+/**
+ * デフォルトスケジュール作成APIのPOSTメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function POST(request: Request) {
   const body = await request.json();
 
@@ -55,6 +65,11 @@ export async function POST(request: Request) {
   return response;
 }
 
+/**
+ * デフォルトスケジュール更新APIのPUTメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function PUT(request: Request) {
   const body = await request.json();
 
@@ -70,6 +85,7 @@ export async function PUT(request: Request) {
     },
   );
 
+  // No Contentの場合は空のレスポンスを返す
   if (data.status === 204) {
     return new Response(null, { status: 204 });
   }

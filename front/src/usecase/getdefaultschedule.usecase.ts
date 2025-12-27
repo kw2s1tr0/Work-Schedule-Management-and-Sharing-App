@@ -7,6 +7,13 @@ import { GetSingleScheduleForm } from '@/type/form/getsingleschedule.form';
 import { DefaultscheduleRes } from '@/type/res/defaultschedule.res';
 import { DefaultScheduleDTO } from '@/type/dto/defaultschedule.dto';
 
+/**
+ * デフォルトスケジュール取得ユースケース
+ * @param getSingleScheduleForm デフォルトスケジュール取得フォーム
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns デフォルトスケジュールDTO配列
+ */
 export async function GetDefaultScheduleUsecase(
   getSingleScheduleForm: GetSingleScheduleForm,
   type: ServerOrClientEnum,
@@ -26,6 +33,11 @@ export async function GetDefaultScheduleUsecase(
   return defaultScheduleDTOList;
 }
 
+/**
+ * デフォルトスケジュール取得リクエスト変換
+ * @param getSingleScheduleForm デフォルトスケジュール取得フォーム
+ * @returns デフォルトスケジュール取得リクエスト
+ */
 function toreq(
   getSingleScheduleForm: GetSingleScheduleForm,
 ): GetSingleScheduleReq {
@@ -36,6 +48,13 @@ function toreq(
   return getSingleScheduleReq;
 }
 
+/**
+ * デフォルトスケジュール取得処理
+ * @param getSingleScheduleReq デフォルトスケジュール取得リクエスト
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns デフォルトスケジュールレスポンス配列
+ */
 async function get(
   getSingleScheduleReq: GetSingleScheduleReq,
   type: ServerOrClientEnum,
@@ -59,6 +78,7 @@ async function get(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }
@@ -69,6 +89,11 @@ async function get(
   return defaultscheduleResList;
 }
 
+/**
+ * デフォルトスケジュールレスポンスをDTOに変換
+ * @param defaultscheduleResList デフォルトスケジュールレスポンス配列
+ * @returns デフォルトスケジュールDTO配列
+ */
 function toDTO(
   defaultscheduleResList: DefaultscheduleRes[],
 ): DefaultScheduleDTO[] {

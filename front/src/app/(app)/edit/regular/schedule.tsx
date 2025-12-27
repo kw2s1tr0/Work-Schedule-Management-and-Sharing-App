@@ -1,7 +1,6 @@
 import { PostOrPut } from '@/enum/PostOrPut.enum';
 import { ExpectedError } from '@/Error/ExpectedError';
 import { RegularscheduleDTO } from '@/type/dto/regularschedule.dto';
-import React from 'react';
 import styles from './schedule.module.css';
 import { Modalform } from './modalform';
 
@@ -12,6 +11,11 @@ type Props = {
   findWorkTypeId: (worktypeName: string) => string;
 };
 
+/**
+ * スケジュールコンポーネント
+ * @param param0 
+ * @returns 
+ */
 export default function Schedule({
   regularscheduleDTO,
   handleDelete,
@@ -29,6 +33,7 @@ export default function Schedule({
     worktypeColor,
   } = regularscheduleDTO;
 
+  // スケジュール編集モーダルオープン
   const opendScheduleModal = () => {
     const workTypeId = findWorkTypeId(worktypeName);
     const modalform = {
@@ -43,6 +48,7 @@ export default function Schedule({
     openModal(PostOrPut.PUT, modalform);
   };
 
+  // スケジュール削除処理
   const handlescheduleDelete = async () => {
     try {
       if (!confirm('Deleting schedule with ID: ' + scheduleId)) {

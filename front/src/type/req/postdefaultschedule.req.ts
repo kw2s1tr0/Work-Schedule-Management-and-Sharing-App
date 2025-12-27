@@ -1,3 +1,6 @@
+/**
+ * デフォルトスケジュール登録リクエスト
+ */
 export type PostDefaultScheduleReq = {
   startTime: string;
   endTime: string;

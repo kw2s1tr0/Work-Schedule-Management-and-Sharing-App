@@ -8,6 +8,13 @@ import { RegularscheduleRes } from '@/type/res/regularschedule.res';
 import { RegularscheduleDTO } from '@/type/dto/regularschedule.dto';
 import { DayOfWeek } from '@/enum/dayofweek.enum';
 
+/**
+ * レギュラスケジュール取得ユースケース
+ * @param getSingleScheduleForm レギュラスケジュール取得フォーム
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns レギュラスケジュールDTO配列
+ */
 export async function GetRegularScheduleUsecase(
   getSingleScheduleForm: GetSingleScheduleForm,
   type: ServerOrClientEnum,
@@ -27,6 +34,11 @@ export async function GetRegularScheduleUsecase(
   return regularScheduleDTOList;
 }
 
+/**
+ * レギュラスケジュール取得リクエスト変換
+ * @param getSingleScheduleForm レギュラスケジュール取得フォーム
+ * @returns レギュラスケジュール取得リクエスト
+ */
 function toreq(
   getSingleScheduleForm: GetSingleScheduleForm,
 ): GetSingleScheduleReq {
@@ -37,6 +49,13 @@ function toreq(
   return getSingleScheduleReq;
 }
 
+/**
+ * レギュラスケジュール取得処理
+ * @param getSingleScheduleReq レギュラスケジュール取得リクエスト
+ * @param type サーバーorクライアント
+ * @param cookie クッキー
+ * @returns レギュラスケジュールレスポンス配列
+ */
 async function get(
   getSingleScheduleReq: GetSingleScheduleReq,
   type: ServerOrClientEnum,
@@ -60,6 +79,7 @@ async function get(
 
   const data = await response.json();
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     throw new ExpectedError(response.status, [data.message]);
   }
@@ -70,6 +90,10 @@ async function get(
   return regularscheduleResList;
 }
 
+/** * レギュラスケジュールレスポンスをDTOに変換
+ * @param regularscheduleResList レギュラスケジュールレスポンス配列
+ * @returns レギュラスケジュールDTO配列
+ */
 function toDTO(
   regularscheduleResList: RegularscheduleRes[],
 ): RegularscheduleDTO[] {

@@ -8,17 +8,24 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from './logoutbutton.module.css';
 
+
+/**
+ * ログアウトボタンコンポーネント
+ * @returns ログアウトボタンコンポーネント
+ */
 export default function LogoutButton() {
   const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState<string>('');
 
+  // エラーメッセージが更新されたときにアラートを表示
   useEffect(() => {
     if (errorMessage) {
       alert(errorMessage);
     }
   }, [errorMessage]);
 
+  // ログアウト処理
   const onLogoutClick = async () => {
     try {
       await logoutUsecase(ServerOrClientEnum.CLIENT);

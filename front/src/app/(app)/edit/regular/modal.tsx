@@ -1,5 +1,5 @@
 import { WorkTypeDTO } from '@/type/dto/worktype.dto';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Modalform } from './modalform';
 import { PostOrPut } from '@/enum/PostOrPut.enum';
 import { ExpectedError } from '@/Error/ExpectedError';
@@ -21,6 +21,16 @@ type Props = {
   closeModal: () => void;
 };
 
+/**
+ * モーダルコンポーネント
+ * @param worktypeDTOList 勤務タイプデータ転送オブジェクトリスト
+ * @param modalform モーダルフォーム
+ * @param postOrPut POSTかPUTか
+ * @param handleUpdate スケジュール更新処理
+ * @param handleCreate スケジュール作成処理
+ * @param closeModal モーダルクローズ処理
+ * @returns モーダルコンポーネント
+ */
 export default function Modal({
   worktypeDTOList,
   modalform,
@@ -32,27 +42,25 @@ export default function Modal({
   const { id, startDate, endDate, startTime, endTime, dayOfWeek, workTypeId } =
     modalform;
 
-  const [startTimestate, setStartTime] = useState<string>('');
-  const [endTimestate, setEndTime] = useState<string>('');
-  const [startDatestate, setStartDate] = useState<string>('');
-  const [endDatestate, setEndDate] = useState<string>('');
-  const [workTypeIdstate, setWorkTypeId] = useState<string>('');
-  const [dayOfWeekState, setDayOfWeek] = useState<DayOfWeek | ''>('');
-  const [workTypeColorState, setWorkTypeColorState] = useState<string>('');
+  const [startTimestate, setStartTime] = useState<string>(startTime);
+  const [endTimestate, setEndTime] = useState<string>(endTime);
+  const [startDatestate, setStartDate] = useState<string>(startDate);
+  const [endDatestate, setEndDate] = useState<string>(endDate);
+  const [workTypeIdstate, setWorkTypeId] = useState<string>(workTypeId);
+  const [dayOfWeekState, setDayOfWeek] = useState<DayOfWeek | ''>(dayOfWeek);
 
-  const handleWorkTypeChange = (id: string) => {
-    if (!id) {
-      setWorkTypeColorState('');
-      return;
-    }
+  // 勤務タイプカラー取得(stateではなくworkTypeIdstateを参照していることに注意)
+  const workTypeColor = useMemo(() => {
     const selectedWorkType = worktypeDTOList.find(
-      (worktype) => worktype.id === id,
+      (worktype) => worktype.id === workTypeIdstate,
     );
-    if (selectedWorkType) {
-      setWorkTypeColorState(selectedWorkType.workTypeColor);
+    if (!selectedWorkType) {
+      return '';
     }
-  };
+    return selectedWorkType.workTypeColor;
+  }, [worktypeDTOList, workTypeIdstate]);
 
+  // スケジュール更新処理
   const handleScheduleUpdate = async () => {
     if (!id) return;
     const putRegularScheduleForm: PutRegularScheduleForm = {
@@ -76,6 +84,7 @@ export default function Modal({
     }
   };
 
+  // スケジュール作成処理
   const handleScheduleCreate = async () => {
     const postRegularScheduleForm: PostRegularScheduleForm = {
       startDate: startDatestate,
@@ -96,16 +105,6 @@ export default function Modal({
       }
     }
   };
-
-  useEffect(() => {
-    setStartTime(startTime);
-    setEndTime(endTime);
-    setStartDate(startDate);
-    setEndDate(endDate);
-    setWorkTypeId(workTypeId);
-    setDayOfWeek(dayOfWeek);
-    handleWorkTypeChange(workTypeId);
-  }, [startTime, endTime, startDate, endDate, dayOfWeek, workTypeId]);
 
   return (
     <div className={styles.modalOverlay}>
@@ -176,7 +175,7 @@ export default function Modal({
         <div className={styles.formGroup}>
           <label
             className={styles.label}
-            style={{ backgroundColor: workTypeColorState }}
+            style={{ backgroundColor: workTypeColor }}
             htmlFor="workTypeId"
           >
             勤務タイプ:
@@ -188,7 +187,6 @@ export default function Modal({
             value={workTypeIdstate}
             onChange={(e) => {
               setWorkTypeId(e.target.value);
-              handleWorkTypeChange(e.target.value);
             }}
           >
             <option value="">選択してください</option>

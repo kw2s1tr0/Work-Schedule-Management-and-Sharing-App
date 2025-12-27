@@ -1,3 +1,6 @@
+/**
+ * レギュラスケジュールレスポンス
+ */
 export type RegularscheduleRes = {
   scheduleId: string;
   daysOfWeek: string;

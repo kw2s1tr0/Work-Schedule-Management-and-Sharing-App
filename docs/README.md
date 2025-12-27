@@ -57,15 +57,15 @@ com.schedule.app/
 ├── applicationservice/  # アプリケーションサービス（ユースケース実装）
 ├── domainservice/       # ドメインサービス（ビジネスロジック）
 ├── repository/          # データアクセス層（MyBatis Mapper）
-├── entity/             # ドメインエンティティ
-├── dto/                # データ転送オブジェクト
-├── form/               # リクエストフォーム（バリデーション）
-├── record/             # レコード型（input/output）
-├── enums/              # 列挙型
-├── exception/          # カスタム例外
-├── handler/            # 例外ハンドラ
-├── security/           # セキュリティ設定
-└── config/             # アプリケーション設定
+├── entity/              # ドメインエンティティ
+├── dto/                 # データ転送オブジェクト
+├── form/                # リクエストフォーム（バリデーション）
+├── record/              # レコード型（input/output）
+├── enums/               # 列挙型
+├── exception/           # カスタム例外
+├── handler/             # 例外ハンドラ
+├── security/            # セキュリティ設定
+└── config/              # アプリケーション設定
 ```
 
 **レイヤー構成**:
@@ -134,29 +134,31 @@ front/src/
 
 ### 前提条件
 
-- Java 21以上
-- Node.js 20以上
-- PostgreSQL（またはDocker）
-- Gradle（または`gradlew`使用）
+- Docker
 
 ### バックエンド起動
 
 ```bash
-cd back
-./gradlew bootRun
+cd back/.devcontainer
+docker compose up -d
+docker compose exec WSMSA-back bash
+gradle bootRun
 ```
 
-起動後、`http://localhost:8080`でAPIサーバーが稼働します。
+`http://localhost:8080`でAPIサーバーが、
+`localhost:5432`でDBが稼働します。
 
 ### フロントエンド起動
 
 ```bash
-cd front
-npm install
+cd front/.devcontainer
+docker compose up -d
+docker compose exec WSMSA-front bash
 npm run dev
 ```
 
-起動後、`http://localhost:3000`でアプリケーションにアクセスできます。
+`http://localhost:3000`でアプリケーションにアクセスできます。
+ログイン画面では　ユーザー名'00001'パスワード'password'で仮ユーザとしてログインが可能です。
 
 ### データベース初期化
 
@@ -175,14 +177,14 @@ npm run dev
   意図した例外ハンドリングが行えないケースがある。
   現状はやむなく許容しているが、設計上の問題であるため、
   例外ハンドリングの整理、もしくは
-  DomainExceptionではなくMethodArgumentNotValidExceptionとするなどで見直しを今後検討する。
+  DomainException ではなく MethodArgumentNotValidException とするなどで見直しを今後検討する。
 
-- schedule 検索時に、
+- スケジュール検索時に、
   ログインユーザーのスケジュール一覧取得と検索処理を
   同一 Controller メソッドで行っているが、
   責務分離の観点から分割するべきである。
 
-- error レスポンスが message のみで構成されており、
+- エラーレスポンスが message のみで構成されており、
   フロント側での制御が困難である。
   error code や種別を含めたレスポンス設計を
   見直す必要がある。
@@ -190,12 +192,12 @@ npm run dev
 - 管理者機能が存在しない点は、
   運用および利便性の観点から課題である。
 
-- DTOに関してはフロントで何が必要かの取捨選択が不十分であり
-　フロント側で無用の処理を必要とした。
+- DTO に関しては、フロントで何が必要かの取捨選択が不十分であり、
+  フロント側で無用の処理を必要とした。
 
-- CREATE DELETEで戻り値にidが必要であることに思い至らず、
-　FRONT作成中に急遽追加したため、かなり汚い。そもそもRETRUNNINGを使わないほうがよい気もする
-　idを返すのであればupdateとinsertのレコードは同じものにできた
+- CREATE/DELETE で戻り値に id が必要であることに思い至らず、
+  FRONT 作成中に急遽追加したため、かなり汚い。そもそも RETURNING を使わないほうがよい気もする。
+  id を返すのであれば UPDATE と INSERT のレコードは同じものにできた。
 
 ### FRONT
 
@@ -222,7 +224,7 @@ npm run dev
   表示方法およびメッセージ内容の設計について、
   見直しが必要である。
 
-- CSSは別フォルダにまとめたほうがよいだろう
+- CSS は別フォルダにまとめたほうがよいだろう。
 
 ### DB
 

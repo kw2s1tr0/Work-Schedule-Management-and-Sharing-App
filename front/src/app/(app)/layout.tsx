@@ -2,6 +2,11 @@ import Link from 'next/link';
 import LogoutButton from './logoutbutton';
 import styles from './layout.module.css';
 
+/**
+ * アプリケーションのレイアウトコンポーネント
+ * @param children レイアウト内に表示する子コンポーネント
+ * @returns レイアウトコンポーネント
+ */
 export default function ScheduleLayout({
   children,
 }: Readonly<{

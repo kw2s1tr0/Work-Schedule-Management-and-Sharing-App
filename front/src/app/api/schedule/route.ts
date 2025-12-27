@@ -1,6 +1,12 @@
+/**
+ * スケジュール取得APIのGETメソッドハンドラ
+ * @param request リクエストオブジェクト
+ * @returns レスポンスオブジェクト
+ */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
+  // クエリパラメータの設定
   const params = new URLSearchParams();
   if (searchParams.get('userId')) {
     params.append('userId', searchParams.get('userId') ?? '');

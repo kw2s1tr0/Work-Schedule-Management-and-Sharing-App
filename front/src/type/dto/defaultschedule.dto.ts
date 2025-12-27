@@ -1,3 +1,6 @@
+/**
+ * デフォルトスケジュールDTO
+ */
 export type DefaultScheduleDTO = {
   scheduleId: string;
   startTime: string;

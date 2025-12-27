@@ -1,3 +1,6 @@
+/**
+ * イレギュラスケジュール更新リクエスト
+ */
 export type PutIrregularScheduleReq = {
   id: string;
   startTime: string;

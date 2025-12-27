@@ -1,3 +1,6 @@
+/**
+ * レギュラスケジュール登録リクエスト
+ */
 export type PostRegularScheduleReq = {
   startTime: string;
   endTime: string;

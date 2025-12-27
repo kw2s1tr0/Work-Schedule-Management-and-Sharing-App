@@ -1,3 +1,6 @@
+/**
+ * スケジュールの種類を表す列挙型
+ */
 export enum ScheduleEnum {
   REGULAR = 'REGULAR',
   IRREGULAR = 'IRREGULAR',

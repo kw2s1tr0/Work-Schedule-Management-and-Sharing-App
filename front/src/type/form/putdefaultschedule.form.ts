@@ -1,3 +1,6 @@
+/**
+ * デフォルトスケジュール更新フォーム
+ */
 export type PutDefaultScheduleForm = {
   id: string;
   startTime: string;

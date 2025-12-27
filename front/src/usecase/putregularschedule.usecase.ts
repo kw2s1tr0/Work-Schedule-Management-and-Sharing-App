@@ -5,6 +5,12 @@ import { fetcher } from '@/fetch/fetch';
 import { PutRegularScheduleForm } from '@/type/form/putregularschedule.form';
 import { PutRegularScheduleReq } from '@/type/req/putregularschedule.req';
 
+/**
+ * レギュラスケジュール更新ユースケース
+ * @param putRegularScheduleForm レギュラスケジュール更新フォーム
+ * @param type サーバーorクライアント
+ * @returns
+ */
 export async function PutRegularScheduleUsecase(
   putRegularScheduleForm: PutRegularScheduleForm,
   type: ServerOrClientEnum,
@@ -15,6 +21,11 @@ export async function PutRegularScheduleUsecase(
   await put(putRegularScheduleReq, type);
 }
 
+/**
+ * レギュラスケジュール更新リクエスト変換
+ * @param putRegularScheduleForm レギュラスケジュール更新フォーム
+ * @returns レギュラスケジュール更新リクエスト
+ */
 function toreq(
   putRegularScheduleForm: PutRegularScheduleForm,
 ): PutRegularScheduleReq {
@@ -30,6 +41,12 @@ function toreq(
   return putRegularScheduleReq;
 }
 
+/**
+ * レギュラスケジュール更新処理
+ * @param putRegularScheduleReq レギュラスケジュール更新リクエスト
+ * @param type サーバーorクライアント
+ * @returns
+ */
 async function put(
   putRegularScheduleReq: PutRegularScheduleReq,
   type: ServerOrClientEnum,
@@ -41,6 +58,7 @@ async function put(
     putRegularScheduleReq,
   );
 
+  // エラーチェック
   if (!(200 <= response.status && response.status < 300)) {
     const data = await response.json();
     throw new ExpectedError(response.status, [data.message]);

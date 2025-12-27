@@ -1,5 +1,8 @@
 import { DayOfWeek } from '@/enum/dayofweek.enum';
 
+/**
+ * レギュラスケジュール更新フォーム
+ */
 export type PutRegularScheduleForm = {
   id: string;
   startTime: string;

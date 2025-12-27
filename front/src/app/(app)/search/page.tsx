@@ -11,8 +11,13 @@ import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * 検索ページコンポーネント
+ * @returns 検索ページコンポーネント
+ */
 export default async function Search() {
   const date = new Date();
+  // 現在のISO週を取得
   const week = `${getISOWeekYear(date)}-W${String(getISOWeek(date)).padStart(2, '0')}`;
 
   const getScheduleForm: GetScheduleForm = {
@@ -23,15 +28,18 @@ export default async function Search() {
     organizationCode: '',
   };
 
+  // サーバーサイドでヘッダー情報を取得
   const headerList = await headers();
   const cookie = headerList.get('cookie') ?? '';
 
+  // スケジュール情報を取得
   const userDTOlist: UserDTO[] = await GetScheduleUsecase(
     getScheduleForm,
     ServerOrClientEnum.SERVER,
     cookie,
   );
 
+  // 組織情報を取得
   const organizationDTOlist: OrganizationDTO[] = await GetOrganizationUsecase(
     ServerOrClientEnum.SERVER,
     cookie,
