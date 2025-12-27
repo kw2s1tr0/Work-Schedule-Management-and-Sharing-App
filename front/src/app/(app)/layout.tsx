@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import LogoutButton from './logoutbutton';
+import styles from './layout.module.css';
 
 export default function ScheduleLayout({
   children,
@@ -8,21 +9,27 @@ export default function ScheduleLayout({
 }>) {
   return (
     <>
-      <header>
-        <h1>WSMSA</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link href="/edit/calendar">登録</Link>
-            </li>
-            <li>
-              <Link href="/search">検索</Link>
-            </li>
-          </ul>
-          <LogoutButton></LogoutButton>
-        </nav>
+      <header className={styles.header}>
+        <div className={styles.headerContainer}>
+          <h1 className={styles.title}>WSMSA</h1>
+          <nav className={styles.nav}>
+            <ul className={styles.navList}>
+              <li>
+                <Link href="/edit/calendar" className={styles.navLink}>
+                  登録
+                </Link>
+              </li>
+              <li>
+                <Link href="/search" className={styles.navLink}>
+                  検索
+                </Link>
+              </li>
+            </ul>
+            <LogoutButton></LogoutButton>
+          </nav>
+        </div>
       </header>
-      <main>{children}</main>
+      <main className={styles.main}>{children}</main>
     </>
   );
 }

@@ -23,7 +23,7 @@
             end_time = #{endTime},
             start_date = #{startDate},
             end_date = #{endDate},
-            days_of_week = #{dayOfWeek},
+            days_of_week = CAST(#{dayOfWeek} AS day_of_week),
             work_type_id = #{workTypeId}
         WHERE
             id = #{id}

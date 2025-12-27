@@ -63,8 +63,7 @@ public class PostDefaultScheduleServiceImpl implements PostDefaultScheduleServic
    */
   @Override
   public Integer postDefaultSchedule(DefaultScheduleInputRecord record) {
-    scheduleCreateMapper.createDefaultSchedule(record);
-    int id = record.id();
+    int id = scheduleCreateMapper.createDefaultSchedule(record);
     return id;
   }
 }

@@ -5,14 +5,26 @@ import { fetcher } from '@/fetch/fetch';
 import { OrganizationRes } from '@/type/res/organization.res';
 import { OrganizationDTO } from '@/type/dto/organization.dto';
 
-export async function GetOrganizationUsecase(type: ServerOrClientEnum, cookie?: string): Promise<OrganizationDTO[]> {
+export async function GetOrganizationUsecase(
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<OrganizationDTO[]> {
   const organizationResList: OrganizationRes[] = await get(type, cookie);
   const organizationDTOList: OrganizationDTO[] = toDTO(organizationResList);
   return organizationDTOList;
 }
 
-async function get(type: ServerOrClientEnum, cookie?: string): Promise<OrganizationRes[]> {
-  const response = await fetcher(`/api/organizations`, MethodEnum.GET, type, undefined, cookie);
+async function get(
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<OrganizationRes[]> {
+  const response = await fetcher(
+    `/api/organizations`,
+    MethodEnum.GET,
+    type,
+    undefined,
+    cookie,
+  );
 
   const data = await response.json();
 
@@ -33,7 +45,7 @@ function toDTO(organizationResList: OrganizationRes[]): OrganizationDTO[] {
         organizationName: organizationRes.organizationName,
       };
       return organizationDTO;
-    }
+    },
   );
   return organizationDTOList;
 }

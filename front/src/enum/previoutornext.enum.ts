@@ -1,4 +1,4 @@
 export enum PrevipoutOrNextEnum {
-    PREVIOUS,
-    NEXT,
+  PREVIOUS,
+  NEXT,
 }

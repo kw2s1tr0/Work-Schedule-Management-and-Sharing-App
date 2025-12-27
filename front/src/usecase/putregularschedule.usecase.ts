@@ -7,13 +7,17 @@ import { PutRegularScheduleReq } from '@/type/req/putregularschedule.req';
 
 export async function PutRegularScheduleUsecase(
   putRegularScheduleForm: PutRegularScheduleForm,
-  type: ServerOrClientEnum
+  type: ServerOrClientEnum,
 ): Promise<void> {
-  const putRegularScheduleReq: PutRegularScheduleReq = toreq(putRegularScheduleForm);
+  const putRegularScheduleReq: PutRegularScheduleReq = toreq(
+    putRegularScheduleForm,
+  );
   await put(putRegularScheduleReq, type);
 }
 
-function toreq(putRegularScheduleForm: PutRegularScheduleForm): PutRegularScheduleReq {
+function toreq(
+  putRegularScheduleForm: PutRegularScheduleForm,
+): PutRegularScheduleReq {
   const putRegularScheduleReq: PutRegularScheduleReq = {
     id: putRegularScheduleForm.id,
     startTime: putRegularScheduleForm.startTime,
@@ -26,8 +30,16 @@ function toreq(putRegularScheduleForm: PutRegularScheduleForm): PutRegularSchedu
   return putRegularScheduleReq;
 }
 
-async function put(putRegularScheduleReq: PutRegularScheduleReq, type: ServerOrClientEnum): Promise<void> {
-  const response = await fetcher(`/api/regularSchedule`, MethodEnum.PUT, type, putRegularScheduleReq);
+async function put(
+  putRegularScheduleReq: PutRegularScheduleReq,
+  type: ServerOrClientEnum,
+): Promise<void> {
+  const response = await fetcher(
+    `/api/regularSchedule`,
+    MethodEnum.PUT,
+    type,
+    putRegularScheduleReq,
+  );
 
   if (!(200 <= response.status && response.status < 300)) {
     const data = await response.json();

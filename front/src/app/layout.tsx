@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import styles from './layout.module.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -16,6 +17,11 @@ export const metadata: Metadata = {
   description: 'WSMSA Application',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,10 +30,12 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-        <footer>
-          <p>© 2025 WSMSA. All rights reserved.</p>
-        </footer>
+        <div className={styles.container}>
+          <main className={styles.main}>{children}</main>
+          <footer className={styles.footer}>
+            <p>© 2025 WSMSA. All rights reserved.</p>
+          </footer>
+        </div>
       </body>
     </html>
   );

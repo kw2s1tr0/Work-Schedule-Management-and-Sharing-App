@@ -11,7 +11,11 @@ import { UserDTO } from '@/type/dto/user.dto';
 import { ScheduleDTO } from '@/type/dto/schedule.dto';
 import { ScheduleEnum } from '@/enum/schedule.enum';
 
-export async function GetScheduleUsecase(getScheduleForm: GetScheduleForm, type: ServerOrClientEnum, cookie?: string): Promise<UserDTO[]> {
+export async function GetScheduleUsecase(
+  getScheduleForm: GetScheduleForm,
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<UserDTO[]> {
   const getScheduleReq: GetScheduleReq = toreq(getScheduleForm);
   const userResList: UserRes[] = await get(getScheduleReq, type, cookie);
   const userDTOList: UserDTO[] = toDTO(userResList);
@@ -19,7 +23,7 @@ export async function GetScheduleUsecase(getScheduleForm: GetScheduleForm, type:
 }
 
 function toreq(getScheduleForm: GetScheduleForm): GetScheduleReq {
-  const getScheduleReq: GetScheduleReq  = {
+  const getScheduleReq: GetScheduleReq = {
     userId: getScheduleForm.userId,
     week: getScheduleForm.week,
     month: getScheduleForm.month,
@@ -30,8 +34,11 @@ function toreq(getScheduleForm: GetScheduleForm): GetScheduleReq {
   return getScheduleReq;
 }
 
-async function get(getScheduleReq: GetScheduleReq, type: ServerOrClientEnum, cookie?: string): Promise<UserRes[]> {
-
+async function get(
+  getScheduleReq: GetScheduleReq,
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<UserRes[]> {
   const params = new URLSearchParams();
 
   if (getScheduleReq.userId) {
@@ -53,7 +60,13 @@ async function get(getScheduleReq: GetScheduleReq, type: ServerOrClientEnum, coo
     params.append('organizationCode', getScheduleReq.organizationCode);
   }
 
-  const response = await fetcher(`/api/schedule?${params.toString()}`, MethodEnum.GET, type, undefined, cookie);
+  const response = await fetcher(
+    `/api/schedule?${params.toString()}`,
+    MethodEnum.GET,
+    type,
+    undefined,
+    cookie,
+  );
 
   const data = await response.json();
 
@@ -68,19 +81,20 @@ async function get(getScheduleReq: GetScheduleReq, type: ServerOrClientEnum, coo
 
 function toDTO(userResList: UserRes[]): UserDTO[] {
   const userDTOList: UserDTO[] = userResList.map((userRes) => {
-    const scheduleDTOList: ScheduleDTO[] = userRes.schedules.map((scheduleRes: ScheduleRes) => {
-
-      const scheduleDTO: ScheduleDTO = {   
-        scheduleId: scheduleRes.scheduleId,
-        date: scheduleRes.date,
-        startTime: scheduleRes.startTime,
-        endTime: scheduleRes.endTime,
-        worktypeName: scheduleRes.worktypeName,
-        worktypeColor: scheduleRes.worktypeColor,
-        scheduleType: scheduleRes.scheduleType as unknown as ScheduleEnum,
-      };
-      return scheduleDTO;
-    });
+    const scheduleDTOList: ScheduleDTO[] = userRes.schedules.map(
+      (scheduleRes: ScheduleRes) => {
+        const scheduleDTO: ScheduleDTO = {
+          scheduleId: scheduleRes.scheduleId,
+          date: scheduleRes.date,
+          startTime: scheduleRes.startTime,
+          endTime: scheduleRes.endTime,
+          worktypeName: scheduleRes.worktypeName,
+          worktypeColor: scheduleRes.worktypeColor,
+          scheduleType: scheduleRes.scheduleType as unknown as ScheduleEnum,
+        };
+        return scheduleDTO;
+      },
+    );
 
     const userDTO: UserDTO = {
       userName: userRes.userName,
@@ -91,4 +105,3 @@ function toDTO(userResList: UserRes[]): UserDTO[] {
   });
   return userDTOList;
 }
-

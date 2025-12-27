@@ -5,14 +5,26 @@ import { fetcher } from '@/fetch/fetch';
 import { workTypeRes } from '@/type/res/worktype.res';
 import { WorkTypeDTO } from '@/type/dto/worktype.dto';
 
-export async function GetWorkTypeUsecase(type: ServerOrClientEnum, cookie?: string): Promise<WorkTypeDTO[]> {
+export async function GetWorkTypeUsecase(
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<WorkTypeDTO[]> {
   const workTypeResList: workTypeRes[] = await get(type, cookie);
   const workTypeDTOList: WorkTypeDTO[] = toDTO(workTypeResList);
   return workTypeDTOList;
 }
 
-async function get(type: ServerOrClientEnum, cookie?: string): Promise<workTypeRes[]> {
-  const response = await fetcher(`/api/workTypes`, MethodEnum.GET, type, undefined, cookie);
+async function get(
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<workTypeRes[]> {
+  const response = await fetcher(
+    `/api/workTypes`,
+    MethodEnum.GET,
+    type,
+    undefined,
+    cookie,
+  );
 
   const data = await response.json();
 

@@ -1,7 +1,7 @@
-import { ScheduleRes } from "./schedule.res";
+import { ScheduleRes } from './schedule.res';
 
 export type UserRes = {
-    userName: string;
-    organizationName: string;
-    schedules: ScheduleRes[]
+  userName: string;
+  organizationName: string;
+  schedules: ScheduleRes[];
 };

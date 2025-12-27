@@ -1,4 +1,4 @@
 export enum PostOrPut {
-    POST,
-    PUT
+  POST,
+  PUT,
 }

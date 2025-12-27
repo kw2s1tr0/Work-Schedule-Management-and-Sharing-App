@@ -6,6 +6,7 @@ import { logoutUsecase } from '@/usecase/logout.usecase';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import styles from './logoutbutton.module.css';
 
 export default function LogoutButton() {
   const router = useRouter();
@@ -33,9 +34,13 @@ export default function LogoutButton() {
   };
 
   return (
-    <ul>
+    <ul className={styles.logoutList}>
       <li>
-        <Link href="/login" onClick={onLogoutClick}>
+        <Link
+          href="/login"
+          className={styles.logoutLink}
+          onClick={onLogoutClick}
+        >
           ログアウト
         </Link>
       </li>

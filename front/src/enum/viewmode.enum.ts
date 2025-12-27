@@ -1,4 +1,4 @@
 export enum ViewModeEnum {
-    WEEK = 'WEEK',
-    MONTH = 'MONTH'
+  WEEK = 'WEEK',
+  MONTH = 'MONTH',
 }

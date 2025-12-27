@@ -7,13 +7,17 @@ import { PostRegularScheduleReq } from '@/type/req/postregularschedule.req';
 
 export async function PostRegularScheduleUsecase(
   postRegularScheduleForm: PostRegularScheduleForm,
-  type: ServerOrClientEnum
+  type: ServerOrClientEnum,
 ): Promise<string> {
-  const postRegularScheduleReq: PostRegularScheduleReq = toreq(postRegularScheduleForm);
+  const postRegularScheduleReq: PostRegularScheduleReq = toreq(
+    postRegularScheduleForm,
+  );
   return await post(postRegularScheduleReq, type);
 }
 
-function toreq(postRegularScheduleForm: PostRegularScheduleForm): PostRegularScheduleReq {
+function toreq(
+  postRegularScheduleForm: PostRegularScheduleForm,
+): PostRegularScheduleReq {
   const postRegularScheduleReq: PostRegularScheduleReq = {
     startTime: postRegularScheduleForm.startTime,
     endTime: postRegularScheduleForm.endTime,
@@ -25,8 +29,16 @@ function toreq(postRegularScheduleForm: PostRegularScheduleForm): PostRegularSch
   return postRegularScheduleReq;
 }
 
-async function post(postRegularScheduleReq: PostRegularScheduleReq, type: ServerOrClientEnum): Promise<string> {
-  const response = await fetcher(`/api/regularSchedule`, MethodEnum.POST, type, postRegularScheduleReq);
+async function post(
+  postRegularScheduleReq: PostRegularScheduleReq,
+  type: ServerOrClientEnum,
+): Promise<string> {
+  const response = await fetcher(
+    `/api/regularSchedule`,
+    MethodEnum.POST,
+    type,
+    postRegularScheduleReq,
+  );
 
   const data = await response.json();
 

@@ -632,12 +632,12 @@ components:
     ScheduleDTO:
       type: object
       description: 個別スケジュール情報
-      required: [scheduleId, date]
+      required: [scheduleId, date, startTime, endTime, worktypeName, worktypeColor, scheduleType]
       properties:
         scheduleId:
-          type: integer
-          description: スケジュールID（0の場合は該当なし）
-          example: 1
+          type: string
+          description: スケジュールID
+          example: "1"
         date:
           type: string
           format: date
@@ -645,24 +645,19 @@ components:
         startTime:
           type: string
           format: time
-          nullable: true
           example: "09:00:00"
         endTime:
           type: string
           format: time
-          nullable: true
           example: "18:00:00"
         worktypeName:
           type: string
-          nullable: true
           example: "在宅勤務"
         worktypeColor:
           type: string
-          nullable: true
           example: "#2196F3"
         scheduleType:
           type: string
-          nullable: true
           enum:
             - REGULAR
             - IRREGULAR
@@ -670,15 +665,16 @@ components:
             - COMMON_REGULAR
             - COMMON_IRREGULAR
             - COMMON_DEFAULT
+            - FREE
 
     IrregularScheduleDTO:
       type: object
       description: 非定期スケジュール
-      required: [scheduleId, date]
+      required: [scheduleId, date, startTime, endTime, worktypeName, worktypeColor]
       properties:
         scheduleId:
-          type: integer
-          example: 10
+          type: string
+          example: "10"
         date:
           type: string
           format: date
@@ -686,12 +682,10 @@ components:
         startTime:
           type: string
           format: time
-          nullable: true
           example: "10:00:00"
         endTime:
           type: string
           format: time
-          nullable: true
           example: "15:00:00"
         worktypeName:
           type: string
@@ -737,20 +731,18 @@ components:
     RegularScheduleDTO:
       type: object
       description: 定期スケジュール
-      required: [scheduleId, startDate, endDate, daysOfWeek]
+      required: [scheduleId, startDate, endDate, daysOfWeek, startTime, endTime, worktypeName, worktypeColor]
       properties:
         scheduleId:
-          type: integer
-          example: 3
+          type: string
+          example: "3"
         startTime:
           type: string
           format: time
-          nullable: true
           example: "09:00:00"
         endTime:
           type: string
           format: time
-          nullable: true
           example: "17:30:00"
         startDate:
           type: string
@@ -759,7 +751,6 @@ components:
         endDate:
           type: string
           format: date
-          nullable: true
           example: "2025-03-31"
         daysOfWeek:
           type: string
@@ -814,20 +805,18 @@ components:
     DefaultScheduleDTO:
       type: object
       description: デフォルトスケジュール
-      required: [scheduleId, startDate, endDate]
+      required: [scheduleId, startDate, endDate, startTime, endTime, worktypeName, worktypeColor]
       properties:
         scheduleId:
-          type: integer
-          example: 4
+          type: string
+          example: "4"
         startTime:
           type: string
           format: time
-          nullable: true
           example: "09:00:00"
         endTime:
           type: string
           format: time
-          nullable: true
           example: "17:00:00"
         startDate:
           type: string
@@ -836,7 +825,6 @@ components:
         endDate:
           type: string
           format: date
-          nullable: true
           example: "2025-12-31"
         worktypeName:
           type: string

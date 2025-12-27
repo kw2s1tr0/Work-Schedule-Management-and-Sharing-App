@@ -1,21 +1,21 @@
 'use client';
 
-import { DefaultScheduleDTO } from "@/type/dto/defaultschedule.dto";
-import Schedule from "./schedule";
-import { useEffect, useState } from "react";
-import { GetDefaultScheduleUsecase } from "@/usecase/getdefaultschedule.usecase";
-import { ServerOrClientEnum } from "@/enum/serverOrClient.enum";
-import { ExpectedError } from "@/Error/ExpectedError";
-import { DeleteDefaultScheduleUsecase } from "@/usecase/deletedefaultschedule.usecase";
-import { PutDefaultScheduleForm } from "@/type/form/putdefaultschedule.form";
-import { PutDefaultScheduleUsecase } from "@/usecase/putdefaultschedule.usecase";
-import { WorkTypeDTO } from "@/type/dto/worktype.dto";
-import { PostDefaultScheduleUsecase } from "@/usecase/postdefaultschedule.usecase";
-import { PostDefaultScheduleForm } from "@/type/form/postdefaultschedule.form";
-import Modal from "./modal";
-import { PostOrPut } from "@/enum/PostOrPut.enum";
-import { Modalform } from "./modalform";
-import { start } from "repl";
+import { DefaultScheduleDTO } from '@/type/dto/defaultschedule.dto';
+import Schedule from './schedule';
+import { useState } from 'react';
+import { GetDefaultScheduleUsecase } from '@/usecase/getdefaultschedule.usecase';
+import { ServerOrClientEnum } from '@/enum/serverOrClient.enum';
+import { ExpectedError } from '@/Error/ExpectedError';
+import { DeleteDefaultScheduleUsecase } from '@/usecase/deletedefaultschedule.usecase';
+import { PutDefaultScheduleForm } from '@/type/form/putdefaultschedule.form';
+import { PutDefaultScheduleUsecase } from '@/usecase/putdefaultschedule.usecase';
+import { WorkTypeDTO } from '@/type/dto/worktype.dto';
+import { PostDefaultScheduleUsecase } from '@/usecase/postdefaultschedule.usecase';
+import { PostDefaultScheduleForm } from '@/type/form/postdefaultschedule.form';
+import Modal from './modal';
+import { PostOrPut } from '@/enum/PostOrPut.enum';
+import { Modalform } from './modalform';
+import styles from './defaultpage.module.css';
 
 type Props = {
   defaultscheduleDTOList: DefaultScheduleDTO[];
@@ -24,9 +24,14 @@ type Props = {
   to: string;
 };
 
-export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, from, to }: Props) {
-
-  const [defaultscheduleDTOListState, setDefaultscheduleDTOListState] = useState<DefaultScheduleDTO[]>(defaultscheduleDTOList);
+export default function DefaultPage({
+  defaultscheduleDTOList,
+  worktypeDTOList,
+  from,
+  to,
+}: Props) {
+  const [defaultscheduleDTOListState, setDefaultscheduleDTOListState] =
+    useState<DefaultScheduleDTO[]>(defaultscheduleDTOList);
 
   const [fromState, setFrom] = useState<string>(from);
   const [toState, setTo] = useState<string>(to);
@@ -38,18 +43,10 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
     endDate: '',
     startTime: '',
     endTime: '',
-    workTypeId: ''
+    workTypeId: '',
   });
 
   const [postOrPutState, setPostOrPutState] = useState<PostOrPut>();
-
-  const [postDefaultScheduleForm, setPostDefaultScheduleForm] = useState<PostDefaultScheduleForm>({
-    startDate: '',
-    endDate: '',
-    startTime: '',
-    endTime: '',
-    workTypeId: ''
-  });
 
   const handleSearch = async () => {
     const getSingleScheduleForm = {
@@ -58,34 +55,50 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
     };
 
     try {
-      const defaultscheduleDTOListFiltered: DefaultScheduleDTO[] = await GetDefaultScheduleUsecase(getSingleScheduleForm, ServerOrClientEnum.CLIENT);
+      const defaultscheduleDTOListFiltered: DefaultScheduleDTO[] =
+        await GetDefaultScheduleUsecase(
+          getSingleScheduleForm,
+          ServerOrClientEnum.CLIENT,
+        );
       setDefaultscheduleDTOListState(defaultscheduleDTOListFiltered);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
   const handleDelete = async (scheduleId: string) => {
     try {
-      const id = await DeleteDefaultScheduleUsecase(scheduleId, ServerOrClientEnum.CLIENT);
-      const updatedList = defaultscheduleDTOListState.filter(schedule => schedule.scheduleId !== id);
+      const id = await DeleteDefaultScheduleUsecase(
+        scheduleId,
+        ServerOrClientEnum.CLIENT,
+      );
+      const updatedList = defaultscheduleDTOListState.filter(
+        (schedule) => schedule.scheduleId !== id,
+      );
       setDefaultscheduleDTOListState(updatedList);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
-  const handleUpdate = async (putdefaultscheduleform: PutDefaultScheduleForm) => {
+  const handleUpdate = async (
+    putdefaultscheduleform: PutDefaultScheduleForm,
+  ) => {
     try {
-      await PutDefaultScheduleUsecase(putdefaultscheduleform, ServerOrClientEnum.CLIENT);
+      await PutDefaultScheduleUsecase(
+        putdefaultscheduleform,
+        ServerOrClientEnum.CLIENT,
+      );
 
       let worktypeName: string;
       let worktypeColor: string;
@@ -98,7 +111,7 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
 
       let updatedList: DefaultScheduleDTO[] = [];
 
-      defaultscheduleDTOListState.map((schedule) => {
+      defaultscheduleDTOListState.forEach((schedule) => {
         if (schedule.scheduleId === putdefaultscheduleform.id) {
           const newSchedule = {
             scheduleId: putdefaultscheduleform.id,
@@ -107,26 +120,32 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
             startDate: putdefaultscheduleform.startDate,
             endDate: putdefaultscheduleform.endDate,
             worktypeName: worktypeName!,
-            worktypeColor: worktypeColor!
+            worktypeColor: worktypeColor!,
           };
           updatedList.push(newSchedule);
-          return;
+        } else {
+          updatedList.push(schedule);
         }
-        updatedList.push(schedule);
       });
       setDefaultscheduleDTOListState(updatedList);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
-  const handleCreate = async (postdefaultscheduleform: PostDefaultScheduleForm) => {
+  const handleCreate = async (
+    postdefaultscheduleform: PostDefaultScheduleForm,
+  ) => {
     try {
-      const id = await PostDefaultScheduleUsecase(postdefaultscheduleform, ServerOrClientEnum.CLIENT);
+      const id = await PostDefaultScheduleUsecase(
+        postdefaultscheduleform,
+        ServerOrClientEnum.CLIENT,
+      );
 
       let newworktypeName: string = '';
       let newworktypeColor: string = '';
@@ -144,43 +163,47 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
         worktypeName: newworktypeName,
         worktypeColor: newworktypeColor,
         startDate: postdefaultscheduleform.startDate,
-        endDate: postdefaultscheduleform.endDate
+        endDate: postdefaultscheduleform.endDate,
       };
 
-      setDefaultscheduleDTOListState([...defaultscheduleDTOListState, newSchedule]);
+      setDefaultscheduleDTOListState([
+        ...defaultscheduleDTOListState,
+        newSchedule,
+      ]);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
   const openModal = (postOrPut: PostOrPut, modalform?: Modalform) => {
     let newModalform: Modalform;
     switch (postOrPut) {
-     case PostOrPut.POST:
-      newModalform = {
-        startDate: '',
-        endDate: '',
-        startTime: '',
-        endTime: '',
-        workTypeId: ''
-      };
-      break;
-    case PostOrPut.PUT:
-      newModalform = modalform!;
-      break;
+      case PostOrPut.POST:
+        newModalform = {
+          startDate: '',
+          endDate: '',
+          startTime: '',
+          endTime: '',
+          workTypeId: '',
+        };
+        break;
+      case PostOrPut.PUT:
+        newModalform = modalform!;
+        break;
     }
     setPostOrPutState(postOrPut);
     setModalform(newModalform);
     setModalOpen(true);
-  }
+  };
 
   const closeModal = () => {
     setModalOpen(false);
-  }
+  };
 
   const findWorkTypeId = (worktypeName: string): string => {
     let workTypeId = '';
@@ -190,27 +213,80 @@ export default function DefaultPage({ defaultscheduleDTOList, worktypeDTOList, f
       }
     });
     return workTypeId;
-  }
+  };
 
   return (
     <>
-      <form>
-        <label htmlFor="from">開始日</label>
-        <input type="date" id="from" name="from" value={fromState} onChange={(e) => setFrom(e.target.value)} />
-        <label htmlFor="to">終了日</label>
-        <input type="date" id="to" name="to" value={toState} onChange={(e) => setTo(e.target.value)} />
-        <button type="button" onClick={handleSearch}>検索</button>
+      <form className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="from" className={styles.label}>
+            開始日
+          </label>
+          <input
+            type="date"
+            id="from"
+            name="from"
+            className={styles.input}
+            value={fromState}
+            onChange={(e) => setFrom(e.target.value)}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="to" className={styles.label}>
+            終了日
+          </label>
+          <input
+            type="date"
+            id="to"
+            name="to"
+            className={styles.input}
+            value={toState}
+            onChange={(e) => setTo(e.target.value)}
+          />
+        </div>
+        <button
+          type="button"
+          className={styles.searchButton}
+          onClick={handleSearch}
+        >
+          検索
+        </button>
       </form>
-      {defaultscheduleDTOListState.length === 0 && <p>期間内にデフォルトスケジュールは登録されていません。</p>}
-      {defaultscheduleDTOListState.length > 0 &&
-        defaultscheduleDTOListState.map((defaultscheduleDTO) => (
-          <Schedule key={defaultscheduleDTO.scheduleId} defaultscheduleDTO={defaultscheduleDTO} handleDelete={handleDelete} openModal={openModal} findWorkTypeId={findWorkTypeId}/>
-        ))}
-      <button type="button" onClick={() => openModal(PostOrPut.POST)}>新規作成</button>
+      {defaultscheduleDTOListState.length === 0 && (
+        <p className={styles.noResults}>
+          期間内にデフォルトスケジュールは登録されていません。
+        </p>
+      )}
+      {defaultscheduleDTOListState.length > 0 && (
+        <div className={styles.scheduleList}>
+          {defaultscheduleDTOListState.map((defaultscheduleDTO) => (
+            <Schedule
+              key={defaultscheduleDTO.scheduleId}
+              defaultscheduleDTO={defaultscheduleDTO}
+              handleDelete={handleDelete}
+              openModal={openModal}
+              findWorkTypeId={findWorkTypeId}
+            />
+          ))}
+        </div>
+      )}
+      <button
+        type="button"
+        className={styles.createButton}
+        onClick={() => openModal(PostOrPut.POST)}
+      >
+        新規作成
+      </button>
       {modalOpen && (
-        <Modal worktypeDTOList={worktypeDTOList} modalform={modalform} postOrPut={postOrPutState} handleUpdate={handleUpdate} handleCreate={handleCreate} closeModal={closeModal}/>
+        <Modal
+          worktypeDTOList={worktypeDTOList}
+          modalform={modalform}
+          postOrPut={postOrPutState}
+          handleUpdate={handleUpdate}
+          handleCreate={handleCreate}
+          closeModal={closeModal}
+        />
       )}
     </>
   );
 }
-

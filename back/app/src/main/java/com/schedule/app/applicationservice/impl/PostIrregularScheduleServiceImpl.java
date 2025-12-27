@@ -63,8 +63,7 @@ public class PostIrregularScheduleServiceImpl implements PostIrregularScheduleSe
    */
   @Override
   public Integer postIrregularSchedule(IrregularScheduleInputRecord record) {
-    scheduleCreateMapper.createIrregularSchedule(record);
-    int id = record.id();
+    int id = scheduleCreateMapper.createIrregularSchedule(record);
     return id;
   }
 }

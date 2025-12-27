@@ -1,4 +1,4 @@
 export type OrganizationDTO = {
-    organizationCode: string;
-    organizationName: string;
+  organizationCode: string;
+  organizationName: string;
 };

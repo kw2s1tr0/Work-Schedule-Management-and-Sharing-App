@@ -33,7 +33,7 @@ export default function Modal({worktypeDTOList, modalform, postOrPut, handleUpda
         setEndDate(endDate);
         setWorkTypeId(workTypeId);  
         handleWorkTypeChange(workTypeId);
-    }, [modalform, worktypeDTOList, startTime, endTime, startDate, endDate, workTypeId]);
+    }, [startTime, endTime, startDate, endDate, workTypeId]);
 
 
 

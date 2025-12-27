@@ -1,5 +1,5 @@
 export type WorkTypeDTO = {
-    id: string;
-    workTypeName: string;
-    workTypeColor: string;
+  id: string;
+  workTypeName: string;
+  workTypeColor: string;
 };

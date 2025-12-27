@@ -7,13 +7,17 @@ import { PutDefaultScheduleReq } from '@/type/req/putdefaultschedule.req';
 
 export async function PutDefaultScheduleUsecase(
   putDefaultScheduleForm: PutDefaultScheduleForm,
-  type: ServerOrClientEnum
+  type: ServerOrClientEnum,
 ): Promise<void> {
-  const putDefaultScheduleReq: PutDefaultScheduleReq = toreq(putDefaultScheduleForm);
+  const putDefaultScheduleReq: PutDefaultScheduleReq = toreq(
+    putDefaultScheduleForm,
+  );
   await put(putDefaultScheduleReq, type);
 }
 
-function toreq(putDefaultScheduleForm: PutDefaultScheduleForm): PutDefaultScheduleReq {
+function toreq(
+  putDefaultScheduleForm: PutDefaultScheduleForm,
+): PutDefaultScheduleReq {
   const putDefaultScheduleReq: PutDefaultScheduleReq = {
     id: putDefaultScheduleForm.id,
     startTime: putDefaultScheduleForm.startTime,
@@ -25,8 +29,16 @@ function toreq(putDefaultScheduleForm: PutDefaultScheduleForm): PutDefaultSchedu
   return putDefaultScheduleReq;
 }
 
-async function put(putDefaultScheduleReq: PutDefaultScheduleReq, type: ServerOrClientEnum): Promise<void> {
-  const response = await fetcher(`/api/defaultSchedule`, MethodEnum.PUT, type, putDefaultScheduleReq);
+async function put(
+  putDefaultScheduleReq: PutDefaultScheduleReq,
+  type: ServerOrClientEnum,
+): Promise<void> {
+  const response = await fetcher(
+    `/api/defaultSchedule`,
+    MethodEnum.PUT,
+    type,
+    putDefaultScheduleReq,
+  );
 
   if (!(200 <= response.status && response.status < 300)) {
     const data = await response.json();

@@ -1,4 +1,4 @@
 export type OrganizationRes = {
-    organizationCode: string;
-    organizationName: string
+  organizationCode: string;
+  organizationName: string;
 };

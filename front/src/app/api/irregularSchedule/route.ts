@@ -1,20 +1,25 @@
 export async function GET(request: Request) {
-  const {searchParams} = new URL(request.url);
+  const { searchParams } = new URL(request.url);
 
   const params = new URLSearchParams();
-  if (searchParams.get('from')){
+  if (searchParams.get('from')) {
     params.append('from', searchParams.get('from') ?? '');
   }
-  if (searchParams.get('to')){
+  if (searchParams.get('to')) {
     params.append('to', searchParams.get('to') ?? '');
   }
 
-  const data = await fetch(`${process.env.BACKEND_BASE_URL}/api/irregularSchedule` + '?' + params.toString(), {
-    method: 'GET',
-    headers: {
-      cookie: request.headers.get('cookie') ?? '',
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}/api/irregularSchedule` +
+      '?' +
+      params.toString(),
+    {
+      method: 'GET',
+      headers: {
+        cookie: request.headers.get('cookie') ?? '',
+      },
     },
-  });
+  );
 
   const result = await data.json();
 
@@ -28,14 +33,17 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const data = await fetch(`${process.env.BACKEND_BASE_URL}/api/irregularSchedule`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      cookie: request.headers.get('cookie') ?? '',
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}/api/irregularSchedule`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: request.headers.get('cookie') ?? '',
+      },
+      body: JSON.stringify(body),
     },
-    body: JSON.stringify(body),
-  });
+  );
 
   const result = await data.json();
 
@@ -49,17 +57,23 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   const body = await request.json();
 
-  const data = await fetch(`${process.env.BACKEND_BASE_URL}/api/irregularSchedule`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      cookie: request.headers.get('cookie') ?? '',
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}/api/irregularSchedule`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie: request.headers.get('cookie') ?? '',
+      },
+      body: JSON.stringify(body),
     },
-    body: JSON.stringify(body),
-  });
+  );
 
-  const text = await data.text();
-  const result = text ? JSON.parse(text) : null;
+  if (data.status === 204) {
+    return new Response(null, { status: 204 });
+  }
+
+  const result = await data.json();
 
   const response = Response.json(result, {
     status: data.status,
@@ -67,5 +81,3 @@ export async function PUT(request: Request) {
 
   return response;
 }
-
-

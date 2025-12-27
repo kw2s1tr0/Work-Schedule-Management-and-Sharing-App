@@ -1,24 +1,79 @@
-import { IrregularScheduleDTO } from "@/type/dto/irregularschedule.dto";
-import React from "react";
+import { IrregularScheduleDTO } from '@/type/dto/irregularschedule.dto';
+import { Modalform } from './modalform';
+import { PostOrPut } from '@/enum/PostOrPut.enum';
+import { ExpectedError } from '@/Error/ExpectedError';
+import styles from './schedule.module.css';
 
 type Props = {
-    irregularscheduleDTO: IrregularScheduleDTO;
+  irregularscheduleDTO: IrregularScheduleDTO;
+  handleDelete: (id: string) => Promise<void>;
+  openModal: (postOrPut: any, modalform: Modalform) => void;
+  findWorkTypeId: (worktypeName: string) => string;
 };
 
-export default function Schedule({ irregularscheduleDTO }: Props) {
+export default function Schedule({
+  irregularscheduleDTO,
+  handleDelete,
+  openModal,
+  findWorkTypeId,
+}: Props) {
+  const { scheduleId, startTime, endTime, date, worktypeName, worktypeColor } =
+    irregularscheduleDTO;
 
-    const { scheduleId, startTime, endTime, date, worktypeName, worktypeColor } = irregularscheduleDTO;
+  const opendScheduleModal = () => {
+    const worktypeId = findWorkTypeId(worktypeName);
+    const modalform: Modalform = {
+      id: scheduleId,
+      date: date,
+      startTime: startTime,
+      endTime: endTime,
+      workTypeId: worktypeId,
+    };
+    openModal(PostOrPut.PUT, modalform);
+  };
+
+  const handlescheduleDelete = async () => {
+    try {
+      if (!confirm('Deleting schedule with ID: ' + scheduleId)) {
+        return;
+      }
+      await handleDelete(scheduleId);
+    } catch (error) {
+      if (error instanceof ExpectedError) {
+        alert(error.messages.join('\n'));
+      } else {
+        alert('An unexpected error occurred');
+      }
+    }
+  };
+
   return (
-    <>
-    <React.Fragment>
-      <div>
-        <p>{startTime}-{endTime}</p>
-        <p>{date}</p>
-        <p style={{ backgroundColor: worktypeColor }}>{worktypeName}</p>
-        <button>編集</button>
-        <button>削除</button>
+    <div className={styles.scheduleCard}>
+      <div className={styles.scheduleContent}>
+        <div className={styles.scheduleInfo}>
+          <p className={styles.timeInfo}>
+            {startTime}-{endTime}
+          </p>
+          <p className={styles.dateInfo}>{date}</p>
+        </div>
+        <p
+          className={styles.worktype}
+          style={{ backgroundColor: worktypeColor }}
+        >
+          {worktypeName}
+        </p>
+        <div className={styles.buttonGroup}>
+          <button className={styles.editButton} onClick={opendScheduleModal}>
+            編集
+          </button>
+          <button
+            className={styles.deleteButton}
+            onClick={handlescheduleDelete}
+          >
+            削除
+          </button>
+        </div>
       </div>
-    </React.Fragment>
-    </>
+    </div>
   );
 }

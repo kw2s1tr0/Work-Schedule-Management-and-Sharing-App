@@ -10,7 +10,11 @@ import { UserRes } from '@/type/res/user.res';
 import { ScheduleDTO } from '@/type/dto/schedule.dto';
 import { ScheduleEnum } from '@/enum/schedule.enum';
 
-export async function GetMyScheduleUsecase(getScheduleForm: GetScheduleForm, type: ServerOrClientEnum, cookie?: string): Promise<ScheduleDTO[]> {
+export async function GetMyScheduleUsecase(
+  getScheduleForm: GetScheduleForm,
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<ScheduleDTO[]> {
   const userId: string = await loginuserinfo(type, cookie);
   const getScheduleReq: GetScheduleReq = toreq(getScheduleForm, userId);
   const userResList: UserRes[] = await get(getScheduleReq, type, cookie);
@@ -18,21 +22,33 @@ export async function GetMyScheduleUsecase(getScheduleForm: GetScheduleForm, typ
   return scheduleDTOList;
 }
 
-async function loginuserinfo(type: ServerOrClientEnum, cookie?: string): Promise<string> {
-    const response = await fetcher('/api/me', MethodEnum.GET, type, undefined, cookie);
+async function loginuserinfo(
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<string> {
+  const response = await fetcher(
+    '/api/me',
+    MethodEnum.GET,
+    type,
+    undefined,
+    cookie,
+  );
 
-    if (!(200 <= response.status && response.status < 300)) {
-        const data = await response.json();
-        throw new ExpectedError(response.status, [data.message]);
-    }
+  if (!(200 <= response.status && response.status < 300)) {
+    const data = await response.json();
+    throw new ExpectedError(response.status, [data.message]);
+  }
 
-    const userId: string = await response.text();
+  const userId: string = await response.text();
 
-    return userId;
+  return userId;
 }
 
-function toreq(getScheduleForm: GetScheduleForm, userId: string): GetScheduleReq {
-  const getScheduleReq: GetScheduleReq  = {
+function toreq(
+  getScheduleForm: GetScheduleForm,
+  userId: string,
+): GetScheduleReq {
+  const getScheduleReq: GetScheduleReq = {
     userId: userId,
     week: getScheduleForm.week,
     month: getScheduleForm.month,
@@ -43,8 +59,11 @@ function toreq(getScheduleForm: GetScheduleForm, userId: string): GetScheduleReq
   return getScheduleReq;
 }
 
-async function get(getScheduleReq: GetScheduleReq, type: ServerOrClientEnum, cookie?: string): Promise<UserRes[]> {
-
+async function get(
+  getScheduleReq: GetScheduleReq,
+  type: ServerOrClientEnum,
+  cookie?: string,
+): Promise<UserRes[]> {
   const params = new URLSearchParams();
   if (getScheduleReq.userId) {
     params.append('userId', getScheduleReq.userId);
@@ -65,7 +84,13 @@ async function get(getScheduleReq: GetScheduleReq, type: ServerOrClientEnum, coo
     params.append('organizationCode', getScheduleReq.organizationCode);
   }
 
-  const response = await fetcher(`/api/schedule?${params.toString()}`, MethodEnum.GET, type, undefined, cookie);
+  const response = await fetcher(
+    `/api/schedule?${params.toString()}`,
+    MethodEnum.GET,
+    type,
+    undefined,
+    cookie,
+  );
 
   const data = await response.json();
 
@@ -79,34 +104,34 @@ async function get(getScheduleReq: GetScheduleReq, type: ServerOrClientEnum, coo
 }
 
 function toDTO(userResList: UserRes[]): ScheduleDTO[] {
-  const scheduleResList: ScheduleRes[]  = userResList[0].schedules;
-  let scheduleDTOList: ScheduleDTO[]
+  const scheduleResList: ScheduleRes[] = userResList[0].schedules;
+  let scheduleDTOList: ScheduleDTO[];
 
-    const datefirst = new Date(scheduleResList[0].date);
-    let dayOfWeekfirst = datefirst.getUTCDay();
-    const scheduleDTOListFirst: ScheduleDTO[] = [];
+  const datefirst = new Date(scheduleResList[0].date);
+  let dayOfWeekfirst = datefirst.getUTCDay();
+  const scheduleDTOListFirst: ScheduleDTO[] = [];
 
-    if (dayOfWeekfirst !== 1) {
-        if (dayOfWeekfirst === 0) {
-            dayOfWeekfirst = 7;
-        }
-        for (let i = 1; i < dayOfWeekfirst; i++) {
-            const scheduleDTO: ScheduleDTO = {   
-                scheduleId: '',
-                date: '',
-                startTime: '',
-                endTime: '',
-                worktypeName: '',
-                worktypeColor: '',
-                scheduleType: ScheduleEnum.FREE,
-            };
-            scheduleDTOListFirst.push(scheduleDTO);
-        }
+  if (dayOfWeekfirst !== 1) {
+    if (dayOfWeekfirst === 0) {
+      dayOfWeekfirst = 7;
     }
-  
-    const scheduleDTOListMiddle: ScheduleDTO[] = scheduleResList.map((scheduleRes: ScheduleRes) => {
+    for (let i = 1; i < dayOfWeekfirst; i++) {
+      const scheduleDTO: ScheduleDTO = {
+        scheduleId: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        worktypeName: '',
+        worktypeColor: '',
+        scheduleType: ScheduleEnum.FREE,
+      };
+      scheduleDTOListFirst.push(scheduleDTO);
+    }
+  }
 
-      const scheduleDTO: ScheduleDTO = {   
+  const scheduleDTOListMiddle: ScheduleDTO[] = scheduleResList.map(
+    (scheduleRes: ScheduleRes) => {
+      const scheduleDTO: ScheduleDTO = {
         scheduleId: scheduleRes.scheduleId,
         date: scheduleRes.date,
         startTime: scheduleRes.startTime,
@@ -116,33 +141,37 @@ function toDTO(userResList: UserRes[]): ScheduleDTO[] {
         scheduleType: scheduleRes.scheduleType as unknown as ScheduleEnum,
       };
       return scheduleDTO;
-    });
+    },
+  );
 
-    const datelast = new Date(scheduleResList[scheduleResList.length -1].date);
-    let dayOfWeeklast = datelast.getUTCDay();
+  const datelast = new Date(scheduleResList[scheduleResList.length - 1].date);
+  let dayOfWeeklast = datelast.getUTCDay();
 
-    const scheduleDTOListLast: ScheduleDTO[] = [];
+  const scheduleDTOListLast: ScheduleDTO[] = [];
 
-    if (dayOfWeeklast !== 0) {
-      if (dayOfWeeklast === 0) {
-          dayOfWeeklast = 7;
-      }
-        for (let i = dayOfWeeklast; i < 7; i++) {
-            const scheduleDTO: ScheduleDTO = {
-                scheduleId: '',
-                date: '',
-                startTime: '',
-                endTime: '',
-                worktypeName: '',
-                worktypeColor: '',
-                scheduleType: ScheduleEnum.FREE,
-            };
-            scheduleDTOListLast.push(scheduleDTO);
-        }
+  if (dayOfWeeklast !== 0) {
+    if (dayOfWeeklast === 0) {
+      dayOfWeeklast = 7;
     }
+    for (let i = dayOfWeeklast; i < 7; i++) {
+      const scheduleDTO: ScheduleDTO = {
+        scheduleId: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        worktypeName: '',
+        worktypeColor: '',
+        scheduleType: ScheduleEnum.FREE,
+      };
+      scheduleDTOListLast.push(scheduleDTO);
+    }
+  }
 
-    scheduleDTOList = [...scheduleDTOListFirst, ...scheduleDTOListMiddle, ...scheduleDTOListLast];
-    
-    return scheduleDTOList;
+  scheduleDTOList = [
+    ...scheduleDTOListFirst,
+    ...scheduleDTOListMiddle,
+    ...scheduleDTOListLast,
+  ];
+
+  return scheduleDTOList;
 }
-

@@ -1,5 +1,5 @@
 export type Modalform = {
-  id ?: string;
+  id?: string;
   startDate: string;
   endDate: string;
   startTime: string;

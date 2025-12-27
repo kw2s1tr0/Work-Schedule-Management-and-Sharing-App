@@ -91,8 +91,7 @@ public class PostRegularScheduleServiceImpl implements PostRegularScheduleServic
    */
   @Override
   public Integer postRegularSchedule(RegularScheduleInputRecord record) {
-    scheduleCreateMapper.createRegularSchedule(record);
-    int id = record.id();
+    int id = scheduleCreateMapper.createRegularSchedule(record);
     return id;
   }
 }

@@ -1,7 +1,7 @@
-import { ScheduleDTO } from "./schedule.dto";
+import { ScheduleDTO } from './schedule.dto';
 
 export type UserDTO = {
-    userName: string;
-    organizationName: string;
-    schedules: ScheduleDTO[]
+  userName: string;
+  organizationName: string;
+  schedules: ScheduleDTO[];
 };

@@ -1,23 +1,25 @@
-import { ScheduleDTO } from "@/type/dto/schedule.dto";
-import React from "react";
+import { ScheduleDTO } from '@/type/dto/schedule.dto';
+import styles from './day.module.css';
 
 type Props = {
-    scheduleDTO: ScheduleDTO;
-    index: number;
+  scheduleDTO: ScheduleDTO;
+  index: number;
 };
 
 export default function Day({ scheduleDTO, index }: Props) {
-
-    const { startTime, endTime, date, worktypeName, worktypeColor } = scheduleDTO;
+  const { startTime, endTime, date, worktypeName, worktypeColor } = scheduleDTO;
 
   return (
-    <React.Fragment>
-      <div>
-        <p>{date}</p>
-        {(startTime || endTime) && <p>{startTime}-{endTime}</p>}
-        <p style={{ backgroundColor: worktypeColor }}>{worktypeName}</p>
-      </div>
-      {(index + 1) % 7 === 0 && <br />}
-    </React.Fragment>
+    <div className={styles.day}>
+      <p className={styles.date}>{date}</p>
+      {(startTime || endTime) && (
+        <p className={styles.time}>
+          {startTime}-{endTime}
+        </p>
+      )}
+      <p className={styles.worktype} style={{ backgroundColor: worktypeColor }}>
+        {worktypeName}
+      </p>
+    </div>
   );
 }

@@ -7,13 +7,17 @@ import { PostIrregularScheduleReq } from '@/type/req/postirregularschedule.req';
 
 export async function PostIrregularScheduleUsecase(
   postIrregularScheduleForm: PostIrregularScheduleForm,
-  type: ServerOrClientEnum
+  type: ServerOrClientEnum,
 ): Promise<string> {
-  const postIrregularScheduleReq: PostIrregularScheduleReq = toreq(postIrregularScheduleForm);
+  const postIrregularScheduleReq: PostIrregularScheduleReq = toreq(
+    postIrregularScheduleForm,
+  );
   return await post(postIrregularScheduleReq, type);
 }
 
-function toreq(postIrregularScheduleForm: PostIrregularScheduleForm): PostIrregularScheduleReq {
+function toreq(
+  postIrregularScheduleForm: PostIrregularScheduleForm,
+): PostIrregularScheduleReq {
   const postIrregularScheduleReq: PostIrregularScheduleReq = {
     startTime: postIrregularScheduleForm.startTime,
     endTime: postIrregularScheduleForm.endTime,
@@ -23,8 +27,16 @@ function toreq(postIrregularScheduleForm: PostIrregularScheduleForm): PostIrregu
   return postIrregularScheduleReq;
 }
 
-async function post(postIrregularScheduleReq: PostIrregularScheduleReq, type: ServerOrClientEnum): Promise<string> {
-  const response = await fetcher(`/api/irregularSchedule`, MethodEnum.POST, type, postIrregularScheduleReq);
+async function post(
+  postIrregularScheduleReq: PostIrregularScheduleReq,
+  type: ServerOrClientEnum,
+): Promise<string> {
+  const response = await fetcher(
+    `/api/irregularSchedule`,
+    MethodEnum.POST,
+    type,
+    postIrregularScheduleReq,
+  );
 
   const data = await response.json();
 

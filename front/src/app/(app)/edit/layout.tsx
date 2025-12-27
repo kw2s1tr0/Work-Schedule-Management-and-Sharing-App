@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import styles from './layout.module.css';
 
 export default function SearchLayout({
   children,
@@ -6,24 +7,32 @@ export default function SearchLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <aside>
-        <ul>
+    <div className={styles.container}>
+      <aside className={styles.aside}>
+        <ul className={styles.navList}>
           <li>
-            <Link href="/edit/calendar">カレンダー</Link>
+            <Link href="/edit/calendar" className={styles.navLink}>
+              カレンダー
+            </Link>
           </li>
           <li>
-            <Link href="/edit/default">基本予定</Link>
+            <Link href="/edit/default" className={styles.navLink}>
+              基本予定
+            </Link>
           </li>
           <li>
-            <Link href="/edit/regular">定期予定</Link>
+            <Link href="/edit/regular" className={styles.navLink}>
+              定期予定
+            </Link>
           </li>
           <li>
-            <Link href="/edit/irregular">非定期予定</Link>
+            <Link href="/edit/irregular" className={styles.navLink}>
+              非定期予定
+            </Link>
           </li>
         </ul>
       </aside>
-      {children}
-    </>
+      <div className={styles.content}>{children}</div>
+    </div>
   );
 }
