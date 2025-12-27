@@ -3,11 +3,12 @@ import { ExpectedError } from '@/Error/ExpectedError';
 import { RegularscheduleDTO } from '@/type/dto/regularschedule.dto';
 import React from 'react';
 import styles from './schedule.module.css';
+import { Modalform } from './modalform';
 
 type Props = {
   regularscheduleDTO: RegularscheduleDTO;
   handleDelete: (id: string) => Promise<void>;
-  openModal: (postOrPut: any, modalform: any) => void;
+  openModal: (postOrPut: PostOrPut, modalform: Modalform) => void;
   findWorkTypeId: (worktypeName: string) => string;
 };
 

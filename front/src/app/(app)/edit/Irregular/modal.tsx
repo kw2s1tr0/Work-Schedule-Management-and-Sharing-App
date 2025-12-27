@@ -1,9 +1,7 @@
 import { WorkTypeDTO } from '@/type/dto/worktype.dto';
-import { PostDefaultScheduleForm } from '@/type/form/postdefaultschedule.form';
 import { useEffect, useState } from 'react';
 import { Modalform } from './modalform';
 import { PostOrPut } from '@/enum/PostOrPut.enum';
-import { PutDefaultScheduleForm } from '@/type/form/putdefaultschedule.form';
 import { ExpectedError } from '@/Error/ExpectedError';
 import { PutIrregularScheduleForm } from '@/type/form/putirregularschedule.form';
 import { PostIrregularScheduleForm } from '@/type/form/postirregularschedule.form';
@@ -37,14 +35,6 @@ export default function Modal({
   const [datestate, setDate] = useState<string>('');
   const [workTypeIdstate, setWorkTypeId] = useState<string>('');
   const [workTypeColorState, setWorkTypeColorState] = useState<string>('');
-
-  useEffect(() => {
-    setStartTime(startTime);
-    setEndTime(endTime);
-    setDate(date);
-    setWorkTypeId(workTypeId);
-    handleWorkTypeChange(workTypeId);
-  }, [startTime, endTime, date, workTypeId]);
 
   const handleWorkTypeChange = (id: string) => {
     if (!id) {
@@ -98,6 +88,14 @@ export default function Modal({
       }
     }
   };
+
+  useEffect(() => {
+    setStartTime(startTime);
+    setEndTime(endTime);
+    setDate(date);
+    setWorkTypeId(workTypeId);
+    handleWorkTypeChange(workTypeId);
+  }, [startTime, endTime, date, workTypeId]);
 
   return (
     <div className={styles.modalOverlay}>

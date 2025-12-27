@@ -7,7 +7,7 @@ import styles from './schedule.module.css';
 type Props = {
   irregularscheduleDTO: IrregularScheduleDTO;
   handleDelete: (id: string) => Promise<void>;
-  openModal: (postOrPut: any, modalform: Modalform) => void;
+  openModal: (postOrPut: PostOrPut, modalform: Modalform) => void;
   findWorkTypeId: (worktypeName: string) => string;
 };
 

@@ -1,9 +1,7 @@
 import { WorkTypeDTO } from '@/type/dto/worktype.dto';
-import { PostDefaultScheduleForm } from '@/type/form/postdefaultschedule.form';
 import { useEffect, useState } from 'react';
 import { Modalform } from './modalform';
 import { PostOrPut } from '@/enum/PostOrPut.enum';
-import { PutDefaultScheduleForm } from '@/type/form/putdefaultschedule.form';
 import { ExpectedError } from '@/Error/ExpectedError';
 import { PutRegularScheduleForm } from '@/type/form/putregularschedule.form';
 import { PostRegularScheduleForm } from '@/type/form/postregularschedule.form';
@@ -41,16 +39,6 @@ export default function Modal({
   const [workTypeIdstate, setWorkTypeId] = useState<string>('');
   const [dayOfWeekState, setDayOfWeek] = useState<DayOfWeek | ''>('');
   const [workTypeColorState, setWorkTypeColorState] = useState<string>('');
-
-  useEffect(() => {
-    setStartTime(startTime);
-    setEndTime(endTime);
-    setStartDate(startDate);
-    setEndDate(endDate);
-    setWorkTypeId(workTypeId);
-    setDayOfWeek(dayOfWeek);
-    handleWorkTypeChange(workTypeId);
-  }, [startTime, endTime, startDate, endDate, dayOfWeek, workTypeId]);
 
   const handleWorkTypeChange = (id: string) => {
     if (!id) {
@@ -108,6 +96,16 @@ export default function Modal({
       }
     }
   };
+
+  useEffect(() => {
+    setStartTime(startTime);
+    setEndTime(endTime);
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setWorkTypeId(workTypeId);
+    setDayOfWeek(dayOfWeek);
+    handleWorkTypeChange(workTypeId);
+  }, [startTime, endTime, startDate, endDate, dayOfWeek, workTypeId]);
 
   return (
     <div className={styles.modalOverlay}>

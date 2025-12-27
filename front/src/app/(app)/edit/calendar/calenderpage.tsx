@@ -118,7 +118,6 @@ export default function Calenderpage({ scheduleDTOlist, month }: Props) {
           <Day
             key={`${scheduleDTO.date}-${index}`}
             scheduleDTO={scheduleDTO}
-            index={index}
           />
         ))}
       </div>

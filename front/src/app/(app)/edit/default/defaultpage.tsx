@@ -109,7 +109,7 @@ export default function DefaultPage({
         }
       });
 
-      let updatedList: DefaultScheduleDTO[] = [];
+      const updatedList: DefaultScheduleDTO[] = [];
 
       defaultscheduleDTOListState.forEach((schedule) => {
         if (schedule.scheduleId === putdefaultscheduleform.id) {

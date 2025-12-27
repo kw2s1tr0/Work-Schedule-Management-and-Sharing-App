@@ -2,7 +2,6 @@
 
 import { RegularscheduleDTO } from '@/type/dto/regularschedule.dto';
 import Schedule from './schedule';
-import { use, useEffect, useState } from 'react';
 import styles from './regualarpage.module.css';
 import { GetRegularScheduleUsecase } from '@/usecase/getregularschedule.usecase';
 import { ServerOrClientEnum } from '@/enum/serverOrClient.enum';
@@ -11,12 +10,13 @@ import { WorkTypeDTO } from '@/type/dto/worktype.dto';
 import { Modalform } from './modalform';
 import { PostOrPut } from '@/enum/PostOrPut.enum';
 import { PostRegularScheduleForm } from '@/type/form/postregularschedule.form';
-import { DayOfWeek } from '@/enum/dayofweek.enum';
 import { DeleteRegularScheduleUsecase } from '@/usecase/deleteregularschedule.usecase';
 import { PutRegularScheduleUsecase } from '@/usecase/putregularschedule.usecase';
 import { PutRegularScheduleForm } from '@/type/form/putregularschedule.form';
 import { PostRegularScheduleUsecase } from '@/usecase/postregularschedu.usecase';
 import Modal from './modal';
+import { useState } from 'react';
+import { DayOfWeek } from '@/enum/dayofweek.enum';
 
 type Props = {
   regularscheduleDTOList: RegularscheduleDTO[];
@@ -44,21 +44,11 @@ export default function RegularPage({
     endDate: '',
     startTime: '',
     endTime: '',
-    dayOfWeek: undefined as any,
+    dayOfWeek: undefined as unknown as DayOfWeek,
     workTypeId: '',
   });
 
   const [postOrPutState, setPostOrPutState] = useState<PostOrPut>();
-
-  const [postRegularScheduleForm, setPostRegularScheduleForm] =
-    useState<PostRegularScheduleForm>({
-      startDate: '',
-      endDate: '',
-      startTime: '',
-      endTime: '',
-      dayOfWeek: undefined as any,
-      workTypeId: '',
-    });
 
   const handleSearch = async () => {
     const getSingleScheduleForm = {
@@ -122,7 +112,7 @@ export default function RegularPage({
         }
       });
 
-      let updatedList: RegularscheduleDTO[] = [];
+      const updatedList: RegularscheduleDTO[] = [];
 
       regularscheduleDTOListState.forEach((schedule) => {
         if (schedule.scheduleId === putregularscheduleform.id) {
@@ -204,7 +194,7 @@ export default function RegularPage({
           endDate: '',
           startTime: '',
           endTime: '',
-          dayOfWeek: undefined as any,
+          dayOfWeek: undefined as unknown as DayOfWeek,
           workTypeId: '',
         };
         break;

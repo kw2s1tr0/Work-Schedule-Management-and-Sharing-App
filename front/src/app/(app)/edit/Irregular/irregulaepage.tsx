@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Schedule from './schedule';
 import { IrregularScheduleDTO } from '@/type/dto/irregularschedule.dto';
 import { GetIrregularScheduleUsecase } from '@/usecase/getirregularschedule.usecase';

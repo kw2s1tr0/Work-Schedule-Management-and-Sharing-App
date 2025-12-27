@@ -3,7 +3,7 @@ import { MethodEnum } from '@/enum/method.enum';
 export async function clientFetch(
   url: string,
   method: MethodEnum,
-  body?: any,
+  body?: unknown,
 ): Promise<Response> {
   const response = await fetch(url, {
     method: method,

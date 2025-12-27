@@ -37,15 +37,6 @@ export default function Modal({
   const [workTypeIdstate, setWorkTypeId] = useState<string>('');
   const [workTypeColorState, setWorkTypeColorState] = useState<string>('');
 
-  useEffect(() => {
-    setStartTime(startTime);
-    setEndTime(endTime);
-    setStartDate(startDate);
-    setEndDate(endDate);
-    setWorkTypeId(workTypeId);
-    handleWorkTypeChange(workTypeId);
-  }, [startTime, endTime, startDate, endDate, workTypeId]);
-
   const handleWorkTypeChange = (id: string) => {
     if (!id) {
       setWorkTypeColorState('');
@@ -100,6 +91,15 @@ export default function Modal({
       }
     }
   };
+
+  useEffect(() => {
+    setStartTime(startTime);
+    setEndTime(endTime);
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setWorkTypeId(workTypeId);
+    handleWorkTypeChange(workTypeId);
+  }, [startTime, endTime, startDate, endDate, workTypeId]);
 
   return (
     <div className={styles.modalOverlay}>

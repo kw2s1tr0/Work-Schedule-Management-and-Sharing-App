@@ -3,10 +3,9 @@ import styles from './day.module.css';
 
 type Props = {
   scheduleDTO: ScheduleDTO;
-  index: number;
 };
 
-export default function Day({ scheduleDTO, index }: Props) {
+export default function Day({ scheduleDTO }: Props) {
   const { startTime, endTime, date, worktypeName, worktypeColor } = scheduleDTO;
 
   return (

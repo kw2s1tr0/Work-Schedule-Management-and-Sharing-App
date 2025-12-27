@@ -7,7 +7,7 @@ export async function fetcher(
   url: string,
   method: MethodEnum,
   type: ServerOrClientEnum,
-  body?: any,
+  body?: unknown,
   cookie?: string,
 ): Promise<Response> {
   let response;

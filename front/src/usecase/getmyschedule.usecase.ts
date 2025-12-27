@@ -105,7 +105,7 @@ async function get(
 
 function toDTO(userResList: UserRes[]): ScheduleDTO[] {
   const scheduleResList: ScheduleRes[] = userResList[0].schedules;
-  let scheduleDTOList: ScheduleDTO[];
+  let scheduleDTOList: ScheduleDTO[] = [];
 
   const datefirst = new Date(scheduleResList[0].date);
   let dayOfWeekfirst = datefirst.getUTCDay();
