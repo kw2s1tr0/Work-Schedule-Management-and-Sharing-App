@@ -15,10 +15,7 @@ type Props = {
   month: string;
 };
 
-export default function Calenderpage({
-  scheduleDTOlist,
-  month,
-}: Props) {
+export default function Calenderpage({ scheduleDTOlist, month }: Props) {
   const isFirstRender = useRef(true);
 
   const [scheduleDTOlistState, setScheduleDTOlistState] =

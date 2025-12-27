@@ -1,32 +1,37 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import Schedule from "./schedule";
-import { IrregularScheduleDTO } from "@/type/dto/irregularschedule.dto";
-import { GetIrregularScheduleUsecase } from "@/usecase/getirregularschedule.usecase";
-import { ServerOrClientEnum } from "@/enum/serverOrClient.enum";
-import { ExpectedError } from "@/Error/ExpectedError";
-import { WorkTypeDTO } from "@/type/dto/worktype.dto";
-import { Modalform } from "./modalform";
-import { PostOrPut } from "@/enum/PostOrPut.enum";
-import { DeleteIrregularScheduleUsecase } from "@/usecase/deleteirregularschedule.usecase";
-import { PutIrregularScheduleForm } from "@/type/form/putirregularschedule.form";
-import { PutIrregularScheduleUsecase } from "@/usecase/putirregularschedule.usecase";
-import { PostIrregularScheduleForm } from "@/type/form/postirregularschedule.form";
-import { PostIrregularScheduleUsecase } from "@/usecase/postirregularschedule.usecase";
-import Modal from "./modal";
+import { useEffect, useState } from 'react';
+import Schedule from './schedule';
+import { IrregularScheduleDTO } from '@/type/dto/irregularschedule.dto';
+import { GetIrregularScheduleUsecase } from '@/usecase/getirregularschedule.usecase';
+import { ServerOrClientEnum } from '@/enum/serverOrClient.enum';
+import { ExpectedError } from '@/Error/ExpectedError';
+import { WorkTypeDTO } from '@/type/dto/worktype.dto';
+import { Modalform } from './modalform';
+import { PostOrPut } from '@/enum/PostOrPut.enum';
+import { DeleteIrregularScheduleUsecase } from '@/usecase/deleteirregularschedule.usecase';
+import { PutIrregularScheduleForm } from '@/type/form/putirregularschedule.form';
+import { PutIrregularScheduleUsecase } from '@/usecase/putirregularschedule.usecase';
+import { PostIrregularScheduleForm } from '@/type/form/postirregularschedule.form';
+import { PostIrregularScheduleUsecase } from '@/usecase/postirregularschedule.usecase';
+import Modal from './modal';
 import styles from './irregulaepage.module.css';
 
 type Props = {
-    irregularscheduleDTOList: IrregularScheduleDTO[];
-    worktypeDTOList: WorkTypeDTO[];
-    from: string;
-    to: string;
+  irregularscheduleDTOList: IrregularScheduleDTO[];
+  worktypeDTOList: WorkTypeDTO[];
+  from: string;
+  to: string;
 };
 
-export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOList, from, to }: Props) {
-
-  const [irregularscheduleDTOListState, setIrregularscheduleDTOListState] = useState<IrregularScheduleDTO[]>(irregularscheduleDTOList);
+export default function IrregularPage({
+  irregularscheduleDTOList,
+  worktypeDTOList,
+  from,
+  to,
+}: Props) {
+  const [irregularscheduleDTOListState, setIrregularscheduleDTOListState] =
+    useState<IrregularScheduleDTO[]>(irregularscheduleDTOList);
 
   const [fromState, setFrom] = useState<string>(from);
   const [toState, setTo] = useState<string>(to);
@@ -37,11 +42,10 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
     date: '',
     startTime: '',
     endTime: '',
-    workTypeId: ''
+    workTypeId: '',
   });
 
   const [postOrPutState, setPostOrPutState] = useState<PostOrPut>();
-
 
   const handleSearch = async () => {
     const getSingleScheduleForm = {
@@ -50,21 +54,31 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
     };
 
     try {
-      const irregularscheduleDTOListFiltered: IrregularScheduleDTO[] = await GetIrregularScheduleUsecase(getSingleScheduleForm, ServerOrClientEnum.CLIENT);
+      const irregularscheduleDTOListFiltered: IrregularScheduleDTO[] =
+        await GetIrregularScheduleUsecase(
+          getSingleScheduleForm,
+          ServerOrClientEnum.CLIENT,
+        );
       setIrregularscheduleDTOListState(irregularscheduleDTOListFiltered);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
   const handleDelete = async (scheduleId: string) => {
     try {
-      const id = await DeleteIrregularScheduleUsecase(scheduleId, ServerOrClientEnum.CLIENT);
-      const updatedList = irregularscheduleDTOListState.filter(schedule => schedule.scheduleId !== id);
+      const id = await DeleteIrregularScheduleUsecase(
+        scheduleId,
+        ServerOrClientEnum.CLIENT,
+      );
+      const updatedList = irregularscheduleDTOListState.filter(
+        (schedule) => schedule.scheduleId !== id,
+      );
       setIrregularscheduleDTOListState(updatedList);
     } catch (error) {
       if (error instanceof ExpectedError) {
@@ -75,9 +89,14 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
     }
   };
 
-  const handleUpdate = async (putirregularscheduleform: PutIrregularScheduleForm) => {
+  const handleUpdate = async (
+    putirregularscheduleform: PutIrregularScheduleForm,
+  ) => {
     try {
-      await PutIrregularScheduleUsecase(putirregularscheduleform, ServerOrClientEnum.CLIENT);
+      await PutIrregularScheduleUsecase(
+        putirregularscheduleform,
+        ServerOrClientEnum.CLIENT,
+      );
 
       let workTypeName = '';
       let workTypeColor = '';
@@ -115,9 +134,14 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
     }
   };
 
-  const handleCreate = async (postirregularscheduleform: PostIrregularScheduleForm) => {
+  const handleCreate = async (
+    postirregularscheduleform: PostIrregularScheduleForm,
+  ) => {
     try {
-      const newId = await PostIrregularScheduleUsecase(postirregularscheduleform, ServerOrClientEnum.CLIENT);
+      const newId = await PostIrregularScheduleUsecase(
+        postirregularscheduleform,
+        ServerOrClientEnum.CLIENT,
+      );
       let workTypeName = '';
       let workTypeColor = '';
       worktypeDTOList.forEach((worktypeDTO) => {
@@ -134,7 +158,10 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
         worktypeName: workTypeName,
         worktypeColor: workTypeColor,
       };
-      setIrregularscheduleDTOListState([...irregularscheduleDTOListState, newIrregularSchedule]);
+      setIrregularscheduleDTOListState([
+        ...irregularscheduleDTOListState,
+        newIrregularSchedule,
+      ]);
     } catch (error) {
       if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
@@ -152,7 +179,7 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
           date: '',
           startTime: '',
           endTime: '',
-          workTypeId: ''
+          workTypeId: '',
         };
         break;
       case PostOrPut.PUT:
@@ -166,7 +193,7 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
 
   const closeModal = () => {
     setModalOpen(false);
-  }
+  };
 
   const findWorkTypeId = (worktypeName: string): string => {
     let workTypeId = '';
@@ -176,7 +203,7 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
       }
     });
     return workTypeId;
-  }
+  };
 
   return (
     <>

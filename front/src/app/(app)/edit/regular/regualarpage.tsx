@@ -1,59 +1,64 @@
 'use client';
 
-import { RegularscheduleDTO } from "@/type/dto/regularschedule.dto";
-import Schedule from "./schedule";
-import { use, useEffect, useState } from "react";
+import { RegularscheduleDTO } from '@/type/dto/regularschedule.dto';
+import Schedule from './schedule';
+import { use, useEffect, useState } from 'react';
 import styles from './regualarpage.module.css';
-import { GetRegularScheduleUsecase } from "@/usecase/getregularschedule.usecase";
-import { ServerOrClientEnum } from "@/enum/serverOrClient.enum";
-import { ExpectedError } from "@/Error/ExpectedError";
-import { WorkTypeDTO } from "@/type/dto/worktype.dto";
-import { Modalform } from "./modalform";
-import { PostOrPut } from "@/enum/PostOrPut.enum";
-import { PostRegularScheduleForm } from "@/type/form/postregularschedule.form";
-import { DayOfWeek } from "@/enum/dayofweek.enum";
-import { DeleteRegularScheduleUsecase } from "@/usecase/deleteregularschedule.usecase";
-import { PutRegularScheduleUsecase } from "@/usecase/putregularschedule.usecase";
-import { PutRegularScheduleForm } from "@/type/form/putregularschedule.form";
-import { PostRegularScheduleUsecase } from "@/usecase/postregularschedu.usecase";
-import Modal from "./modal";
+import { GetRegularScheduleUsecase } from '@/usecase/getregularschedule.usecase';
+import { ServerOrClientEnum } from '@/enum/serverOrClient.enum';
+import { ExpectedError } from '@/Error/ExpectedError';
+import { WorkTypeDTO } from '@/type/dto/worktype.dto';
+import { Modalform } from './modalform';
+import { PostOrPut } from '@/enum/PostOrPut.enum';
+import { PostRegularScheduleForm } from '@/type/form/postregularschedule.form';
+import { DayOfWeek } from '@/enum/dayofweek.enum';
+import { DeleteRegularScheduleUsecase } from '@/usecase/deleteregularschedule.usecase';
+import { PutRegularScheduleUsecase } from '@/usecase/putregularschedule.usecase';
+import { PutRegularScheduleForm } from '@/type/form/putregularschedule.form';
+import { PostRegularScheduleUsecase } from '@/usecase/postregularschedu.usecase';
+import Modal from './modal';
 
 type Props = {
-    regularscheduleDTOList: RegularscheduleDTO[];
-    worktypeDTOList: WorkTypeDTO[];
-    from: string;
-    to: string;
+  regularscheduleDTOList: RegularscheduleDTO[];
+  worktypeDTOList: WorkTypeDTO[];
+  from: string;
+  to: string;
 };
 
-export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, from, to }: Props) {
-
-  const [regularscheduleDTOListState, setRegularscheduleDTOListState] = useState<RegularscheduleDTO[]>(regularscheduleDTOList);
+export default function RegularPage({
+  regularscheduleDTOList,
+  worktypeDTOList,
+  from,
+  to,
+}: Props) {
+  const [regularscheduleDTOListState, setRegularscheduleDTOListState] =
+    useState<RegularscheduleDTO[]>(regularscheduleDTOList);
 
   const [fromState, setFrom] = useState<string>(from);
   const [toState, setTo] = useState<string>(to);
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  
+
   const [modalform, setModalform] = useState<Modalform>({
     startDate: '',
     endDate: '',
     startTime: '',
     endTime: '',
     dayOfWeek: undefined as any,
-    workTypeId: ''
+    workTypeId: '',
   });
 
   const [postOrPutState, setPostOrPutState] = useState<PostOrPut>();
 
-  const [postRegularScheduleForm, setPostRegularScheduleForm] = useState<PostRegularScheduleForm>({
-    startDate: '',
-    endDate: '',
-    startTime: '',
-    endTime: '',
-    dayOfWeek: undefined as any,
-    workTypeId: ''
-  });
-    
+  const [postRegularScheduleForm, setPostRegularScheduleForm] =
+    useState<PostRegularScheduleForm>({
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      endTime: '',
+      dayOfWeek: undefined as any,
+      workTypeId: '',
+    });
 
   const handleSearch = async () => {
     const getSingleScheduleForm = {
@@ -62,34 +67,50 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
     };
 
     try {
-      const regularscheduleDTOListFiltered: RegularscheduleDTO[] = await GetRegularScheduleUsecase(getSingleScheduleForm, ServerOrClientEnum.CLIENT);
+      const regularscheduleDTOListFiltered: RegularscheduleDTO[] =
+        await GetRegularScheduleUsecase(
+          getSingleScheduleForm,
+          ServerOrClientEnum.CLIENT,
+        );
       setRegularscheduleDTOListState(regularscheduleDTOListFiltered);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
   const handleDelete = async (scheduleId: string) => {
     try {
-      const id = await DeleteRegularScheduleUsecase(scheduleId, ServerOrClientEnum.CLIENT);
-      const updatedList = regularscheduleDTOListState.filter(schedule => schedule.scheduleId !== id);
+      const id = await DeleteRegularScheduleUsecase(
+        scheduleId,
+        ServerOrClientEnum.CLIENT,
+      );
+      const updatedList = regularscheduleDTOListState.filter(
+        (schedule) => schedule.scheduleId !== id,
+      );
       setRegularscheduleDTOListState(updatedList);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
-  const handleUpdate = async (putregularscheduleform: PutRegularScheduleForm) => {
+  const handleUpdate = async (
+    putregularscheduleform: PutRegularScheduleForm,
+  ) => {
     try {
-      await PutRegularScheduleUsecase(putregularscheduleform, ServerOrClientEnum.CLIENT);
+      await PutRegularScheduleUsecase(
+        putregularscheduleform,
+        ServerOrClientEnum.CLIENT,
+      );
 
       let worktypeName: string;
       let worktypeColor: string;
@@ -113,7 +134,7 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
             endDate: putregularscheduleform.endDate,
             daysOfWeek: putregularscheduleform.dayOfWeek,
             worktypeName: worktypeName!,
-            worktypeColor: worktypeColor!
+            worktypeColor: worktypeColor!,
           };
           updatedList.push(newSchedule);
         } else {
@@ -122,17 +143,21 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
       });
       setRegularscheduleDTOListState(updatedList);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
-      } else 
-        alert('An unexpected error occurred');} 
-      return;
+      } else alert('An unexpected error occurred');
     }
-  
+    return;
+  };
 
-  const handleCreate = async (postregularscheduleform: PostRegularScheduleForm) => {
+  const handleCreate = async (
+    postregularscheduleform: PostRegularScheduleForm,
+  ) => {
     try {
-      const id = await PostRegularScheduleUsecase(postregularscheduleform, ServerOrClientEnum.CLIENT);
+      const id = await PostRegularScheduleUsecase(
+        postregularscheduleform,
+        ServerOrClientEnum.CLIENT,
+      );
 
       let worktypeName: string = '';
       let worktypeColor: string = '';
@@ -152,18 +177,22 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
         worktypeColor: worktypeColor!,
         startDate: postregularscheduleform.startDate,
         endDate: postregularscheduleform.endDate,
-        daysOfWeek: postregularscheduleform.dayOfWeek
+        daysOfWeek: postregularscheduleform.dayOfWeek,
       };
 
-      setRegularscheduleDTOListState([...regularscheduleDTOListState, newSchedule]);
+      setRegularscheduleDTOListState([
+        ...regularscheduleDTOListState,
+        newSchedule,
+      ]);
     } catch (error) {
- if (error instanceof ExpectedError) {
+      if (error instanceof ExpectedError) {
         alert(error.messages.join('\n'));
       } else {
-        alert('An unexpected error occurred');}
+        alert('An unexpected error occurred');
+      }
       return;
     }
-  }
+  };
 
   const openModal = (postOrPut: PostOrPut, modalform?: Modalform) => {
     let newform: Modalform;
@@ -174,9 +203,9 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
           startDate: '',
           endDate: '',
           startTime: '',
-          endTime: '', 
+          endTime: '',
           dayOfWeek: undefined as any,
-          workTypeId: ''
+          workTypeId: '',
         };
         break;
       case PostOrPut.PUT:
@@ -186,11 +215,11 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
     setModalform(newform);
     setPostOrPutState(postOrPut);
     setModalOpen(true);
-  }
+  };
 
   const closeModal = () => {
     setModalOpen(false);
-  }
+  };
 
   const findWorkTypeId = (worktypeName: string): string => {
     let workTypeId = '';
@@ -200,7 +229,7 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
       }
     });
     return workTypeId;
-  }
+  };
 
   return (
     <>
@@ -231,7 +260,11 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
             onChange={(e) => setTo(e.target.value)}
           />
         </div>
-        <button className={styles.searchButton} type="button" onClick={handleSearch}>
+        <button
+          className={styles.searchButton}
+          type="button"
+          onClick={handleSearch}
+        >
           検索
         </button>
       </form>

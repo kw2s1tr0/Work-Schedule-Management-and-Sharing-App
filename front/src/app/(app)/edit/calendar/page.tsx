@@ -33,10 +33,7 @@ export default async function Calender() {
     <div className={styles.container}>
       <h1 className={styles.title}>Edit</h1>
       <h2 className={styles.subtitle}>Calendar</h2>
-      <Calenderpage
-        scheduleDTOlist={scheduleDTOlist}
-        month={month}
-      />
+      <Calenderpage scheduleDTOlist={scheduleDTOlist} month={month} />
     </div>
   );
 }
