@@ -5,6 +5,7 @@ import { Modalform } from "./modalform";
 import { PostOrPut } from "@/enum/PostOrPut.enum";
 import { PutDefaultScheduleForm } from "@/type/form/putdefaultschedule.form";
 import { ExpectedError } from "@/Error/ExpectedError";
+import styles from './modal.module.css';
 
 type Props = {
     worktypeDTOList: WorkTypeDTO[];
@@ -91,31 +92,54 @@ export default function Modal({worktypeDTOList, modalform, postOrPut, handleUpda
     }
 
     return (
-        <div>
-            {postOrPut== PostOrPut.PUT && <p>{id}</p>}
-            <label htmlFor="startTime">開始時間:</label>
-            <input type="time" id="startTime" name="startTime" value={startTimestate} onChange={(e) => setStartTime(e.target.value)} />
-            <label htmlFor="endTime">終了時間:</label>
-            <input type="time" id="endTime" name="endTime" value={endTimestate} onChange={(e) => setEndTime(e.target.value)} />
-            <label htmlFor="startDate">開始日:</label>
-            <input type="date" id="startDate" name="startDate" value={startDatestate} onChange={(e) => setStartDate(e.target.value)}  />
-            <label htmlFor="endDate">終了日:</label>
-            <input type="date" id="endDate" name="endDate" value={endDatestate} onChange={(e) => setEndDate(e.target.value)} />
-            <label style={{backgroundColor: workTypeColorState}} htmlFor="workTypeId">勤務タイプ:</label>
-            <select id="workTypeId" name="workTypeId" value={workTypeIdstate} onChange={(e) => {
-                setWorkTypeId(e.target.value);
-                handleWorkTypeChange(e.target.value);
-            }}>
-                <option value="">選択してください</option>
-                {worktypeDTOList.map((worktype) => (
-                    <option key={worktype.id} value={worktype.id}>
-                        {worktype.workTypeName}
-                    </option>
-                ))}
-            </select>
-            {postOrPut== PostOrPut.PUT && <button type="button" onClick={handleScheduleUpdate}>更新</button>}
-            {postOrPut== PostOrPut.POST && <button type="button" onClick={handleScheduleCreate}>作成</button>}
-            <button type="button" onClick={closeModal}>閉じる</button>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+                <h2 className={styles.modalTitle}>
+                    {postOrPut == PostOrPut.PUT ? 'スケジュール編集' : 'スケジュール作成'}
+                </h2>
+                {postOrPut == PostOrPut.PUT && <p>ID: {id}</p>}
+                
+                <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="startTime">開始時間:</label>
+                    <input className={styles.input} type="time" id="startTime" name="startTime" value={startTimestate} onChange={(e) => setStartTime(e.target.value)} />
+                </div>
+                
+                <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="endTime">終了時間:</label>
+                    <input className={styles.input} type="time" id="endTime" name="endTime" value={endTimestate} onChange={(e) => setEndTime(e.target.value)} />
+                </div>
+                
+                <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="startDate">開始日:</label>
+                    <input className={styles.input} type="date" id="startDate" name="startDate" value={startDatestate} onChange={(e) => setStartDate(e.target.value)}  />
+                </div>
+                
+                <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="endDate">終了日:</label>
+                    <input className={styles.input} type="date" id="endDate" name="endDate" value={endDatestate} onChange={(e) => setEndDate(e.target.value)} />
+                </div>
+                
+                <div className={styles.formGroup}>
+                    <label className={styles.label} style={{backgroundColor: workTypeColorState}} htmlFor="workTypeId">勤務タイプ:</label>
+                    <select className={styles.select} id="workTypeId" name="workTypeId" value={workTypeIdstate} onChange={(e) => {
+                        setWorkTypeId(e.target.value);
+                        handleWorkTypeChange(e.target.value);
+                    }}>
+                        <option value="">選択してください</option>
+                        {worktypeDTOList.map((worktype) => (
+                            <option key={worktype.id} value={worktype.id}>
+                                {worktype.workTypeName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                
+                <div className={styles.buttonGroup}>
+                    {postOrPut == PostOrPut.PUT && <button className={styles.submitButton} type="button" onClick={handleScheduleUpdate}>更新</button>}
+                    {postOrPut == PostOrPut.POST && <button className={styles.submitButton} type="button" onClick={handleScheduleCreate}>作成</button>}
+                    <button className={styles.cancelButton} type="button" onClick={closeModal}>閉じる</button>
+                </div>
+            </div>
         </div>
     )
 }

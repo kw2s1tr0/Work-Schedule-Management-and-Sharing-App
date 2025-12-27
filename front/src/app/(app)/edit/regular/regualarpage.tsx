@@ -3,6 +3,7 @@
 import { RegularscheduleDTO } from "@/type/dto/regularschedule.dto";
 import Schedule from "./schedule";
 import { use, useEffect, useState } from "react";
+import styles from './regualarpage.module.css';
 import { GetRegularScheduleUsecase } from "@/usecase/getregularschedule.usecase";
 import { ServerOrClientEnum } from "@/enum/serverOrClient.enum";
 import { ExpectedError } from "@/Error/ExpectedError";
@@ -203,21 +204,71 @@ export default function RegularPage({ regularscheduleDTOList, worktypeDTOList, f
 
   return (
     <>
-      <form>
-        <label htmlFor="from">開始日</label>
-        <input type="date" id="from" name="from" value={fromState} onChange={(e) => setFrom(e.target.value)} />
-        <label htmlFor="to">終了日</label>
-        <input type="date" id="to" name="to" value={toState} onChange={(e) => setTo(e.target.value)} />
-        <button type="button" onClick={handleSearch}>検索</button>
+      <form className={styles.form}>
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="from">
+            開始日
+          </label>
+          <input
+            className={styles.input}
+            type="date"
+            id="from"
+            name="from"
+            value={fromState}
+            onChange={(e) => setFrom(e.target.value)}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="to">
+            終了日
+          </label>
+          <input
+            className={styles.input}
+            type="date"
+            id="to"
+            name="to"
+            value={toState}
+            onChange={(e) => setTo(e.target.value)}
+          />
+        </div>
+        <button className={styles.searchButton} type="button" onClick={handleSearch}>
+          検索
+        </button>
       </form>
-      {regularscheduleDTOListState.length === 0 && <p>期間内にレギュラースケジュールは登録されていません。</p>}
-      {regularscheduleDTOListState.length > 0 &&
-      regularscheduleDTOListState.map((regularscheduleDTO) => (
-        <Schedule key={regularscheduleDTO.scheduleId} regularscheduleDTO={regularscheduleDTO} handleDelete={handleDelete} openModal={openModal} findWorkTypeId={findWorkTypeId} />
-      ))}
-      <button type="button" onClick={() => openModal(PostOrPut.POST)}>新規作成</button>
+      {regularscheduleDTOListState.length === 0 && (
+        <p className={styles.noResults}>
+          期間内にレギュラースケジュールは登録されていません。
+        </p>
+      )}
+      {regularscheduleDTOListState.length > 0 && (
+        <div className={styles.scheduleList}>
+          {regularscheduleDTOListState.map((regularscheduleDTO) => (
+            <Schedule
+              key={regularscheduleDTO.scheduleId}
+              regularscheduleDTO={regularscheduleDTO}
+              handleDelete={handleDelete}
+              openModal={openModal}
+              findWorkTypeId={findWorkTypeId}
+            />
+          ))}
+        </div>
+      )}
+      <button
+        className={styles.createButton}
+        type="button"
+        onClick={() => openModal(PostOrPut.POST)}
+      >
+        新規作成
+      </button>
       {modalOpen && (
-        <Modal postOrPut={postOrPutState} modalform={modalform} closeModal={closeModal} handleCreate={handleCreate} handleUpdate={handleUpdate} worktypeDTOList={worktypeDTOList} />
+        <Modal
+          postOrPut={postOrPutState}
+          modalform={modalform}
+          closeModal={closeModal}
+          handleCreate={handleCreate}
+          handleUpdate={handleUpdate}
+          worktypeDTOList={worktypeDTOList}
+        />
       )}
     </>
   );

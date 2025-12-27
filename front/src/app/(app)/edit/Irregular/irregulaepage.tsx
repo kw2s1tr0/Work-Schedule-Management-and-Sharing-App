@@ -15,6 +15,7 @@ import { PutIrregularScheduleUsecase } from "@/usecase/putirregularschedule.usec
 import { PostIrregularScheduleForm } from "@/type/form/postirregularschedule.form";
 import { PostIrregularScheduleUsecase } from "@/usecase/postirregularschedule.usecase";
 import Modal from "./modal";
+import styles from './irregulaepage.module.css';
 
 type Props = {
     irregularscheduleDTOList: IrregularScheduleDTO[];
@@ -179,21 +180,75 @@ export default function IrregularPage({ irregularscheduleDTOList, worktypeDTOLis
 
   return (
     <>
-      <form>
-        <label htmlFor="from">開始日</label>
-        <input type="date" id="from" name="from" value={fromState} onChange={(e) => setFrom(e.target.value)} />
-        <label htmlFor="to">終了日</label>
-        <input type="date" id="to" name="to" value={toState} onChange={(e) => setTo(e.target.value)} />
-        <button type="button" onClick={handleSearch}>検索</button>
+      <form className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="from" className={styles.label}>
+            開始日
+          </label>
+          <input
+            type="date"
+            id="from"
+            name="from"
+            className={styles.input}
+            value={fromState}
+            onChange={(e) => setFrom(e.target.value)}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="to" className={styles.label}>
+            終了日
+          </label>
+          <input
+            type="date"
+            id="to"
+            name="to"
+            className={styles.input}
+            value={toState}
+            onChange={(e) => setTo(e.target.value)}
+          />
+        </div>
+        <button
+          type="button"
+          className={styles.searchButton}
+          onClick={handleSearch}
+        >
+          検索
+        </button>
       </form>
-      {irregularscheduleDTOListState.length === 0 && <p>期間内にイレギュラースケジュールは登録されていません。</p>}
-      {irregularscheduleDTOListState.length > 0 &&
-      irregularscheduleDTOListState.map((irregularscheduleDTO) => (
-        <Schedule key={irregularscheduleDTO.scheduleId} irregularscheduleDTO={irregularscheduleDTO} handleDelete={handleDelete} openModal={openModal} findWorkTypeId={findWorkTypeId}/>
-      ))}
-      <button type="button" onClick={() => openModal(PostOrPut.POST)}>新規作成</button>
+      {irregularscheduleDTOListState.length === 0 && (
+        <p className={styles.noResults}>
+          期間内にイレギュラースケジュールは登録されていません。
+        </p>
+      )}
+      {irregularscheduleDTOListState.length > 0 && (
+        <div className={styles.scheduleList}>
+          {irregularscheduleDTOListState.map((irregularscheduleDTO) => (
+            <Schedule
+              key={irregularscheduleDTO.scheduleId}
+              irregularscheduleDTO={irregularscheduleDTO}
+              handleDelete={handleDelete}
+              openModal={openModal}
+              findWorkTypeId={findWorkTypeId}
+            />
+          ))}
+        </div>
+      )}
+      <button
+        type="button"
+        className={styles.createButton}
+        onClick={() => openModal(PostOrPut.POST)}
+      >
+        新規作成
+      </button>
       {modalOpen && (
-        <Modal worktypeDTOList={worktypeDTOList} postOrPut={postOrPutState!} modalform={modalform} closeModal={closeModal} handleCreate={handleCreate} handleUpdate={handleUpdate} />
+        <Modal
+          worktypeDTOList={worktypeDTOList}
+          postOrPut={postOrPutState!}
+          modalform={modalform}
+          closeModal={closeModal}
+          handleCreate={handleCreate}
+          handleUpdate={handleUpdate}
+        />
       )}
     </>
   );

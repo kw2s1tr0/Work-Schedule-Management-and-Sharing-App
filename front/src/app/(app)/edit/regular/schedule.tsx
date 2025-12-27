@@ -2,6 +2,7 @@ import { PostOrPut } from "@/enum/PostOrPut.enum";
 import { ExpectedError } from "@/Error/ExpectedError";
 import { RegularscheduleDTO } from "@/type/dto/regularschedule.dto";
 import React from "react";
+import styles from './schedule.module.css';
 
 type Props = {
     regularscheduleDTO: RegularscheduleDTO;
@@ -43,17 +44,35 @@ export default function Schedule({ regularscheduleDTO, handleDelete, openModal, 
   } 
   
   return (
-    <>
-    <React.Fragment>
-      <div>
-        <p>{startTime}-{endTime}</p>
-        <p>{startDate}-{endDate}</p>
-        <p>{daysOfWeek}</p>
-        <p style={{ backgroundColor: worktypeColor }}>{worktypeName}</p>
-        <button onClick={opendScheduleModal}>編集</button>
-        <button onClick={handlescheduleDelete}>削除</button>
+    <div className={styles.scheduleCard}>
+      <div className={styles.scheduleContent}>
+        <div className={styles.scheduleInfo}>
+          <p className={styles.timeInfo}>
+            {startTime}-{endTime}
+          </p>
+          <p className={styles.dateInfo}>
+            {startDate}-{endDate}
+          </p>
+          <p className={styles.dateInfo}>{daysOfWeek}</p>
+        </div>
+        <p
+          className={styles.worktype}
+          style={{ backgroundColor: worktypeColor }}
+        >
+          {worktypeName}
+        </p>
+        <div className={styles.buttonGroup}>
+          <button className={styles.editButton} onClick={opendScheduleModal}>
+            編集
+          </button>
+          <button
+            className={styles.deleteButton}
+            onClick={handlescheduleDelete}
+          >
+            削除
+          </button>
+        </div>
       </div>
-    </React.Fragment>
-    </>
+    </div>
   );
 }
