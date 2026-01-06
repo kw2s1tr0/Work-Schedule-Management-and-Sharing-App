@@ -154,7 +154,9 @@ gradle bootRun
 cd front/.devcontainer
 docker compose up -d
 docker compose exec WSMSA-front bash
-npm run dev
+npm install
+npm run build
+npm run start
 ```
 
 `http://localhost:3000`でアプリケーションにアクセスできます。
