@@ -10,7 +10,7 @@ RUN apt update && \
     unzip -q gradle.zip -d /opt/ && \
     rm gradle.zip
 
-COPY back /schedule
+COPY back/ /schedule/
 
 WORKDIR /schedule
 
