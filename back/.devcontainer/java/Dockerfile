@@ -20,6 +20,6 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /schedule
 
-COPY --from=builder /schedule/build/libs/*.jar app.jar
+COPY --from=builder /schedule/app/build/libs/*.jar app.jar
 
 ENTRYPOINT ["java","-jar","app.jar"]
