@@ -4,7 +4,9 @@ services:
     container_name: java
     build:
       context: ./java
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./java/.env.local
     ports:
       - "8080:8080"
     volumes:
@@ -23,7 +25,7 @@ services:
     container_name: postgres
     build:
       context: ./postgres
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root

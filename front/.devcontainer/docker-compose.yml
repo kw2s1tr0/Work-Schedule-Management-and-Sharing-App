@@ -3,7 +3,9 @@ services:
   node:
     build:
       context: ./node
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./node/.env.local
     volumes:
       - type: bind
         source: ../
