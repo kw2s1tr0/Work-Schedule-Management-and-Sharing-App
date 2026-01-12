@@ -5,6 +5,10 @@
 本アプリケーションは、従業員の勤怠スケジュールを管理・共有するためのWebアプリケーションです。
 ユーザーは自身のスケジュールを登録・更新・削除でき、組織内の他メンバーのスケジュールを検索・閲覧できます。
 
+### URL
+https://work-schedule-management-and-sharin.vercel.app
+※仮ユーザーとしてユーザーID:00001 パスワード:passwordでログイン可能です
+
 ### 主な機能
 
 - **認証機能**: セッションベースの認証（Spring Security + JSESSIONID）
