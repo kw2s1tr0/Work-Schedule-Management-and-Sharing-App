@@ -10,9 +10,9 @@ RUN apt update && \
     unzip -q gradle.zip -d /opt/ && \
     rm gradle.zip
 
-WORKDIR /schedule
-
 COPY back /schedule
+
+WORKDIR /schedule
 
 RUN gradle bootJar --no-daemon
 
